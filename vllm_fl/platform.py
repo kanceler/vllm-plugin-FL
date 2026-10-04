@@ -260,6 +260,22 @@ class PlatformFL(Platform):
                 attention_config.use_trtllm_attention = False
                 attention_config.disable_flashinfer_prefill = True
 
+        # --------------------------------------------------------
+        # prefill chunk 预算解耦与自适应
+        #
+        # 基线 max_num_batched_tokens=2048 把单次 prefill 的 q_len 钉死在
+        # 2048，Prefill Attention 算力利用率仅 32%（整序列可达 45.6%）。
+        # 这里把「缓冲区上界」抬到 cap，把「运行期预算」留在基线值，再由
+        # 自适应调度器按 decode 压力在两者之间选择。
+        #
+        # 放在本方法末尾：VllmConfig.__post_init__ 会在本钩子返回后
+        # 重算 compile ranges（vllm/config/vllm.py:1350-1357），
+        # 因此此处修改 max_num_batched_tokens 是被支持的用法。
+        # 详见 改动记录/002-framework-prefill自适应chunk预算调度.md
+        from vllm_fl.worker.adaptive_sched import apply_adaptive_chunk_config
+
+        apply_adaptive_chunk_config(vllm_config)
+
     @classmethod
     def get_attn_backend_cls(
         cls,
