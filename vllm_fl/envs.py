@@ -32,12 +32,17 @@ fl_vllm_environment_variables: dict[str, Callable[[], Any]] = {
     ),
     # 单步 token 预算的上界（同时是模型 runner 缓冲区的大小）。
     # 若设成等于 max_num_batched_tokens（即 2048），本功能自动失效 → 等价基线。
+    #
+    # 默认 4096：这是【与 attention 逐层同步消除配套】后重扫出的最优值。
+    # 同步存在时扫出的最优曾是 8192，但同步消除后瓶颈迁移，8192 会使
+    # 4K 场景 TTFT 升至基线的 1.23 倍（违反约束），4096 则四项指标全面占优。
+    # 两者必须配套使用，详见技术报告第三章。
     "VLLM_FL_ADAPTIVE_CHUNK_MAX": lambda: _env_int(
-        "VLLM_FL_ADAPTIVE_CHUNK_MAX", "8192"
+        "VLLM_FL_ADAPTIVE_CHUNK_MAX", "4096"
     ),
     # 活跃 decode 请求数门限：不超过它才用上界预算。
     #   -1（默认）= 不设门限，始终用上界。
-    #                实测最优：门限=0 与门限=-1 的吞吐/TTFT 差异在噪声内，
+    #                实测：门限=0 与门限=-1 的吞吐/TTFT 差异在噪声内，
     #                因为 decode 几乎全程存在，门限形同虚设。
     #   >=0        = 仅在 decode 数不超过该值时放大（留给其他负载形态的旋钮）。
     "VLLM_FL_ADAPTIVE_CHUNK_DECODE_GATE": lambda: _env_int(
