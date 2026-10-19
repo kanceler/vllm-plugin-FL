@@ -208,7 +208,7 @@ class PlatformFL(Platform):
 
             _fl_bs = _fl_envs.VLLM_FL_KV_BLOCK_SIZE
             if _fl_bs > 0 and _fl_bs != cache_config.block_size:
-                logger.info(
+                logger.warning(
                     "KV cache block_size overridden: %s -> %d "
                     "(VLLM_FL_KV_BLOCK_SIZE).",
                     cache_config.block_size,
