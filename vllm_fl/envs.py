@@ -48,6 +48,19 @@ fl_vllm_environment_variables: dict[str, Callable[[], Any]] = {
     "VLLM_FL_ADAPTIVE_CHUNK_DECODE_GATE": lambda: _env_int(
         "VLLM_FL_ADAPTIVE_CHUNK_DECODE_GATE", "-1"
     ),
+    # 只有「长 prompt」才把预算抬到上界。0 = 自动（4 × 基线预算）。
+    #
+    # 为什么要这个门限：抬高 chunk 会让**每个调度步变长**（实测 4k 场景
+    # Mean ITL 59.6→71.3 ms）。这对 prefill 主导的负载有利（少切几块、
+    # q_len 更大、attention 效率更高），但对 decode 主导的负载有害
+    # （步变长 = decode 出 token 变慢）。
+    # 实测：16k 场景（prompt 16384）抬高后 +11.6%；4k 场景（prompt 4096）
+    # 抬高后 total tokens/s −16.0%、TTFT +8.6%，两条硬约束都踩。
+    # 判据用「prompt 长度 ≥ 4×基线预算」——即该 prompt 会被切成 4 块以上，
+    # 这才值得为它增大步长。详见 改动记录/014。
+    "VLLM_FL_ADAPTIVE_CHUNK_LONG_PROMPT": lambda: _env_int(
+        "VLLM_FL_ADAPTIVE_CHUNK_LONG_PROMPT", "0"
+    ),
 }
 
 

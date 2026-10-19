@@ -86,14 +86,22 @@ class AdaptiveChunkBudgetMixin:
             self.scheduler_config.max_num_batched_tokens,
         )
         self._fl_decode_gate = envs.VLLM_FL_ADAPTIVE_CHUNK_DECODE_GATE
+        # 只有 prompt 长度 ≥ 这个门限，才把单步预算抬到 cap。
+        # 0（默认）= 自动取 4 × 基线预算（基线 2048 ⇒ 8192）。
+        _lp = envs.VLLM_FL_ADAPTIVE_CHUNK_LONG_PROMPT
+        self._fl_long_prompt = (
+            _lp if _lp > 0 else 4 * self.max_num_scheduled_tokens
+        )
 
         if self._fl_adaptive_enabled:
             logger.info(
                 "FL adaptive chunk budget: base=%d, cap=%d, decode_gate=%d "
-                "(-1 = no gate, always use cap).",
+                "(-1 = no gate), long_prompt_threshold=%d "
+                "(only prompts >= this use the cap).",
                 self.max_num_scheduled_tokens,
                 self._fl_chunk_cap,
                 self._fl_decode_gate,
+                self._fl_long_prompt,
             )
 
     def _fl_num_decoding(self) -> int:
@@ -110,6 +118,22 @@ class AdaptiveChunkBudgetMixin:
                 count += 1
         return count
 
+    def _fl_max_prefilling_prompt_len(self) -> int:
+        """当前「正在预填」或「还在排队」的请求里，最长的 prompt 长度。
+
+        用 ``num_prompt_tokens``（整段 prompt 的长度）而不是剩余量，
+        因为它不随 chunk 推进而变化，判据稳定。
+        """
+        best = 0
+        for request in self.running:
+            if request.num_computed_tokens < request.num_prompt_tokens:
+                if request.num_prompt_tokens > best:
+                    best = request.num_prompt_tokens
+        for request in self.waiting:
+            if request.num_prompt_tokens > best:
+                best = request.num_prompt_tokens
+        return best
+
     def _fl_adaptive_budget(self, base: int) -> int:
         if not self._fl_adaptive_enabled:
             return base
@@ -118,6 +142,10 @@ class AdaptiveChunkBudgetMixin:
             return base
         gate = self._fl_decode_gate
         if gate >= 0 and self._fl_num_decoding() > gate:
+            return base
+        # 只有长 prompt 才值得付出「步变长」的代价换 prefill 效率。
+        # 短 prompt（会被切成很少几块）抬高预算只会拖慢 decode。
+        if self._fl_max_prefilling_prompt_len() < self._fl_long_prompt:
             return base
         return cap
 
