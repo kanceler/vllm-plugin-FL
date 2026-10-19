@@ -61,6 +61,14 @@ fl_vllm_environment_variables: dict[str, Callable[[], Any]] = {
     "VLLM_FL_ADAPTIVE_CHUNK_LONG_PROMPT": lambda: _env_int(
         "VLLM_FL_ADAPTIVE_CHUNK_LONG_PROMPT", "0"
     ),
+    # KV cache 的页大小（block_size）。0 = 保持平台默认（当前为 16）。
+    #
+    # 为什么要调：decode 阶段每步要把多个序列的整段 KV 从显存里 gather 出来。
+    # 实测反推 4k 场景 decode 的有效带宽只有 ~203 GB/s，而连续带宽可达 720 GB/s
+    # —— 分页 gather 只发挥了约 28%。页越大，单个 (页, KV 头) 的连续段越长
+    # （block=16 时只有 16×128×2B = 4KB），gather 效率应当越高。
+    # 属于赛题允许的「显存管理 → KV Cache 优化」。
+    "VLLM_FL_KV_BLOCK_SIZE": lambda: _env_int("VLLM_FL_KV_BLOCK_SIZE", "0"),
 }
 
 

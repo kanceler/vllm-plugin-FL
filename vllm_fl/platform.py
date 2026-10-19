@@ -196,6 +196,26 @@ class PlatformFL(Platform):
 
             refresh_block_size(vllm_config)
 
+        # [KV Cache 优化] 允许用 VLLM_FL_KV_BLOCK_SIZE 覆盖页大小。
+        #
+        # 依据：decode 阶段每个调度步要把所有序列的整段 KV 从显存 gather 出来。
+        # 实测反推 4k 场景 decode 的有效带宽只有 ~203 GB/s，而连续带宽可达
+        # 720 GB/s —— 分页 gather 只发挥了约 28%。页越大，单个 (页, KV 头)
+        # 的连续段越长（block=16 时仅 16×128×2B = 4KB），gather 效率越高。
+        # 0 = 不覆盖（保持上面按平台给出的默认值）。
+        if cache_config is not None:
+            from vllm_fl import envs as _fl_envs
+
+            _fl_bs = _fl_envs.VLLM_FL_KV_BLOCK_SIZE
+            if _fl_bs > 0 and _fl_bs != cache_config.block_size:
+                logger.info(
+                    "KV cache block_size overridden: %s -> %d "
+                    "(VLLM_FL_KV_BLOCK_SIZE).",
+                    cache_config.block_size,
+                    _fl_bs,
+                )
+                cache_config.block_size = _fl_bs
+
         # TODO(lucas): handle this more gracefully
         # Note: model_config may be None during testing
         # Note: block_size is initialized in
