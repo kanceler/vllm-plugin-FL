@@ -10,10 +10,14 @@ from __future__ import annotations
 
 from typing import Optional, Union
 
+import logging
+
 import torch
 import os
 
 from vllm_fl.dispatch.backends.base import Backend
+
+logger = logging.getLogger(__name__)
 
 
 class FlagGemsBackend(Backend):
@@ -183,6 +187,15 @@ class FlagGemsBackend(Backend):
         if use_flaggems_attn:
             print("Using FlagGems attention backend.")
             return "vllm_fl.dispatch.backends.flaggems.impl.attention.AttentionFLBackend"
+
+        # 走 vLLM 自带的 Triton attention 时，按设备属性重调它的分块参数。
+        # 见 vllm_fl/attention/tile_policy.py。安装失败只会退回上游默认行为。
+        try:
+            from vllm_fl.attention.tile_policy import install_tile_policy
+
+            install_tile_policy()
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("attention tile policy not installed: %r", exc)
 
         return AttentionBackendEnum.TRITON_ATTN.get_path()
 
