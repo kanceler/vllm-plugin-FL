@@ -83,16 +83,96 @@ def _next_pow2(n: int) -> int:
     return p
 
 
-def residency(block_m: int, stages: int, head_size: int, tile: int,
-              elem_size: int, smem_per_sm: int) -> int:
-    """每 SM 能常驻的 CTA 数（由共享内存决定）。
-
-    每个 CTA 的共享内存 = stages 份 K/V 瓦片 + 一份 Q 瓦片。
-    """
+def smem_needed(block_m: int, stages: int, head_size: int, tile: int,
+                elem_size: int) -> int:
+    """一个 CTA 需要的共享内存：stages 份 K/V 瓦片 + 一份 Q 瓦片。"""
     per_stage = 2 * tile * head_size * elem_size      # K + V
     q_tile = block_m * head_size * elem_size
-    need = stages * per_stage + q_tile
-    return max(0, smem_per_sm // max(1, need))
+    return stages * per_stage + q_tile
+
+
+def residency(block_m: int, stages: int, head_size: int, tile: int,
+              elem_size: int, smem_per_sm: int) -> int:
+    """每 SM 能常驻的 CTA 数。
+
+    注意：``smem_per_sm`` 必须是**真实容量**——占用率是硬件事实，
+    不应被"预算折扣"（SMEM_BUDGET）影响。折扣只用来判断"是否允许使用"。
+    """
+    return max(0, smem_per_sm // max(1, smem_needed(block_m, stages, head_size,
+                                                    tile, elem_size)))
+
+
+def derive_tile(
+    block_m: int,
+    stages: int,
+    head_size: int,
+    elem_size: int,
+    smem_per_sm: int,
+    max_tile: int = 128,
+) -> int:
+    """推导 K/V 瓦片宽度（TILE_SIZE）。
+
+    与分块用的是同一条约束：K/V 瓦片每加宽一倍，迭代次数减半（更少的固定开销），
+    但每级流水的共享内存也随之翻倍。所以取**仍能满足占用率下界的最大瓦片**。
+
+    BM=128 / stages=1 / 128 KB smem 时：
+        TILE=32   → 16 KB(KV) + 32 KB(Q) = 48 KB → occ=2
+        TILE=64   → 32 KB     + 32 KB     = 64 KB → occ=2   ← 取这个
+        TILE=128  → 64 KB     + 32 KB     = 96 KB → occ=1   ✗
+    """
+    best = 16
+    tile = 16
+    while tile <= max_tile:
+        if residency(block_m, stages, head_size, tile, elem_size, smem_per_sm) < OCC_MIN:
+            break
+        best = tile
+        tile *= 2
+    return best
+
+
+def derive_prefill_config(
+    head_size: int,
+    num_queries_per_kv: int,
+    max_seqlen_q: int,
+    elem_size: int = 2,
+) -> tuple[int, Optional[int], Optional[int], Optional[int]]:
+    """返回 (BLOCK_M, num_warps, num_stages, TILE_SIZE)；None 表示沿用上游默认。"""
+    default_bm = (
+        16 if num_queries_per_kv <= 16 else _next_pow2(num_queries_per_kv)
+    )
+    profile = device_profile()
+    if profile is None:
+        return default_bm, None, None, None
+    budget = int(profile.smem_per_sm * SMEM_BUDGET)
+    smem = profile.smem_per_sm
+
+    best_bm = 0
+    bm = BM_MIN
+    while bm <= BM_MAX:
+        if smem_needed(bm, 1, head_size, 32, elem_size) > budget:
+            break
+        if residency(bm, 1, head_size, 32, elem_size, smem) < OCC_MIN:
+            break
+        warps = min(WARP_CAP, max(4, bm // 16))
+        threads = warps * profile.warp_size
+        if bm * head_size // max(1, threads) > REG_BUDGET:
+            break
+        if bm > 2 * max(1, max_seqlen_q):
+            break
+        best_bm = bm
+        bm <<= 1
+
+    if best_bm < default_bm:
+        return default_bm, None, None, None
+
+    warps = min(WARP_CAP, max(4, best_bm // 16))
+    occ_by_stage = {
+        s: residency(best_bm, s, head_size, 32, elem_size, smem) for s in (1, 2, 3)
+    }
+    top = max(occ_by_stage.values())
+    stages = min(s for s, occ in occ_by_stage.items() if occ == top)
+    tile = derive_tile(best_bm, stages, head_size, elem_size, smem)
+    return best_bm, warps, stages, tile
 
 
 def derive_prefill_tiles(
@@ -116,7 +196,8 @@ def derive_prefill_tiles(
     if profile is None:
         return default_bm, None, None
 
-    smem = int(profile.smem_per_sm * SMEM_BUDGET)
+    budget = int(profile.smem_per_sm * SMEM_BUDGET)
+    smem = profile.smem_per_sm
 
     # ① 满足占用率下界的最大 2 的幂
     best_bm = 0
@@ -170,7 +251,8 @@ def derive_decode_tiles(
     if profile is None:
         return default_bm, None, None
 
-    smem = int(profile.smem_per_sm * SMEM_BUDGET)
+    budget = int(profile.smem_per_sm * SMEM_BUDGET)
+    smem = profile.smem_per_sm
     occ_by_stage = {
         s: residency(default_bm, s, head_size, tile, elem_size, smem)
         for s in (1, 2, 3)

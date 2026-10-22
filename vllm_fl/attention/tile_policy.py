@@ -88,6 +88,12 @@ _STAGE_TILE = 32          # vLLM 的 TILE_SIZE_PREFILL 默认值
 _SMEM_MARGIN = 0.8        # 共享内存只用到 80%，留出余量
 
 
+# prefill 的 K/V 瓦片宽度，由 compute_prefill_tiles() 写入、_get_tile_size 钩子读取。
+# 上游启动器里 BLOCK_M 的计算（约 860 行）早于 TILE_SIZE 的计算（约 906 行），
+# 所以同一次调用里顺序是正确的。
+_PREFILL_TILE: dict = {"value": None}
+
+
 def compute_prefill_tiles(
     max_seqlen_q: int,
     num_queries_per_kv: int,
@@ -100,12 +106,17 @@ def compute_prefill_tiles(
     """
     from vllm_fl.attention.config_model import (
         derive_decode_tiles,
-        derive_prefill_tiles,
+        derive_prefill_config,
     )
 
     if max_seqlen_q <= 1:
         return derive_decode_tiles(head_size, num_queries_per_kv)
-    return derive_prefill_tiles(head_size, num_queries_per_kv, max_seqlen_q)
+
+    bm, warps, stages, tile = derive_prefill_config(
+        head_size, num_queries_per_kv, max_seqlen_q
+    )
+    _PREFILL_TILE["value"] = tile
+    return bm, warps, stages
 
 
 def _enabled() -> bool:
@@ -164,6 +175,17 @@ def install_tile_policy() -> bool:
         )
         ns = dict(src_mod.__dict__)
         ns["_fl_prefill_tiles"] = compute_prefill_tiles
+
+        # K/V 瓦片宽度同样由推导给出；decode 沿用上游的默认值。
+        _orig_get_tile = getattr(src_mod, "_get_tile_size", None)
+
+        def _fl_get_tile_size(head_size, sliding_window, element_size, is_prefill):
+            if is_prefill and _PREFILL_TILE["value"]:
+                return _PREFILL_TILE["value"]
+            return _orig_get_tile(head_size, sliding_window, element_size, is_prefill)
+
+        if _orig_get_tile is not None:
+            ns["_get_tile_size"] = _fl_get_tile_size
         exec(compile(ast.Module(body=[fn], type_ignores=[]), src_path, "exec"), ns)  # noqa: S102
         tuned = ns["unified_attention"]
     except Exception as exc:  # noqa: BLE001
