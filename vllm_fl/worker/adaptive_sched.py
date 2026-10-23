@@ -203,6 +203,42 @@ def __getattr__(name: str) -> Any:
     return _LAZY_CLASS_CACHE[name]
 
 
+
+def _also_compile_for(budget: int) -> None:
+    """让 torch.compile 的编译区间额外覆盖 ``budget``。
+
+    抬高 ``max_num_batched_tokens`` 会连带改变编译区间上限
+    （``vllm/config/vllm.py`` 的 ``_set_compile_ranges`` 直接拿它当上界）。
+    绝大多数调度步仍落在基线预算内，若只为更大的上界编译，
+    短步会拿到对更大形状特化的 kernel——实测这一项会让 4k 场景慢约 7%。
+
+    这里把基线预算补进编译区间：短步用为它特化的那份，长步用为大上界特化的那份。
+    """
+
+    try:
+        from vllm.config.vllm import VllmConfig
+    except Exception:  # noqa: BLE001
+        return
+    if getattr(VllmConfig, "_fl_compile_ranges_patched", False):
+        return
+    original = VllmConfig._set_compile_ranges
+
+    def _patched(self) -> None:
+        original(self)
+        cc = self.compilation_config
+        endpoints = getattr(cc, "compile_ranges_endpoints", None)
+        if endpoints and budget not in endpoints:
+            cc.compile_ranges_endpoints = sorted(set(list(endpoints) + [budget]))
+            logger.info(
+                "FL compile ranges extended to %s (baseline budget %d kept).",
+                cc.compile_ranges_endpoints,
+                budget,
+            )
+
+    VllmConfig._set_compile_ranges = _patched
+    VllmConfig._fl_compile_ranges_patched = True
+
+
 def apply_adaptive_chunk_config(vllm_config: Any) -> None:
     """把 prefill 预算与缓冲区上界解耦，并挂上自适应调度器。
 
@@ -236,6 +272,9 @@ def apply_adaptive_chunk_config(vllm_config: Any) -> None:
     # 我们是在其后修改的，需要同步（仅多模态场景会用到）。
     scheduler_config.max_num_encoder_input_tokens = cap
     scheduler_config.encoder_cache_size = cap
+
+    # 缓冲区变大不该拖慢"仍在基线预算内"的步：让编译区间把基线也覆盖进来。
+    _also_compile_for(base)
 
     if scheduler_config.scheduler_cls is None:
         scheduler_config.scheduler_cls = (
