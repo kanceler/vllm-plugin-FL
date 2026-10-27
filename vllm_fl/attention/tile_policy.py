@@ -200,7 +200,8 @@ def install_tile_policy() -> bool:
     prof = device_profile()
     print(
         "[FL] attention tile policy installed (device: sms=%s, smem=%.0f KB, warp=%s). "
-        "Prefill uses a larger BLOCK_M derived from device limits; decode is unchanged."
+        "Prefill tile/pipeline/TILE and decode launch parameters are all derived "
+        "from device limits."
         % (prof.sm_count if prof else "?",
            (prof.smem_per_sm / 1024.0) if prof else 0,
            prof.warp_size if prof else "?")

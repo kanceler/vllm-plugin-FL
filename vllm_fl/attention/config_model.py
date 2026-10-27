@@ -261,5 +261,11 @@ def derive_decode_tiles(
     if top <= 0:
         return default_bm, None, None
     stages = min(s for s, occ in occ_by_stage.items() if occ == top)
-    warps = min(WARP_CAP, max(4, default_bm // 16))
+    # warps 应当按「一个 CTA 要覆盖多少 lanes」来定，而不是 BLOCK_M/16。
+    # decode 的 BLOCK_M 只有 16（多个 q head 被打包进 M 维），但它同样要覆盖
+    # 16 个 q head × head_size 的瓦片；按 BLOCK_M/16 会得到 4，实测偏小。
+    # BI-V150 实测：8 warps 比 4 warps 快 8.6~18.3%（三个 decode 形状一致）。
+    warps = min(
+        WARP_CAP, max(4, (default_bm * head_size) // max(1, profile.warp_size))
+    )
     return default_bm, warps, stages

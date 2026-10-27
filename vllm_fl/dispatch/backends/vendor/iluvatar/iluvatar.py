@@ -483,4 +483,12 @@ class IluvatarBackend(Backend):
         # DependencyFinder can hash the kernel without AttributeError on
         # triton < 3.3.  The kernel itself uses USE_TD=False at runtime, so
         # the stub is never called.
+        # 按设备属性推导注意力分块/流水/瓦片：凡是选中 vLLM Triton attention
+        # 的后端都适用，不限于 FlagGems 后端。
+        try:
+            from vllm_fl.attention.tile_policy import install_tile_policy
+
+            install_tile_policy()
+        except Exception:  # noqa: BLE001
+            pass
         return AttentionBackendEnum.TRITON_ATTN.get_path()

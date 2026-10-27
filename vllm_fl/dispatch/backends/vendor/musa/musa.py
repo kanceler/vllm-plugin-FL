@@ -140,5 +140,12 @@ class MusaBackend(Backend):
         if use_mla:
             return AttentionBackendEnum.TRITON_MLA.get_path()
 
+        # 同 iluvatar：选中 vLLM Triton attention 就套用按设备属性推导的分块策略。
+        try:
+            from vllm_fl.attention.tile_policy import install_tile_policy
+
+            install_tile_policy()
+        except Exception:  # noqa: BLE001
+            pass
         return AttentionBackendEnum.TRITON_ATTN.get_path()
 
