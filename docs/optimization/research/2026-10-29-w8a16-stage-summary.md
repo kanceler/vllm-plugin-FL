@@ -1,6 +1,6 @@
 # W8A16 GEMM 优化阶段同步
 
-2026-10-29｜MiniCPM5-2B｜MetaX C500｜当前 Down-only，42/42 层。官方推理性能对比待完整测评后补充。
+2026-10-29｜MiniCPM5-2B｜MetaX C500｜当前 Down-only，42/42 层。官方 4K/16K 对照已完成，吞吐与 TTFT 均未达标，详见第 8 节。
 
 ## 1. 方案演进
 
@@ -65,7 +65,7 @@ MetaX `mm` 保留以下选择逻辑，并非所有 shape 都走同一个 kernel�
 
 普通 BF16 `mm` 已包含 MetaX 配置选择、资源剪枝、分组 tile、整除寻址及流水线支持。**W8A16 对比的是这条已有后端优化的 BF16 路径**；当前大 M 独立方案也复用同一 MetaX `mm`，只增加权重转换和输出 scale。
 
-Down N=2048、K=6144，不能把 N=1 GEMV 或 N=256 两阶段 Split-K 条件直接套用到它。官方服务每个具体 shape 的 kernel/config 应以实际生成代码或 trace 为准，不将上述源码分派表写成所有 shape 都已逐项追踪。依据：[BF16 路径核查](2026-10-26-flaggems-w8a16-reuse-review.md)。
+Down N=2048、K=6144，不能把 N=1 GEMV 或 N=256 两阶段 Split-K 条件直接套用到它。官方服务每个具体 shape 的 kernel/config 应以实际生成代码或 trace 为准，不将上述源码分派表写成所有 shape 都已逐项追踪。依据：本地历史资料 `2026-10-26-flaggems-w8a16-reuse-review.md`（未随本分支提交）。
 
 ## 3. 独立反量化的模型性能
 
@@ -78,7 +78,7 @@ Down N=2048、K=6144，不能把 N=1 GEMV 或 N=256 两阶段 Split-K 条件直�
 
 4K 双方均四轮、后三轮平均。*16K 候选仅首轮，BF16 为完整平均，只能参考。两次 GPU bus 不同，不能把差值全部归因于量化。结论：旧方案已测、精度可用，但未证明性能达标，故继续研究融合。
 
-证据：[10/23 记录](../changes/2026-10-23-w8a16-down-benchmark.md)，工作区 `benchmark_results/bf16-baseline-comparison-20261023.md`、`artifacts/bf16-baseline-20261023-01/`。
+证据：本地历史资料 `../changes/2026-10-23-w8a16-down-benchmark.md`（未随本分支提交），工作区 `benchmark_results/bf16-baseline-comparison-20261023.md`、`artifacts/bf16-baseline-20261023-01/`。
 
 ## 4. 算子性能
 
@@ -93,7 +93,7 @@ Down N=2048、K=6144，不能把 N=1 GEMV 或 N=256 两阶段 Split-K 条件直�
 |256|75.520|119.808|150.528|262.144|
 |2048|291.328|334.848|832.512|2018.560|
 
-同分块 BF16 已慢于成熟 MetaX BF16，INT8 转换进一步增加成本；去掉包装和输出分配后差距仍在。不能仅靠减少读写保证融合更快。来源：[同分块诊断](../changes/2026-10-26-w8a16-same-tile-diagnosis.md)。
+同分块 BF16 已慢于成熟 MetaX BF16，INT8 转换进一步增加成本；去掉包装和输出分配后差距仍在。不能仅靠减少读写保证融合更快。来源：本地历史资料 `../changes/2026-10-26-w8a16-same-tile-diagnosis.md`（未随本分支提交）。
 
 ### 4.2 小 M 整除特化
 
@@ -104,7 +104,7 @@ Down N=2048、K=6144，不能把 N=1 GEMV 或 N=256 两阶段 Split-K 条件直�
 |32|62.976|58.880|6.50%|
 |64|84.480|82.432|2.42%|
 
-72 项边界检查通过。简化合法整除条件下的 K 分片和边界判断，M1 保留行 mask；未改变 dot 顺序、转换位置或缓冲层数。来源：[整除特化](../changes/2026-10-28-w8a16-small-even.md)。
+72 项边界检查通过。简化合法整除条件下的 K 分片和边界判断，M1 保留行 mask；未改变 dot 顺序、转换位置或缓冲层数。来源：本地历史资料 `../changes/2026-10-28-w8a16-small-even.md`（未随本分支提交）。
 
 ### 4.3 当前实现与基线对比
 
@@ -206,8 +206,8 @@ MiniCPM5-2B，Down-only 42层
 | 4K | 3180.14 | 3428.53 | +7.81% | 3211.94（未达标） |
 | 16K | 27258.78 | 28161.24 | +3.31% | 27531.37（未达标） |
 
-**结论**：W8A16 Down-only 组合在 4K/16K 两个场景的吞吐与 TTFT 均未达标（负收益），按 ADR 止损条件记录，保留 BF16 回退，转向主路线 W8A8 或其他有收益的算子优化。
+**结论**：W8A16 Down-only 组合在 4K/16K 两个场景的吞吐与 TTFT 均未达标（负收益），按 ADR 止损条件记录，保留 BF16 回退；后续路线需结合能力证据另行讨论，不能据此直接推定 W8A8 可获得收益。
 
 任务目录：`/workspace/benchmark_results/w8a16-official-comparison-20261029-02`（候选 `candidate/summary_20261029_141125.csv`、基线 `bf16/summary_20261029_150308.csv`，raw_runs 四轮明细同目录保留）。
 
-版本：插件基点`13eb9be`，FlagGems基点`a7620cc`，均含未提交实现；复现需结合实际源码/差异与实验指纹。路线依据：[W8A16 ADR](../decisions/0002-w8a16-mainline.md)。
+版本：插件基点`13eb9be`，FlagGems基点`a7620cc`，均含未提交实现；复现需结合实际源码/差异与实验指纹。历史路线依据保存在本地 `docs/optimization/decisions/0002-w8a16-mainline.md`，未随本分支提交。
