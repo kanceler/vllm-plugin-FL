@@ -169,6 +169,8 @@ def register_model():
 
     # Register OOT quant kernels so kernel selection can find them
     register_quant_linear()
+    from vllm_fl.quantization.w8a16.linear import install_w8a16_down
+    install_w8a16_down()
     register_router()
 
     _register_gdn_packed_decode_patch()
