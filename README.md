@@ -1,5 +1,59 @@
 # vllm-plugin-FL
 
+## 本分支：MiniCPM5-2B GEMM 量化优化
+
+面向 **MetaX C500 / MiniCPM5-2B**，实现 Down 投影的 W8A16 weight-only 量化及 FlagGems 算子接入，覆盖 42/42 个 Down 层。权重在加载时按输出通道对称量化为 INT8，scale 为 FP32；激活和输出保持 BF16，GEMM 使用 BF16 dot、FP32 累加。INT8 用于权重存储，不代表原生 INT8 GEMM。
+
+**当前结论：实现和官方同环境对照已完成，但 4K/16K 吞吐、TTFT 均未达到赛事门槛，暂不作为有效加速方案。** Down 权重数据约减半不等于整体显存减半，也不等于推理加速。
+
+### 相对默认分支的改动
+
+| 改动 | 实现与作用 |
+|---|---|
+| 加载时权重量化 | 新增 [`w8a16/linear.py`](vllm_fl/quantization/w8a16/linear.py) 与 [`reference.py`](vllm_fl/quantization/w8a16/reference.py)，在本地 TP 权重分片加载完成后量化 Down，保留 RowParallelLinear 的通信与 bias 处理逻辑。 |
+| 编译图接入 | 新增 [`int8pack.py`](vllm_fl/quantization/w8a16/int8pack.py)，通过 custom op 调用 `flag_gems.weight_int8pack_mm`，支持动态图与 CUDA Graph。 |
+| 小 M 后端优化 | 配套 FlagGems MetaX 后端对满足能力条件的 M=1/16/32/64 使用 Split-K=8 与整除特化，提高并行度、减少边界判断。 |
+| 大 M 后端路径 | 满足能力条件的 M≥128 使用 INT8→临时 BF16 权重、MetaX BF16 GEMM、独立输出 scale；其他受支持 shape 保留通用融合。 |
+| 回退与历史对照 | 保留独立反量化和旧手写融合用于对照；不支持的布局/bias 等回退到独立反量化后执行 BF16 GEMM。恢复原始 BF16 权重模式需关闭量化并重启服务。 |
+| 验证工具 | 新增 [`单元测试`](tests/unit_tests/quantization/test_w8a16_down.py) 与 [`诊断脚本`](benchmarks/diagnostics/)，覆盖数值、分派、图重放及官方串行对照。 |
+
+后端优化在**独立的 FlagGems 仓库**中，本插件分支不包含其源码；本地配套提交为 `f6a4257`（`feat(metax): add weight_int8pack_mm backend`，基点 `a7620cc`）。复现需要安装该配套版本，不能仅拉取本插件就假定后端优化已生效。
+
+### 官方测评结果
+
+2026-10-29，同环境、相同官方命令；每场景 4 轮，跳过首轮、取后三轮平均。吞吐单位 total tokens/s，TTFT 为 Mean、单位 ms。
+
+| 场景 | BF16 吞吐 | W8A16 吞吐 | 吞吐变化 | BF16 TTFT | W8A16 TTFT | TTFT 变化 |
+|---|---:|---:|---:|---:|---:|---:|
+| 4K `[4096,1024,64,256]` | 4989.25 | 4730.11 | −5.19% | 3180.14 | 3428.53 | +7.81% |
+| 16K `[16384,1024,64,128]` | 7004.75 | 6821.13 | −2.62% | 27258.78 | 28161.24 | +3.31% |
+
+两个场景均未满足吞吐≥基线×0.99、TTFT≤基线×1.01。最终组合回归 **22 项通过**；此前“小 M Split-K＋大 M 通用融合”版本 math_500 Level 3 为 **103/105（98.1%）**。最终组合改用大 M 独立 scale-after-dot 后仅补算子验证，未重新完整测精度，不能将 98.1% 视为最终组合的再次实测结果。
+
+### 模式选择
+
+在已有 Conda/MACA 环境及配套 FlagGems 中，启动新服务前显式选择模式，服务与 Benchmark 继续使用赛事原命令：
+
+```bash
+# 本次被测 W8A16 组合
+export VLLM_PLUGINS=fl
+export VLLM_FL_W8A16_DOWN=1
+export VLLM_FL_W8A16_DOWN_INT8PACK=1
+export VLLM_FL_W8A16_DOWN_FUSED=0
+```
+
+```bash
+# 原始 BF16 对照；切换后须重启服务
+export VLLM_PLUGINS=fl
+export VLLM_FL_W8A16_DOWN=0
+export VLLM_FL_W8A16_DOWN_INT8PACK=0
+export VLLM_FL_W8A16_DOWN_FUSED=0
+```
+
+当前代码 `DOWN` 默认值为 `1`、`INT8PACK` 为 `0`，因此不设置变量会进入独立反量化模式，并非上述被测组合。评测前需按工作区规则归档、停止本任务残留进程、确认资源释放并核对版本与实际 import 路径。
+
+详细依据：[阶段总结](docs/optimization/research/2026-10-29-w8a16-stage-summary.md) · [接入报告](docs/optimization/changes/2026-10-28-w8a16-int8pack-production.md) · [大 M 路径与算子数据](docs/optimization/changes/2026-10-29-w8a16-large-scale-after-diagnosis.md) · [官方测评报告及日志位置](docs/optimization/changes/2026-10-29-w8a16-official-comparison-negative.md)。以下保留默认分支的通用项目与安装说明。
+
 vllm-plugin-FL is a plugin for the [vLLM](https://github.com/vllm-project/vllm) inference/serving framework, built on FlagOS's unified multi-chip backend — including the unified operator library [FlagGems](https://github.com/flagos-ai/FlagGems) and the unified communication library [FlagCX](https://github.com/flagos-ai/FlagCX). It extends vLLM's capabilities and performance across diverse hardware environments. Without changing vLLM's original interfaces or usage patterns, the same command can run model inference/serving on different chips.
 
 ## Version Compatibility
