@@ -177,6 +177,24 @@ class PlatformFL(Platform):
         parallel_config = vllm_config.parallel_config
         model_config = vllm_config.model_config
 
+        # 关闭异步调度（async_scheduling）。
+        # vLLM 0.24 默认在满足条件时开启它：调度器提前分配 output placeholder，
+        # 与模型执行重叠。但当 KV cache 被打满时（16K 场景 64 并发需要约 47 GB，
+        # 而本设备只有 32 GB，必然打满），异步调度器在请求重新放行这一步的
+        # placeholder 记账会出现负值：
+        #     vllm/v1/core/sched/async_scheduler.py:68
+        #     assert request.num_output_placeholders >= 0
+        # 实测 16K 场景 4 次运行 3 次崩在第 61 个请求（并发 64，正好是第二批
+        # 请求放行的时刻）；关闭后 3 次全部 128/128 完成，4K 场景 256/256 完成，
+        # 吞吐与开启时持平（16K 1947 vs 1940 tok/s，4K 2235 tok/s）。
+        # 这只改调度器的执行方式，不改变任何数值语义。
+        scheduler_config = vllm_config.scheduler_config
+        if scheduler_config is not None and scheduler_config.async_scheduling:
+            scheduler_config.async_scheduling = False
+            logger.info(
+                "关闭 async_scheduling：KV cache 打满时其 placeholder 记账会"
+                "断言失败（num_output_placeholders >= 0），长上下文场景不稳定。")
+
         parallel_config.worker_cls = "vllm_fl.worker.worker.WorkerFL"
 
         cache_config = vllm_config.cache_config

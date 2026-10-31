@@ -101,6 +101,15 @@ def register():
     _patch_flash_attn_import()
     _patch_transformers_compat()
 
+    # 修正 Triton matmul 分析模型里的 A100 硬件假设。
+    # FlagGems 的 Iluvatar 后端用它给候选配置排序，只 bench 前 top_k 个；
+    # 模型把"CTA 饱和点"和"SM 上限"写死为 32/108，在 16 SM 的设备上会
+    # 把大 tile 的最优配置排除在候选之外。只在排序层面生效，不改变任何 kernel。
+    from vllm_fl.patches.device_aware_perf_model import (
+        install_device_aware_perf_model,
+    )
+    install_device_aware_perf_model()
+
     # Model-specific platform patches
     from vllm_fl.patches.glm_moe_dsa import apply_platform_patches as glm5_platform
     glm5_platform()
