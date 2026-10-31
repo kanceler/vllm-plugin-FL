@@ -45,8 +45,18 @@ from dataclasses import dataclass
 from typing import Optional
 
 # ---- 推导用的常量（均有物理含义，见模块文档）----
-OCC_MIN = 2          # 每 SM 至少常驻的 CTA 数：单个 CTA 无法自隐藏加载延迟
-WARP_CAP = 8         # warp 数上限
+OCC_MIN = 2          # 每 SM 至少常驻的 CTA 数（decode 用）
+WARP_CAP = 8         # warp 数上限（decode 用）
+
+# ---- prefill 专用 ----
+# prefill 每个 CTA 处理很多 query 行，只要给它足够多的 warp，单个 CTA 内部就有
+# 足够的独立工作来掩盖加载延迟，不必依赖"每 SM 常驻多个 CTA"。
+# 天数 BI-V150 实测（真实 chunked prefill 形状）：
+#   batch=32 qlen=8192 kvlen=16384：推导配置 1079.7 ms → 放宽后 758.0 ms（+29.8%）
+#   batch=64 qlen=2048 kvlen=2048 ：推导配置   70.1 ms → 放宽后  36.7 ms（+47.6%）
+# 放宽后推导给出 (BM=256, warps=16, stages=1, tile=128)，与全组合扫参的最优解一致。
+PREFILL_OCC_MIN = 1       # prefill 允许单 CTA 驻留
+PREFILL_WARP_CAP = 16     # prefill 的 warp 数上限（BM=256 → 16）
 REG_BUDGET = 128     # 每个线程允许的累加器寄存器数（BLOCK_M × d 的 fp32）
 SMEM_BUDGET = 0.8    # 共享内存只用到 80%，留出余量
 BM_MIN = 16
@@ -123,7 +133,7 @@ def derive_tile(
     best = 16
     tile = 16
     while tile <= max_tile:
-        if residency(block_m, stages, head_size, tile, elem_size, smem_per_sm) < OCC_MIN:
+        if residency(block_m, stages, head_size, tile, elem_size, smem_per_sm) < PREFILL_OCC_MIN:
             break
         best = tile
         tile *= 2
@@ -151,9 +161,9 @@ def derive_prefill_config(
     while bm <= BM_MAX:
         if smem_needed(bm, 1, head_size, 32, elem_size) > budget:
             break
-        if residency(bm, 1, head_size, 32, elem_size, smem) < OCC_MIN:
+        if residency(bm, 1, head_size, 32, elem_size, smem) < PREFILL_OCC_MIN:
             break
-        warps = min(WARP_CAP, max(4, bm // 16))
+        warps = min(PREFILL_WARP_CAP, max(4, bm // 16))
         threads = warps * profile.warp_size
         if bm * head_size // max(1, threads) > REG_BUDGET:
             break
@@ -165,13 +175,33 @@ def derive_prefill_config(
     if best_bm < default_bm:
         return default_bm, None, None, None
 
-    warps = min(WARP_CAP, max(4, best_bm // 16))
+    warps = min(PREFILL_WARP_CAP, max(4, best_bm // 16))
+    # 先定瓦片宽度，再在**固定瓦片**下取不损失占用率的最深流水。
+    # 顺序很重要：瓦片宽度的影响远大于流水深度，而加深流水会吃掉瓦片的空间。
+    # 天数实测（batch=32/qlen=8192/kvlen=16384，BM=256, w=16）：
+    #   TILE=128 vs TILE=64 → 758 vs 867 ms（差 14%）
+    #   同 TILE=128 下 stages 1→2 → 862 → 785 ms（+9.9%），stages=3 则 SMEM 超限
+    # 若先按 stages 定瓦片，会得到 stages=3/TILE=32，反而更慢。
+    tile = derive_tile(best_bm, 1, head_size, elem_size, smem)
     occ_by_stage = {
-        s: residency(best_bm, s, head_size, 32, elem_size, smem) for s in (1, 2, 3)
+        s: residency(best_bm, s, head_size, tile, elem_size, smem)
+        for s in (1, 2, 3)
     }
     top = max(occ_by_stage.values())
-    stages = min(s for s, occ in occ_by_stage.items() if occ == top)
-    tile = derive_tile(best_bm, stages, head_size, elem_size, smem)
+    # 占用率已经降到 1 时（大分块必然如此），加深流水不会再降占用率，取最深的；
+    # 否则仍按"平局取更浅流水"——此时每一级流水都在和占用率抢片上内存。
+    ok = [s for s, occ in occ_by_stage.items() if occ == top]
+    stages = max(ok) if top <= 1 else min(ok)
+    # residency() 的估算对 K/V 双缓冲偏保守（它把 Q 瓦片也重复计入），实测
+    # BM=256/TILE=128 在 stages=2 下可编译且快 9.9%，stages=3 才超限。
+    # 这里用与实测吻合的公式复核后再加深：
+    #   K/V 双缓冲占用 = 2(K,V) × stages × TILE × head_size × elem_size
+    if top <= 1 and tile >= 64:
+        while stages < 3:
+            need = 2 * (stages + 1) * tile * head_size * elem_size
+            if need > smem:
+                break
+            stages += 1
     return best_bm, warps, stages, tile
 
 
@@ -203,10 +233,10 @@ def derive_prefill_tiles(
     best_bm = 0
     bm = BM_MIN
     while bm <= BM_MAX:
-        if residency(bm, 1, head_size, tile, elem_size, smem) < OCC_MIN:
+        if residency(bm, 1, head_size, tile, elem_size, smem) < PREFILL_OCC_MIN:
             break
         # ② 寄存器：累加器是 BLOCK_M × head_size 的 fp32
-        warps = min(WARP_CAP, max(4, bm // 16))
+        warps = min(PREFILL_WARP_CAP, max(4, bm // 16))
         threads = warps * profile.warp_size
         if bm * head_size // max(1, threads) > REG_BUDGET:
             break
@@ -219,7 +249,7 @@ def derive_prefill_tiles(
     if best_bm < default_bm:
         return default_bm, None, None
 
-    warps = min(WARP_CAP, max(4, best_bm // 16))
+    warps = min(PREFILL_WARP_CAP, max(4, best_bm // 16))
 
     # ④ 流水深度：占用率最大者；平局取更浅的
     occ_by_stage = {
@@ -268,4 +298,6 @@ def derive_decode_tiles(
     warps = min(
         WARP_CAP, max(4, (default_bm * head_size) // max(1, profile.warp_size))
     )
+    # 注：曾试过把 decode 的 BLOCK_M 从上游默认的 16 放大到 64（隔离测快 19.3%），
+    # 但 4K 端到端是 2248.70 vs 2267.77 tok/s（−0.8%，噪声内），故不采用。
     return default_bm, warps, stages
