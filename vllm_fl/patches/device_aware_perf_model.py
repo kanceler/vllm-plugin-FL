@@ -35,9 +35,12 @@ FlagGems 的 Iluvatar 后端在自动调优时，用 Triton 教程自带的
 在万级，收益衰减到 0.4%，端到端不可辨识。保留它是为了记录这个缺陷本身。
 """
 
-import logging
-
-logger = logging.getLogger(__name__)
+try:                       # vLLM 服务进程只输出它自己的 logger
+    from vllm.logger import init_logger as _init_logger
+    logger = _init_logger(__name__)
+except Exception:          # noqa: BLE001
+    import logging
+    logger = logging.getLogger(__name__)
 
 _installed = False
 
