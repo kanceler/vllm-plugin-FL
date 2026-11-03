@@ -422,6 +422,11 @@ class WorkerFL(WorkerBase):
 
         current_platform.check_if_supports_dtype(self.model_config.dtype)
 
+        if fl_envs.USE_FLAGGEMS and current_platform.vendor_name == "metax":
+            from vllm_fl.dispatch.backends.vendor.metax.nt_gemm import apply_c500_nt_gemm
+
+            apply_c500_nt_gemm(self.device)
+
         # Initialize the distributed environment BEFORE taking
         # memory snapshot
         # This ensures NCCL buffers are allocated before we measure
