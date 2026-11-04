@@ -295,9 +295,17 @@ def derive_decode_tiles(
     # decode 的 BLOCK_M 只有 16（多个 q head 被打包进 M 维），但它同样要覆盖
     # 16 个 q head × head_size 的瓦片；按 BLOCK_M/16 会得到 4，实测偏小。
     # BI-V150 实测：8 warps 比 4 warps 快 8.6~18.3%（三个 decode 形状一致）。
-    warps = min(
-        WARP_CAP, max(4, (default_bm * head_size) // max(1, profile.warp_size))
-    )
+    # decode 的 warp 数：只需足够覆盖一个 head 的 D 维、按 64-bit 向量化访问
+    # （每线程 2 个元素）即可。多给 warp 并不会让这一小块算得更快，反而让同一
+    # SM 能驻留的 CTA 变少——decode 的并行度本来就要靠 CTA 数堆出来。
+    # 天数 BI-V150 实测（同实例，每档三次取中位）：
+    #   4K decode（batch=64, kvlen=4096）：warps=2 1.302 ms / 4 1.401 / 8 1.638
+    #   端到端 4K ：warps=8 2424.96 tok/s → warps=2 3066.58（+26.5%），TPOT 124.7→97.2
+    #   端到端 16K：warps=8 ~2065    tok/s → warps=2 2754.6/2757.9（+33%），TPOT 226.3→165.7
+    # 注意：隔离微基准在 16K 形状（batch=30/kvlen=16384）上反而显示 warps=2 慢 2%，
+    # 与端到端相反——合成 decode 形状（固定 batch、等长 KV）不能代表真实调度，
+    # 这里以端到端为准。
+    warps = min(WARP_CAP, max(2, (head_size + 63) // 64))
     # 注：曾试过把 decode 的 BLOCK_M 从上游默认的 16 放大到 64（隔离测快 19.3%），
     # 但 4K 端到端是 2248.70 vs 2267.77 tok/s（−0.8%，噪声内），故不采用。
     return default_bm, warps, stages
