@@ -1,0 +1,33 @@
+diff --git a/src/flag_gems/runtime/backend/_iluvatar/ops/mm.py b/src/flag_gems/runtime/backend/_iluvatar/ops/mm.py
+index 5fefae2..c0499f3 100644
+--- a/src/flag_gems/runtime/backend/_iluvatar/ops/mm.py
++++ b/src/flag_gems/runtime/backend/_iluvatar/ops/mm.py
+@@ -217,0 +218,28 @@ def _launch_mm(a, b, c, M, N, K):
++    # The measured Down hotspot uses a transposed contiguous BF16 weight.
++    # Keep every other shape/layout on the existing autotuned path.
++    fixed_down = (
++        (M, N, K) == (2048, 2048, 6144)
++        and a.dtype == b.dtype == c.dtype == torch.bfloat16
++        and a.stride() == (K, 1)
++        and b.stride() == (1, K)
++        and c.stride() == (N, 1)
++    )
++    if fixed_down:
++        # Reuse the same JIT body while bypassing performance-model top-k.
++        kernel = mm_kernel
++        while not isinstance(kernel, triton.runtime.JITFunction):
++            kernel = kernel.fn
++        with torch_device_fn.device(a.device):
++            kernel[(triton.cdiv(M, 256) * triton.cdiv(N, 256), 1)](
++                a, b, c, M, N, K,
++                a.stride(0), a.stride(1), b.stride(0), b.stride(1),
++                c.stride(0), c.stride(1),
++                acc_dtype=acc_dtype_tl, input_precision=None,
++                fp8_fast_accum=True, GROUP_M=8, AB_DTYPE=ab_dtype_tl,
++                BLOCK_M=256, BLOCK_N=256, BLOCK_K=32, SPLIT_K=1,
++                EVEN_K=True, UPGRADE=False, UPGRADE_A_OFFS=False,
++                UPGRADE_B_OFFS=False, UPGRADE_C_OFFS=False,
++                num_warps=16, num_stages=2,
++            )
++        return c
++
