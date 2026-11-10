@@ -195,6 +195,11 @@ def install_tile_policy() -> bool:
     binding_mod.unified_attention = tuned
     _installed = True
 
+    # Extend the existing launch policy without changing attention selection.
+    from vllm_fl.attention.mixed_policy import install_mixed_policy
+
+    install_mixed_policy(binding_mod)
+
     from vllm_fl.attention.config_model import device_profile
 
     prof = device_profile()
