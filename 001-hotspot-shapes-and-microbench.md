@@ -24,7 +24,7 @@ M56保留为历史调优与专用配置对照，不能声称它已经取代M64�
 
 ### 详细数据与原始依据
 
-**来源：[2026-11-10-downonly-hotspot-recapture.md](../2026-11-10-downonly-hotspot-recapture.md)。各表仅在原实验内比较，不跨版本合并。**
+**来源：[2026-11-10-downonly-hotspot-recapture.md](docs/optimization/changes/2026-11-10-downonly-hotspot-recapture.md)。各表仅在原实验内比较，不跨版本合并。**
 
 **16384-decode**
 
@@ -118,6 +118,6 @@ M56保留为历史调优与专用配置对照，不能声称它已经取代M64�
 
 ## 7. 复现方式与分支汇总清单
 
-主要依据：[Down-only热点重采样](../2026-11-10-downonly-hotspot-recapture.md)、[历史M热点记录](../2026-11-10-quantized-m-hotspots.md)。
+主要依据：[Down-only热点重采样](docs/optimization/changes/2026-11-10-downonly-hotspot-recapture.md)、[历史M热点记录](docs/optimization/changes/2026-11-10-quantized-m-hotspots.md)。
 
 汇总分支纳入必要Shape采样与汇总工具，并保留采样协议；测试入口参数以归档脚本的 `--help` 和实际commands.json为准，不编造历史命令。每次GPU复现前按工作区规则核对资源和环境。

@@ -33,7 +33,7 @@ BM256补测：每M50项，M2048/4096各26成功、24资源失败。只把BM128�
 
 ### 详细数据与原始依据
 
-**来源：[2026-11-11-down-m2048-fused-joint.md](../2026-11-11-down-m2048-fused-joint.md)。各表仅在原实验内比较，不跨版本合并。**
+**来源：[2026-11-11-down-m2048-fused-joint.md](docs/optimization/changes/2026-11-11-down-m2048-fused-joint.md)。各表仅在原实验内比较，不跨版本合并。**
 
 **4. 实验与验证**
 
@@ -42,7 +42,7 @@ BM256补测：每M50项，M2048/4096各26成功、24资源失败。只把BM128�
 | 20261123 | 445.356 | 351.850 | 21.00% | 462.605 | 368.022 | 20.45% |
 | 20261124 | 446.251 | 352.284 | 21.06% | 461.948 | 367.340 | 20.48% |
 
-**来源：[2026-11-11-down-bm256-scaling.md](../2026-11-11-down-bm256-scaling.md)。各表仅在原实验内比较，不跨版本合并。**
+**来源：[2026-11-11-down-bm256-scaling.md](docs/optimization/changes/2026-11-11-down-bm256-scaling.md)。各表仅在原实验内比较，不跨版本合并。**
 
 **4. 实验与验证**
 
@@ -256,7 +256,7 @@ BM256补测：每M50项，M2048/4096各26成功、24资源失败。只把BM128�
 
 ## 7. 复现方式与分支汇总清单
 
-依据：[联合搜索](../2026-11-11-down-m2048-fused-joint.md)、[跨M验证](../2026-11-11-down-large-m-config-generalization.md)、[BM256](../2026-11-11-down-bm256-scaling.md)、[实际接入及边界](../2026-11-11-down-fused-scale-policy.md)、[最终组合任务](../2026-11-11-down-full-combination-official.md)。
+依据：[联合搜索](docs/optimization/changes/2026-11-11-down-m2048-fused-joint.md)、[跨M验证](docs/optimization/changes/2026-11-11-down-large-m-config-generalization.md)、[BM256](docs/optimization/changes/2026-11-11-down-bm256-scaling.md)、[实际接入及边界](docs/optimization/changes/2026-11-11-down-fused-scale-policy.md)、[最终组合任务](docs/optimization/changes/2026-11-11-down-full-combination-official.md)。
 
 接入源码：工作区 `worktrees/FlagGems-scale-epilogue/src/flag_gems/runtime/backend/_metax/ops/weight_int8pack_mm.py`；日志修复后SHA256 `826ee3b73b01f4cc329286f9e268c87a87f7b069464afe7b121e682f1a9abf03`。MM提供者SHA256 `3abfeba5c64c159370543602a2afc329efb6c7fc09e46659c11faa6b64485213`。
 

@@ -46,6 +46,6 @@ manifest接入记录包括61个精确Shape映射及共享候选池，这是该�
 
 ## 7. 复现方式与分支汇总清单
 
-依据：[分发接入](../2026-11-05-w8a16-shape-dispatch.md)、[生产接口与边界验证](../2026-11-11-down-small-m-partial.md)。
+依据：[分发接入](docs/optimization/changes/2026-11-05-w8a16-shape-dispatch.md)、[生产接口与边界验证](docs/optimization/changes/2026-11-11-down-small-m-partial.md)。
 
 汇总文件：插件 `vllm_fl/quantization/w8a16/int8pack.py`；FlagGems `weight_int8pack_mm.py` 中 `_shape_dispatch`、`_dispatch_manifest`、能力检查、显式算法入口；同目录 `w8a16_dispatch.json`。先跑最小注册入口及尾块检查，再复核图重放、workspace生命周期和实际模型import路径。

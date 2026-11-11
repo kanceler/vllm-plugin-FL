@@ -24,7 +24,7 @@ shared复测：取消swizzle使完整调用慢约29.76%～34.77%；INT8转置布
 
 ### 详细数据与原始依据
 
-**来源：[2026-11-11-down-small-m-partial.md](../2026-11-11-down-small-m-partial.md)。各表仅在原实验内比较，不跨版本合并。**
+**来源：[2026-11-11-down-small-m-partial.md](docs/optimization/changes/2026-11-11-down-small-m-partial.md)。各表仅在原实验内比较，不跨版本合并。**
 
 **4. 实验与验证**
 
@@ -44,7 +44,7 @@ shared复测：取消swizzle使完整调用慢约29.76%～34.77%；INT8转置布
 | 112 | 20261113 | 97.096 | 93.998 | +3.19% | 109.559 | 106.613 | +2.69% | 离线候选 |
 | 112 | 20261114 | 96.956 | 94.274 | +2.77% | 110.121 | 106.696 | +3.11% | 离线候选 |
 
-**来源：[2026-11-11-down-partial-compiler-counter-audit.md](../2026-11-11-down-partial-compiler-counter-audit.md)。各表仅在原实验内比较，不跨版本合并。**
+**来源：[2026-11-11-down-partial-compiler-counter-audit.md](docs/optimization/changes/2026-11-11-down-partial-compiler-counter-audit.md)。各表仅在原实验内比较，不跨版本合并。**
 
 **4. 实验与验证**
 
@@ -58,7 +58,7 @@ shared复测：取消swizzle使完整调用慢约29.76%～34.77%；INT8转置布
 | 单partial图replay中位数（5轮） | 76.400μs | 71.808μs |
 | partial求和相对FP32参考L2 | 1.987e-6 | 2.002e-6 |
 
-**来源：[2026-11-11-down-partial-shared-layout.md](../2026-11-11-down-partial-shared-layout.md)。各表仅在原实验内比较，不跨版本合并。**
+**来源：[2026-11-11-down-partial-shared-layout.md](docs/optimization/changes/2026-11-11-down-partial-shared-layout.md)。各表仅在原实验内比较，不跨版本合并。**
 
 **4. 实验与验证**
 
@@ -95,6 +95,6 @@ shared复测：取消swizzle使完整调用慢约29.76%～34.77%；INT8转置布
 
 ## 7. 复现方式与分支汇总清单
 
-依据：[小M实验](../2026-11-11-down-small-m-partial.md)、[编译与计数器审计](../2026-11-11-down-partial-compiler-counter-audit.md)、[shared消融](../2026-11-11-down-partial-shared-layout.md)。
+依据：[小M实验](docs/optimization/changes/2026-11-11-down-small-m-partial.md)、[编译与计数器审计](docs/optimization/changes/2026-11-11-down-partial-compiler-counter-audit.md)、[shared消融](docs/optimization/changes/2026-11-11-down-partial-shared-layout.md)。
 
 工具：`benchmark_metax_down_partial.py`、`verify_metax_down_partial.py`、`audit_metax_down_partial.py`、`benchmark_metax_down_shared.py`、`benchmark_metax_down_swizzle.py`。原始归档见工作区artifacts下对应down-partial及down-shared-layout目录。汇总分支将这些作为诊断工具，不能将实验Kernel批量替换生产partial。

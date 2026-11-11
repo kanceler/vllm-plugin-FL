@@ -31,7 +31,7 @@ scale direct在M2048烟测eager及图相对FP32量化参考L2约0.001659362，�
 
 ### 详细数据与原始依据
 
-**来源：[2026-11-10-down-splitk-separate-pipeline.md](../2026-11-10-down-splitk-separate-pipeline.md)。各表仅在原实验内比较，不跨版本合并。**
+**来源：[2026-11-10-down-splitk-separate-pipeline.md](docs/optimization/changes/2026-11-10-down-splitk-separate-pipeline.md)。各表仅在原实验内比较，不跨版本合并。**
 
 **4. 实验与验证**
 
@@ -42,7 +42,7 @@ scale direct在M2048烟测eager及图相对FP32量化参考L2约0.001659362，�
 | 转换4096/4；scale2048/8 | 460.053 | 459.508 |
 | 仅scale1024/4；2048/8 | 475.793 | 475.265 |
 
-**来源：[2026-11-11-convert-block-provider-cross.md](../2026-11-11-convert-block-provider-cross.md)。各表仅在原实验内比较，不跨版本合并。**
+**来源：[2026-11-11-convert-block-provider-cross.md](docs/optimization/changes/2026-11-11-convert-block-provider-cross.md)。各表仅在原实验内比较，不跨版本合并。**
 
 **实测结果与结论**
 
@@ -74,6 +74,6 @@ scale direct在M2048烟测eager及图相对FP32量化参考L2约0.001659362，�
 
 ## 7. 复现方式与分支汇总清单
 
-依据：[转换与预取实验](../2026-11-10-down-splitk-separate-pipeline.md)、[提供者交叉验证](../2026-11-11-convert-block-provider-cross.md)、[direct组合记录](../2026-11-11-scale-direct-default-mm-evaluation.md)。
+依据：[转换与预取实验](docs/optimization/changes/2026-11-10-down-splitk-separate-pipeline.md)、[提供者交叉验证](docs/optimization/changes/2026-11-11-convert-block-provider-cross.md)、[direct组合记录](docs/optimization/changes/2026-11-11-scale-direct-default-mm-evaluation.md)。
 
 汇总FlagGems `mm.py` 的scale/scale_direct Kernel与 `weight_int8pack_mm.py` 的转换及融合helper；保留插件BF16提供者接口。诊断用 `benchmark_metax_convert_provider_cross.py`，融合原始脚本与实际参数见工作区 `artifacts/scale-direct-20261111-01/`、`artifacts/scale-epilogue-20261111-01/`。复现需相同提供者与数值参考。

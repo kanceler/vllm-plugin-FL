@@ -29,7 +29,7 @@
 
 ### 详细数据与原始依据
 
-**来源：[2026-11-10-w8a16-separate-ablation.md](../2026-11-10-w8a16-separate-ablation.md)。各表仅在原实验内比较，不跨版本合并。**
+**来源：[2026-11-10-w8a16-separate-ablation.md](docs/optimization/changes/2026-11-10-w8a16-separate-ablation.md)。各表仅在原实验内比较，不跨版本合并。**
 
 **阶段实测补充（12:28）**
 
@@ -91,6 +91,6 @@
 
 ## 7. 复现方式与分支汇总清单
 
-依据：[四投影正式负结果](../2026-11-10-w8a16-official-ab-analysis.md)、[分投影完整算子对照](../2026-11-10-w8a16-separate-ablation.md)。
+依据：[四投影正式负结果](docs/optimization/changes/2026-11-10-w8a16-official-ab-analysis.md)、[分投影完整算子对照](docs/optimization/changes/2026-11-10-w8a16-separate-ablation.md)。
 
-被测Down-only参考源码：[linear.py](../../../../../artifacts/w8a16-consolidation-20261111/source-reference/linear.py)，SHA256 `f3eaa4fe5a57dad76ad9b7f4c86c9ed8c2f832bf94547e55ae0681e742904e74`。汇总时涉及插件 `linear.py`、`int8pack.py`、注册入口及FlagGems算子。接入后必须检查实际42层Down覆盖和其他投影dtype，而非仅看环境变量名。
+被测Down-only参考源码：[linear.py](../artifacts/w8a16-consolidation-20261111/source-reference/linear.py)，SHA256 `f3eaa4fe5a57dad76ad9b7f4c86c9ed8c2f832bf94547e55ae0681e742904e74`。汇总时涉及插件 `linear.py`、`int8pack.py`、注册入口及FlagGems算子。接入后必须检查实际42层Down覆盖和其他投影dtype，而非仅看环境变量名。

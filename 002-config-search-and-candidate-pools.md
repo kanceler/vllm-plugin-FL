@@ -31,7 +31,7 @@ Down M56/M64沿用 `(64,64,128,4,1,8)`。M64有显式选择入口；M56可由man
 
 ### 详细数据与原始依据
 
-**来源：[2026-11-11-down-small-m-partial.md](../2026-11-11-down-small-m-partial.md)。各表仅在原实验内比较，不跨版本合并。**
+**来源：[2026-11-11-down-small-m-partial.md](docs/optimization/changes/2026-11-11-down-small-m-partial.md)。各表仅在原实验内比较，不跨版本合并。**
 
 **4. 实验与验证**
 
@@ -63,6 +63,6 @@ Down M56/M64沿用 `(64,64,128,4,1,8)`。M64有显式选择入口；M56可由man
 
 ## 7. 复现方式与分支汇总清单
 
-依据：[启动缓存修复](../2026-11-05-w8a16-splitk-launch-cache-fix.md)、[三算法manifest接入](../2026-11-05-w8a16-shape-dispatch.md)、[小M独立复验](../2026-11-11-down-small-m-partial.md)。M56原始数据：工作区 `experiment-artifacts/2026-11-10-m56-history-audit/historical-controls.json`。
+依据：[启动缓存修复](docs/optimization/changes/2026-11-05-w8a16-splitk-launch-cache-fix.md)、[三算法manifest接入](docs/optimization/changes/2026-11-05-w8a16-shape-dispatch.md)、[小M独立复验](docs/optimization/changes/2026-11-11-down-small-m-partial.md)。M56原始数据：工作区 `experiment-artifacts/2026-11-10-m56-history-audit/historical-controls.json`。
 
 汇总FlagGems的 `_configured_splitk`、Dense显式启动修复、`w8a16_dispatch.json`；插件诊断保留 `verify_splitk_launch_options.py` 和实际已测版本。复现先运行启动选项验证，再按归档目录脚本做搜索，不能复用修复前赢家表。
