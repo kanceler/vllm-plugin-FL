@@ -32,3 +32,28 @@ def is_set(name: str):
     if name in fl_vllm_environment_variables:
         return name in os.environ
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
+
+def _env_bool(name: str, default: str) -> bool:
+    return os.environ.get(name, default).lower() in ("true", "1")
+
+def _env_int(name: str, default: str) -> int:
+    try:
+        return int(os.environ.get(name, default))
+    except ValueError:
+        return int(default)
+
+fl_vllm_environment_variables.update({
+'VLLM_FL_ADAPTIVE_CHUNK_ENABLED': lambda: _env_bool(
+        "VLLM_FL_ADAPTIVE_CHUNK_ENABLED", "True"
+    ),
+'VLLM_FL_ADAPTIVE_CHUNK_MAX': lambda: _env_int(
+        "VLLM_FL_ADAPTIVE_CHUNK_MAX", "4096"
+    ),
+'VLLM_FL_ADAPTIVE_CHUNK_DECODE_GATE': lambda: _env_int(
+        "VLLM_FL_ADAPTIVE_CHUNK_DECODE_GATE", "-1"
+    ),
+'VLLM_FL_ADAPTIVE_CHUNK_LONG_PROMPT': lambda: _env_int(
+        "VLLM_FL_ADAPTIVE_CHUNK_LONG_PROMPT", "0"
+    ),
+})

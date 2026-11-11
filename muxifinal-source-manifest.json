@@ -1,0 +1,28 @@
+{
+  "branch": "muxifinal",
+  "plugin_base_commit": "2f283ca95432efdffb606e822d25ee236862b72d",
+  "FlagGems_commit": "13d3db134ab01e2495e17ac05aac1b49e07fd5a2",
+  "002_source": "a09c3c7",
+  "003_source": "2f76394",
+  "hardware": "MetaX C500",
+  "runtime": {
+    "vllm": "0.24.0+empty",
+    "torch": "2.8.0+metax3.7.0.7",
+    "triton_distribution": "3.0.0+metax3.7.0.7"
+  },
+  "critical_sha256": {
+    "vllm_fl/envs.py": "a3add2aafbfe942cc937b921333d8a2ebcdc5ced6769d17f9c2803a0bd4f65c6",
+    "vllm_fl/platform.py": "e1f3c2a5b915a464c29ffc96ff18b00358de31049ead34a43799deb4dce3a581",
+    "vllm_fl/worker/adaptive_sched.py": "b13ddb3f876d0294e3a75d1e6d0833b91844634d4e81666e8154deeba11e9219",
+    "vllm_fl/worker/worker.py": "43ea6f160fac409698c096995a59c7a17fd28fb0b276305f6bb5a384b906d00e",
+    "vllm_fl/quantization/w8a16/linear.py": "5a0f273719d174b64a6c98854054e8f0bee971b12b74e830fb83468629d263c3",
+    "vllm_fl/quantization/w8a16/int8pack.py": "0d264b09e8b1ffb47692e126f8622b44f64d7b3f7c86f4f0d17f870ceb88d336",
+    "vllm_fl/dispatch/backends/vendor/metax/nt_gemm.py": "1f8c5c823f6cd746df8c7358f52945ef0a23c53d1f929dc251716a69fdfc135e",
+    "vllm_fl/dispatch/backends/vendor/metax/impl/attention/flash_attn.py": "051b111d989eb2a5ad048bdcd863197f84fe82acb825dc10547323d160ecb524",
+    "FlagGems/src/flag_gems/runtime/backend/_metax/ops/mm.py": "3abfeba5c64c159370543602a2afc329efb6c7fc09e46659c11faa6b64485213",
+    "FlagGems/src/flag_gems/runtime/backend/_metax/ops/weight_int8pack_mm.py": "826ee3b73b01f4cc329286f9e268c87a87f7b069464afe7b121e682f1a9abf03",
+    "FlagGems/src/flag_gems/runtime/backend/_metax/ops/w8a16_dispatch.json": "e3a0ed2edb8ae4340506be008de2a0e3a336b8e85add89a867805959399b5479"
+  },
+  "precision": "not rerun per user; 0.9714 belongs to previous combo",
+  "performance": "official command running; see 009 pending table"
+}

@@ -798,10 +798,16 @@ class FlashAttentionImpl(AttentionImpl):
                 # For handling prefill decode split
                 num_decode_tokens = attn_metadata.num_decode_tokens
                 if attn_metadata.num_prefills > 0:
-                    cu_prefix_kv_lens = torch.tensor(
-                        [0] + attn_metadata.prefill_seq_lens.tolist(),
-                        device=attn_metadata.prefill_seq_lens.device,
-                        dtype=torch.int32,
+                    # 原写法 `[0] + prefill_seq_lens.tolist()` 会触发一次
+                    # device→host 同步，而 prefill_seq_lens 是 device 张量
+                    # （见本文件 prefill_seq_lens = seq_lens[...]）。
+                    # 该同步在 42 层上、每个 chunked-prefill step 各执行一次，
+                    # 会让 CPU 再也追不上 GPU，后续所有 host 开销从「可重叠」
+                    # 变成「可相加」。且 host 同步在 CUDA graph capture 内部非法。
+                    # 改在 device 端用 cat+zeros 构造，语义完全等价、不引入同步。
+                    _lens = attn_metadata.prefill_seq_lens.to(torch.int32)
+                    cu_prefix_kv_lens = torch.cat(
+                        [_lens.new_zeros(1), _lens]
                     ).cumsum(dim=0, dtype=torch.int32)
                     output[num_decode_tokens:num_actual_tokens] = (
                         flash_attn_varlen_func(

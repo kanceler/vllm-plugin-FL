@@ -15,6 +15,9 @@ _C500_NT_TILES = {
     (2048, 2560, 2048): (128, 128, 64),
     (2048, 2048, 2048): (128, 128, 64),
     (2048, 12288, 2048): (128, 128, 64),
+    (4096, 12288, 2048): (128, 128, 64),
+    (4096, 2560, 2048): (128, 128, 64),
+    (4096, 2048, 2048): (128, 128, 128),
 }
 
 
@@ -96,5 +99,5 @@ def apply_c500_nt_gemm(device):
         )
 
     mm.general_mm_nt = _make_nt_dispatch(original, entries, device)
-    logger.info("Enabled three C500 BF16 NT tiling overrides on %s", device)
+    logger.info("Enabled %d C500 BF16 NT tiling overrides on %s", len(entries), device)
     return True

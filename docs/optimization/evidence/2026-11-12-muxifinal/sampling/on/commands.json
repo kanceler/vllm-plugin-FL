@@ -1,0 +1,35 @@
+{
+  "serve": [
+    "python",
+    "/data/collect_gemm_shapes.py",
+    "serve",
+    "--output",
+    "/data/adaptive-chunk-m-sampling-20261111-01/on/observer",
+    "--",
+    "vllm",
+    "serve",
+    "/workspace/MiniCPM5-2B",
+    "--port",
+    "9031",
+    "--served-model-name",
+    "minicpm",
+    "--gpu-memory-utilization",
+    "0.85",
+    "--max-model-len",
+    "131072"
+  ],
+  "env": {
+    "MACA_PATH": "/opt/maca",
+    "VLLM_FL_ADAPTIVE_CHUNK_ENABLED": "1",
+    "VLLM_FL_ADAPTIVE_CHUNK_MAX": "4096",
+    "VLLM_FL_ADAPTIVE_CHUNK_DECODE_GATE": "-1",
+    "VLLM_FL_ADAPTIVE_CHUNK_LONG_PROMPT": "0",
+    "PYTHONPATH": "/data/adaptive-chunk-m-sampling-20261111-01/on/overlay",
+    "VLLM_PLUGINS": "fl",
+    "VLLM_FL_W8A16_SHAPE_DISPATCH": "1",
+    "VLLM_FL_W8A16_DOWN": "1",
+    "VLLM_FL_W8A16_DOWN_INT8PACK": "1",
+    "VLLM_FL_W8A16_FORCE_SEPARATE": "0"
+  },
+  "scope": "diagnostic synthetic token IDs; 4K/16K prescribed lengths/concurrency/count; finite windows, no throughput score"
+}

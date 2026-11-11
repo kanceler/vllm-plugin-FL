@@ -276,6 +276,9 @@ class PlatformFL(Platform):
         if cls.vendor_name in ("gcu", "enflame"):
             parallel_config.disable_custom_all_reduce = True
 
+        from vllm_fl.worker.adaptive_sched import apply_adaptive_chunk_config
+        apply_adaptive_chunk_config(vllm_config)
+
     @classmethod
     def get_attn_backend_cls(
         cls,

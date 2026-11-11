@@ -1,5 +1,7 @@
 # vllm-plugin-FL
 
+本分支为 **muxifinal**。沐曦最终组合、完整配置、002采样分析、复现命令和本轮测评状态见 [009-muxifinal-integration-and-evaluation.md](009-muxifinal-integration-and-evaluation.md)。001～008为前置实现及历史结果；本轮结果以009为准。完整FlagGems源码位于 `FlagGems/`。
+
 vllm-plugin-FL is a plugin for the [vLLM](https://github.com/vllm-project/vllm) inference/serving framework, built on FlagOS's unified multi-chip backend — including the unified operator library [FlagGems](https://github.com/flagos-ai/FlagGems) and the unified communication library [FlagCX](https://github.com/flagos-ai/FlagCX). It extends vLLM's capabilities and performance across diverse hardware environments. Without changing vLLM's original interfaces or usage patterns, the same command can run model inference/serving on different chips.
 
 ## Adaptation Gate
