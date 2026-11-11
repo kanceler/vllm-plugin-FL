@@ -90,24 +90,15 @@ Down 的该次量化完整调用比 BF16 低约 14.25%；其他三个投影在�
 
 对原始 BF16 权重先转 FP32，按输出通道 n 计算：
 
-$$
-a_n=\max_k |W_{n,k}|,\qquad
-s_n=\begin{cases}a_n/127,&a_n>0\\1,&a_n=0\end{cases}
-$$
+![公式1](report-assets/formula-01.png)
 
-$$
-Q_{n,k}=\operatorname{clip}\left(\operatorname{round}(W_{n,k}/s_n),-127,127\right),\qquad
-\widehat W_{n,k}=s_nQ_{n,k}.
-$$
+![公式2](report-assets/formula-02.png)
 
 Q 为连续 INT8 `[N,K]`，s 为连续 FP32 `[N]`；全零通道使用 scale=1 避免除零。量化在本地权重分片加载完成后进行，不依赖评测集校准，不修改激活格式，也不改变上层 RowParallelLinear 的通信与 bias 处理。
 
 INT8 整数范围可由 BF16 精确表示。因此所采用的 scale-after-dot 计算为：
 
-$$
-A_{m,n}=\sum_k X_{m,k}\operatorname{BF16}(Q_{n,k}),\qquad
-Y_{m,n}=\operatorname{BF16}(s_n A_{m,n}),
-$$
+![公式3](report-assets/formula-03.png)
 
 其中乘法输入为 BF16、累加为 FP32。将每输出通道固定的 scale 提出 K 维求和，避免每个权重元素在 dot 前重复乘 scale。这不是原生 INT8×INT8 GEMM，且有限精度实现不应与逐元素先反量化再 BF16 GEMM 宣称逐位等价。
 
@@ -136,10 +127,7 @@ $$
 
 Split-K 将 K 维划分为 S 个分片：
 
-$$
-P_{j,m,n}=\sum_{k\in\mathcal K_j}X_{m,k}\operatorname{BF16}(Q_{n,k}),\qquad
-Y_{m,n}=\operatorname{BF16}\left(s_n\sum_{j=0}^{S-1}P_{j,m,n}\right).
-$$
+![公式4](report-assets/formula-04.png)
 
 M64、BM64、BN64、N2048、S8 时，partial 网格为 `1×32×8=256` 个 CTA；不切 K 时相应二维网格仅 32 个 CTA。增加 S 能改善并行度，但会增加归约及工作区成本，所以不能仅按 partial 单核时间选 Split 数。
 
@@ -147,10 +135,7 @@ M64、BM64、BN64、N2048、S8 时，partial 网格为 `1×32×8=256` 个 CTA；
 
 原 Separate 先将 MM 输出舍入 BF16，再独立乘 scale；最终 direct 融合在 FP32 累加值上乘 scale，只在输出时转 BF16：
 
-$$
-Y_{\mathrm{old}}=\operatorname{BF16}\left(s\cdot\operatorname{FP32}(\operatorname{BF16}(A))\right),\qquad
-Y_{\mathrm{direct}}=\operatorname{BF16}(s\cdot A).
-$$
+![公式5](report-assets/formula-05.png)
 
 它们存在真实舍入差异。验证必须区分：Kernel 相对量化参考的计算误差、量化相对原始权重的误差、算法之间的舍入差异，以及模型任务精度。算子相对 L2 通过不能替代模型精度测评。本文第 7.4 节记录最终组合模型精度结果。
 
@@ -516,3 +501,5 @@ python benchmarks/diagnostics/verify_m4096_integration.py \
 图件提供PNG与SVG两个版本，生成脚本为 [report-assets/generate_figures.py](report-assets/generate_figures.py)。图1、图2为实现示意；图3仅使用本文已列明的归档summary数据，不含模型精度结果。
 
 精度完整归档：`artifacts/muxifinal-accuracy-20261112/muxifinal-accuracy-20261112-results.tgz`，SHA256 `7f8811248eba173d1d2c4592e13c481b3737012642fc4010c09629da14b9928b`，包含预测、逐题review、日志和控制器。
+
+公式采用预渲染PNG以兼容Markdown预览与文档转换；对应LaTeX源文件为 `report-assets/formula-01.tex` 至 `formula-05.tex`。
