@@ -24,5 +24,22 @@
     "FlagGems/src/flag_gems/runtime/backend/_metax/ops/w8a16_dispatch.json": "e3a0ed2edb8ae4340506be008de2a0e3a336b8e85add89a867805959399b5479"
   },
   "precision": "not rerun per user; 0.9714 belongs to previous combo",
-  "performance": "official 8 rounds complete; 4K 5668.66 tok/s TTFT2111.42ms; 16K8675.61 tok/s TTFT17018.61ms; new default baseline pending"
+  "performance": "candidate and fresh default BF16 official benchmarks complete; both 8 rounds, mean of runs 2/3/4",
+  "default_bf16_comparison": {
+    "baseline_evidence": "docs/optimization/evidence/2026-11-12-muxifinal/default-bf16",
+    "baseline_archive_sha256": "fc46c93091f5220063e2d78fc82e0fb769896eb0c99921a969039ba87b9bdf02",
+    "4K": {
+      "baseline_tokens_per_s": 5050.28,
+      "candidate_tokens_per_s": 5668.66,
+      "baseline_mean_ttft_ms": 3279.94,
+      "candidate_mean_ttft_ms": 2111.42
+    },
+    "16K": {
+      "baseline_tokens_per_s": 6981.43,
+      "candidate_tokens_per_s": 8675.61,
+      "baseline_mean_ttft_ms": 27411.66,
+      "candidate_mean_ttft_ms": 17018.61
+    },
+    "attribution": "full combination, not quantization-only ablation"
+  }
 }

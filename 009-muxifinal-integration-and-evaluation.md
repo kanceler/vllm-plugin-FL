@@ -2,7 +2,7 @@
 
 ## 1. 平台数据与整体摘要
 
-2026-11-12。本分支整合 **002自适应prefill预算、003消除Attention逐层host同步、Down-only W8A16完整路径、M2048及M4096专用MM配置**。目标是在保持数值和赛事限制的前提下提高total tokens/s。本轮官方性能已完成，结果见第4节；新原始默认BF16基线正在补跑；用户明确本轮不重跑精度。
+2026-11-12。本分支整合 **002自适应prefill预算、003消除Attention逐层host同步、Down-only W8A16完整路径、M2048及M4096专用MM配置**。目标是在保持数值和赛事限制的前提下提高total tokens/s。本轮官方性能已完成，结果见第4节；新原始默认BF16基线也已完成；用户明确本轮不重跑精度。
 
 | 项目 | 本轮环境 |
 |---|---|
@@ -113,7 +113,20 @@ Down较小M仍按精确配置/区间候选池选Split-K，范围外保留合法�
 | 默认BF16 | 19.86% | 35.04% | 23.55% | 37.28% |
 | 专用配置纯BF16 | 10.56% | 20.00% | 13.38% | 28.07% |
 
-本轮相对两组历史参照的四项指标均有效改善；这里是组合总效果，不隔离量化贡献。用户另要求补跑原始默认BF16（量化、002/003和专用MM均关闭），任务目录 `/data/default-bf16-baseline-20261112-01/`；尚未完成，不预填结果。性能计分指标为total tokens/s；吞吐不得低于指定baseline×0.99、TTFT不得高于baseline×1.01；±1%含边界归正常波动，有效改善须严格超过1%。本文不自行扩展TTFT计分权重，正式baseline由组委会口径决定。参照来自同设备不同时间，且没有完整新增002/003和M4096配置，不能将所有组合收益归因量化；若隔离量化贡献需另做相同底座纯BF16对照。
+### 新原始默认BF16正式对照（2026-11-12补齐）
+
+基线在同一容器、同一C500、相同依赖与官方命令下运行；量化、002/003和专用MM均关闭。002通过ENABLED=0关闭；003恢复原tolist前缀构造；worker专用MM安装钩子禁用，保留原默认提供者选择。此处“原始默认BF16”描述实际活动路径，不表示切回整个上游历史提交。实际差异、开关及源码指纹保留归档，官方serve/Benchmark命令及脚本SHA256与候选一致。
+
+| 场景 | 新默认BF16 tok/s | 最终组合 tok/s | 吞吐提升 | 新默认BF16 TTFT ms | 最终组合 TTFT ms | TTFT降低 |
+|---|---:|---:|---:|---:|---:|---:|
+| 4K | 5050.28 | 5668.66 | **12.24%** | 3279.94 | 2111.42 | **35.63%** |
+| 16K | 6981.43 | 8675.61 | **24.27%** | 27411.66 | 17018.61 | **37.91%** |
+
+基线02:07:31 COMPLETE、退出码0，八轮全部SUCCESS，4K每轮256/256、16K每轮128/128请求成功。各场景跳过首轮，summary为第2/3/4轮平均，未额外重复或择优。结束后9031可绑定、GPU无进程、利用率0%、驱动保留显存826MiB。
+
+这组新默认对照作为本轮主要结论；4K新基线高于历史默认约6.78%，不能继续把历史19.86%当作本轮默认对照增幅。两个场景吞吐均有效提升、TTFT均有效改善。这仍是002/003、量化和MM配置的组合总效果，缺少相同002/003及配置底座下只关闭量化的消融，不能将12.24%/24.27%全归因于量化。
+
+新基线[summary](docs/optimization/evidence/2026-11-12-muxifinal/default-bf16/summary_20261112_011927.csv)、[八轮raw](docs/optimization/evidence/2026-11-12-muxifinal/default-bf16/raw_runs_20261112_011927.csv)、[命令与开关](docs/optimization/evidence/2026-11-12-muxifinal/default-bf16/commands.json)。性能指标为total tokens/s；±1%含边界归正常波动，只有严格超过1%才为有效改善。吞吐≥baseline×0.99、TTFT≤baseline×1.01仅表示没有超过1%的反向退化，不等同有效提升条件。TTFT不另行计分；赛事最终评分基线由组委会确定。
 
 用户要求本轮不再重跑精度。上一版不含新002/003/M4096映射的量化完整组合math_500 Level3报告accuracy=0.9714、105成功/0错误，达到0.950数值门槛。该结果保留为前版本证据，**不写成本轮组合重新测得的精度**。
 
@@ -169,4 +182,4 @@ python3 /workspace/vllm-plugin-FL/benchmarks/benchmark_throughput_serve.py \
 - M4096搜索：`/data/m4096-config-search-20261111-01/`，原始包`artifacts/m4096-config-search-20261111/m4096-config-search-20261111-results.tgz`。
 - 实际接入：`/data/m4096-002003-integration-20261112-01/`，本机归档SHA256 `a62f9fa17a7d7c71be643dbba0a7bf8f4f175b58a3bf93bef90b1b3c7d9dbddc`。
 - 本轮官方：`/data/m4096-002003-official-20261112-02/`，控制器`/data/run_m4096_002003_official_20261112_v2.py`。01目录因旧预热检查提前停止，未启动Benchmark，不与02拼接。
-- 仓库小型证据：`docs/optimization/evidence/2026-11-12-muxifinal/`；完整日志、逐轮计时及归档保留artifacts，源码与关键指纹由Git管理。最终summary和八轮raw已收录；完整归档SHA256为 `f77dede4dc0a42cbe3742413b9d8140a183cd0af4438d3e0d4a13b92c0714cbc`。新的同期原始基线待补。
+- 仓库小型证据：`docs/optimization/evidence/2026-11-12-muxifinal/`；完整日志、逐轮计时及归档保留artifacts，源码与关键指纹由Git管理。最终summary和八轮raw已收录；完整归档SHA256为 `f77dede4dc0a42cbe3742413b9d8140a183cd0af4438d3e0d4a13b92c0714cbc`。新默认基线原始包 `artifacts/default-bf16-baseline-20261112/default-bf16-baseline-20261112-results.tgz`，SHA256 `fc46c93091f5220063e2d78fc82e0fb769896eb0c99921a969039ba87b9bdf02`；关键证据收录 `default-bf16/` 子目录。
