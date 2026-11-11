@@ -200,6 +200,10 @@ def install_tile_policy() -> bool:
 
     install_mixed_policy(binding_mod)
 
+    from vllm_fl.attention.decode_index_policy import install_decode_index_policy
+
+    install_decode_index_policy(binding_mod)
+
     from vllm_fl.attention.config_model import device_profile
 
     prof = device_profile()
