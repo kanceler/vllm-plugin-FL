@@ -20,5 +20,11 @@
   "sampling/on/commands.json": "d6d0845a2f729379f0a4fdd66c557a0f4dd6a757ad7864aad9e31508df71190c",
   "sampling/on/ranking.json": "7d16db96f0eafb123a8752443bbe8217e49469aff5a1392d076d0b54cf38a2c6",
   "sampling/off/commands.json": "656f702c9de8a4a855a85149104ac2c06750dc2668a5ebfab1edbe3ea44678b5",
-  "sampling/off/ranking.json": "72c75588edef11d4aa48750ae82ef858ff9bcf1b6a59eb130c1a189e08643d86"
+  "sampling/off/ranking.json": "72c75588edef11d4aa48750ae82ef858ff9bcf1b6a59eb130c1a189e08643d86",
+  "official/actual-mm-hits.txt": "e61f911a681ba99a065570f7609740d29702e0b56b4eac599774c17037ac2ad4",
+  "official/raw_runs_20261112_002738.csv": "daa7a85f9d495fad863834c2a40ef6f8cab45b6faa06532391817abe5d2693a2",
+  "official/summary_20261112_002738.csv": "d2fa6be6ea04555318459b6ced2efe13db577aaa0dc7007411b38fa06adc44b0",
+  "official/hashes.json": "fc01b670968a9e306f69e62a6b0a6be5682f6b7b78c2d3ceb2e55e6bcb106e16",
+  "official/health.txt": "fa40384c32c823ddf521b697f8c6b49b2ebd1c4d85ace75fc737a59c4a074e49",
+  "official/commands.json": "fee028bf5f60e08fd2810ed6b48092a1887386b2e7c69277d574bf62dbb242d9"
 }

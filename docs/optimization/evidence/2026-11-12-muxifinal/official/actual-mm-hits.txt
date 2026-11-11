@@ -1,0 +1,6 @@
+(EngineCore pid=621191) [2026-11-12 00:26:51] [INFO] [vllm_fl.dispatch.backends.vendor.metax.nt_gemm] C500_NT_AB_HIT shape=(4096, 2560, 2048) tile=(128, 128, 64)
+(EngineCore pid=621191) [2026-11-12 00:26:51] [INFO] [vllm_fl.dispatch.backends.vendor.metax.nt_gemm] C500_NT_AB_HIT shape=(4096, 2048, 2048) tile=(128, 128, 128)
+(EngineCore pid=621191) [2026-11-12 00:26:52] [INFO] [vllm_fl.dispatch.backends.vendor.metax.nt_gemm] C500_NT_AB_HIT shape=(4096, 12288, 2048) tile=(128, 128, 64)
+(EngineCore pid=621191) [2026-11-12 00:28:24] [INFO] [vllm_fl.dispatch.backends.vendor.metax.nt_gemm] C500_NT_AB_HIT shape=(2048, 2560, 2048) tile=(128, 128, 64)
+(EngineCore pid=621191) [2026-11-12 00:28:25] [INFO] [vllm_fl.dispatch.backends.vendor.metax.nt_gemm] C500_NT_AB_HIT shape=(2048, 2048, 2048) tile=(128, 128, 64)
+(EngineCore pid=621191) [2026-11-12 00:28:25] [INFO] [vllm_fl.dispatch.backends.vendor.metax.nt_gemm] C500_NT_AB_HIT shape=(2048, 12288, 2048) tile=(128, 128, 64)

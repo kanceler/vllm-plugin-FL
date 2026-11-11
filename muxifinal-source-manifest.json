@@ -24,5 +24,5 @@
     "FlagGems/src/flag_gems/runtime/backend/_metax/ops/w8a16_dispatch.json": "e3a0ed2edb8ae4340506be008de2a0e3a336b8e85add89a867805959399b5479"
   },
   "precision": "not rerun per user; 0.9714 belongs to previous combo",
-  "performance": "official command running; see 009 pending table"
+  "performance": "official 8 rounds complete; 4K 5668.66 tok/s TTFT2111.42ms; 16K8675.61 tok/s TTFT17018.61ms; new default baseline pending"
 }
