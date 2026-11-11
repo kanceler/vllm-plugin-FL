@@ -2,7 +2,7 @@
 
 > 环境：天数 BI-V150（16 SM / warp 64），MiniCPM5-2B，FP32 logits，词表 130560。
 > 开发基线：`perf/BI-V150` 的 `8f17b5d5668082a10f765c6dc8e972862c754447`（已含 #011）。
-> 状态：算子及真实路径验证通过；与 #013 联合完成双场景简化端到端测试。默认关闭，联合 MATH 尚未运行。
+> 状态：算子及真实路径验证通过；与 #013 联合完成双场景简化端到端测试。默认启用（仅命中已验证设备/形状时生效），联合 MATH 尚未运行。
 > 编号说明：本改动在实验阶段记为 #014，本次提交按正式编号 #012 归档，不是另一项新增优化。
 
 ---
@@ -25,10 +25,10 @@ pivot、mask、重复值处理、过滤算法和后续随机采样，不重新�
 | 文件 | 作用 |
 |---|---|
 | `vllm_fl/patches/iluvatar_sampling.py` | 设备/形状保护、原 Kernel 行并行启动、device/stream 独立 scratch |
-| `vllm_fl/dispatch/backends/vendor/iluvatar/iluvatar.py` | 在天数 backend 导入时安装 opt-in 包装 |
+| `vllm_fl/dispatch/backends/vendor/iluvatar/iluvatar.py` | 在天数 backend 导入时安装带独立开关的包装 |
 | `tests/unit_tests/patches/test_iluvatar_sampling.py` | ABI、设备/形状回退与过滤数值回归 |
 
-开关：`VLLM_FL_BIV150_ROW_PARALLEL_SAMPLING=1`，默认 0；关闭或 unset 后重启 worker 回退。
+开关：`VLLM_FL_BIV150_ROW_PARALLEL_SAMPLING`，默认 1；不设置即可启用。显式设为 0 并重启 worker 回退，unset 则恢复默认启用。
 
 适用条件：实际厂商/型号为 Iluvatar BI-V150、FP32 logits、B17–64、V130560、
 vocab 连续、k/p 元数据形状和设备合法。其余情况调用原函数；上游 Kernel ABI 不匹配不安装。
@@ -53,6 +53,8 @@ vocab 连续、k/p 元数据形状和设备合法。其余情况调用原函数�
 两边 profiler 均只有一次 `_topk_topp_kernel`。此前本改动与原 Mixed Attention 合计 56 项回归通过；
 4k/16k 的短模型检查每场景均 64/64 请求成功。提交前在隔离的拟提交代码树上联合复核
 本改动、#013 和 Mixed 回归，**79 项全部通过**，Ruff/格式及差异检查通过。
+默认启用修正后，补充未设置开关、显式启用/关闭及设备回退验证，**83 项全部通过**；
+真实 BI-V150 上取消两个开关后加载正常 backend，确认两项优化均自动安装。
 
 ### 3.2 与 #013 联合端到端结果
 
@@ -86,12 +88,10 @@ vocab 连续、k/p 元数据形状和设备合法。其余情况调用原函数�
 
 ## 5. 复现与回退
 
-在本分支对应依赖环境启动服务，以下同时开启 #012/#013 以复现联合配置：
+本分支已默认开启 #012/#013，无需额外设置两个开关。沿用原天数启动命令：
 
 ```bash
 VLLM_PLUGINS=fl TORCHINDUCTOR_COMPILE_THREADS=1 \
-VLLM_FL_BIV150_ROW_PARALLEL_SAMPLING=1 \
-VLLM_FL_BIV150_DECODE_DIRECT_INDEX=1 \
 vllm serve /workspace/MiniCPM5-2B \
   --port 9031 \
   --compilation-config '{"cudagraph_mode": "FULL_DECODE_ONLY"}' \
@@ -116,7 +116,9 @@ PY
 ```
 
 原函数的日志分母仍显示 `/4`，实际这里只调用两次。不要将预热计入最终值。
-可分别将两个独立开关设 0 并重启服务回退。此次没有修改默认开关或固定 serve 参数。
+可分别将两个独立开关设 0 并重启服务回退；不设置或 unset 均恢复默认启用。固定 serve 参数不变。
+
+上述 Benchmark 是显式设 1 时的实测结果；随后默认值修正为 1，Kernel、分发保护和已测路径保持相同，未因此重复长测。不把历史结果写成默认值修正后重新运行的成绩。
 
 工作区完整记录：`天数BI-V150-非Attention算子Profiling与优化报告.md`、
 `天数BI-V150-Sampling与Decode直接索引联合端到端Benchmark报告.md`；联合原始证据在

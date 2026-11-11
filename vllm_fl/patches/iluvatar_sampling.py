@@ -1,6 +1,6 @@
 # Copyright (c) 2026 BAAI. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-"""Opt-in BI-V150 row parallelism for the existing vLLM top-k/top-p kernel.
+"""Default-enabled BI-V150 row parallelism for the vLLM top-k/top-p kernel.
 
 Keep the upstream selection algorithm, floating point operations and RNG path.
 Only replace its persistent one-program-per-SM grid with one program per row.
@@ -72,8 +72,8 @@ def apply_row_parallel(logits, k, p, mask_value=float("-inf")):
 
 
 def install_row_parallel_sampling():
-    """Install once at backend import; disabled by default pending formal E2E."""
-    if os.environ.get("VLLM_FL_BIV150_ROW_PARALLEL_SAMPLING", "0").lower() not in (
+    """Install once at backend import; an explicit 0 disables this policy."""
+    if os.environ.get("VLLM_FL_BIV150_ROW_PARALLEL_SAMPLING", "1").lower() not in (
         "1",
         "true",
     ):
@@ -135,5 +135,5 @@ def install_row_parallel_sampling():
 
     dispatch._fl_biv150_row_parallel = True
     sampler.apply_top_k_top_p_triton = dispatch
-    logger.info("BI-V150 row-parallel sampling installed (experimental opt-in)")
+    logger.info("BI-V150 row-parallel sampling installed")
     return True

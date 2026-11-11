@@ -1,6 +1,6 @@
 # Copyright (c) 2026 BAAI. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-"""Opt-in dense single-query index/grid specialization; attention math unchanged."""
+"""Guarded single-query index/grid specialization; enabled by default on BI-V150."""
 
 import hashlib
 import inspect
@@ -177,7 +177,7 @@ def install_decode_index_policy(backend):
     global _installed
     if _installed:
         return True
-    if os.environ.get("VLLM_FL_BIV150_DECODE_DIRECT_INDEX", "0").lower() not in (
+    if os.environ.get("VLLM_FL_BIV150_DECODE_DIRECT_INDEX", "1").lower() not in (
         "1",
         "true",
     ):
@@ -220,5 +220,5 @@ def install_decode_index_policy(backend):
         original, specialized
     )
     _installed = True
-    logger.info("BI-V150 Decode direct-index policy installed (experimental opt-in)")
+    logger.info("BI-V150 Decode direct-index policy installed")
     return True

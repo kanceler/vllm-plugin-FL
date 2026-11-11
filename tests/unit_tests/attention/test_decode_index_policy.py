@@ -1,4 +1,4 @@
-from types import SimpleNamespace
+from types import FunctionType, SimpleNamespace
 
 import pytest
 import torch
@@ -41,7 +41,41 @@ def test_metadata_reuses_cpu_prefix_and_mixed_plan():
 
 def test_disabled_does_not_install(monkeypatch):
     monkeypatch.setattr(policy, "_installed", False)
+    monkeypatch.setenv("VLLM_FL_BIV150_DECODE_DIRECT_INDEX", "0")
+    assert policy.install_decode_index_policy(None) is False
+
+
+@pytest.mark.parametrize("setting", [None, "1"])
+def test_default_and_explicit_enable_install(monkeypatch, setting):
+    from vllm_fl.attention import mixed_policy
+
+    monkeypatch.setattr(policy, "_installed", False)
+    if setting is None:
+        monkeypatch.delenv("VLLM_FL_BIV150_DECODE_DIRECT_INDEX", raising=False)
+    else:
+        monkeypatch.setenv("VLLM_FL_BIV150_DECODE_DIRECT_INDEX", setting)
+    monkeypatch.setattr(mixed_policy, "_is_validated_device", lambda: True)
+    original, specialized = object(), object()
+    monkeypatch.setattr(policy, "build_specialized_head", lambda _: specialized)
+    namespace = {"_fl_prefill_tiles": None, "kernel_unified_attention": original}
+    launcher = FunctionType((lambda: None).__code__, namespace)
+    builder = SimpleNamespace(build=lambda *args: None)
+    backend = SimpleNamespace(
+        unified_attention=launcher, TritonAttentionMetadataBuilder=builder
+    )
+    assert policy.install_decode_index_policy(backend)
+    dispatch = namespace["kernel_unified_attention"]
+    assert isinstance(dispatch, policy.DecodeIndexKernel)
+    assert dispatch.original is original and dispatch.specialized is specialized
+    assert policy.install_decode_index_policy(backend)
+
+
+def test_default_does_not_install_on_unvalidated_device(monkeypatch):
+    from vllm_fl.attention import mixed_policy
+
+    monkeypatch.setattr(policy, "_installed", False)
     monkeypatch.delenv("VLLM_FL_BIV150_DECODE_DIRECT_INDEX", raising=False)
+    monkeypatch.setattr(mixed_policy, "_is_validated_device", lambda: False)
     assert policy.install_decode_index_policy(None) is False
 
 

@@ -7,16 +7,20 @@ from vllm_fl.patches import iluvatar_sampling as policy
 
 
 def test_disabled_does_not_install(monkeypatch):
-    monkeypatch.delenv("VLLM_FL_BIV150_ROW_PARALLEL_SAMPLING", raising=False)
+    monkeypatch.setenv("VLLM_FL_BIV150_ROW_PARALLEL_SAMPLING", "0")
     assert policy.install_row_parallel_sampling() is False
 
 
-def test_enabled_install_is_idempotent_and_cpu_falls_back(monkeypatch):
+@pytest.mark.parametrize("setting", [None, "1"])
+def test_enabled_install_is_idempotent_and_cpu_falls_back(monkeypatch, setting):
     from vllm.v1.sample.ops import topk_topp_sampler as sampler
 
     calls = []
     sentinel = object()
-    monkeypatch.setenv("VLLM_FL_BIV150_ROW_PARALLEL_SAMPLING", "1")
+    if setting is None:
+        monkeypatch.delenv("VLLM_FL_BIV150_ROW_PARALLEL_SAMPLING", raising=False)
+    else:
+        monkeypatch.setenv("VLLM_FL_BIV150_ROW_PARALLEL_SAMPLING", setting)
     monkeypatch.setattr(
         sampler,
         "apply_top_k_top_p_triton",
