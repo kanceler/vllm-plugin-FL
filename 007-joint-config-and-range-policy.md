@@ -261,3 +261,5 @@ BM256补测：每M50项，M2048/4096各26成功、24资源失败。只把BM128�
 接入源码：工作区 `worktrees/FlagGems-scale-epilogue/src/flag_gems/runtime/backend/_metax/ops/weight_int8pack_mm.py`；日志修复后SHA256 `826ee3b73b01f4cc329286f9e268c87a87f7b069464afe7b121e682f1a9abf03`。MM提供者SHA256 `3abfeba5c64c159370543602a2afc329efb6c7fc09e46659c11faa6b64485213`。
 
 微基准脚本依次为 `benchmark_metax_down_joint.py`、`verify_metax_down_joint.py`、`verify_metax_down_joint_range.py`、`verify_metax_down_transition.py`、`verify_metax_down_fused_policy.py`、`benchmark_metax_down_bm_scaling.py`。具体seed/轮次和commands.json见对应artifacts归档，不能用当前脚本冒充历史已测版本。
+
+最终完整组合性能与精度现已完成，见[整体改动与最终测评](008-overall-changes-and-evaluation.md)。以其官方summary及精度JSON为准，历史未完成状态保留为过程记录。

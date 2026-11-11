@@ -219,3 +219,5 @@ If you want to use the original CUDA operators, you can set the following enviro
 ```sh
 export USE_FLAGGEMS=0
 ```
+
+最终整体改动、两组性能对照及官方精度：[008-overall-changes-and-evaluation.md](008-overall-changes-and-evaluation.md)。

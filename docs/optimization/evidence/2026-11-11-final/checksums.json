@@ -1,0 +1,13 @@
+{
+  "math_500.json": "bd8bb083349c6f4e5b11111f5c4a44f2c46009b6a888b0b544ce37529dad05ab",
+  "accuracy-commands.json": "55f3469968de68b593e996b870f099f454e8d7d96ed65c305d5c942c75391f6c",
+  "quantized/summary_20261111_213800.csv": "d1bd7419caca95c90c117c24d8fa23597eb113f98d8a7fa77b3c3dc87052afe8",
+  "quantized/raw_runs_20261111_213800.csv": "9910ba21d4462390fa0b95a1a6b57537d12e606c1efc5fa4de0b9c0cb4cf8785",
+  "quantized/hashes.json": "8a57ad8ffade051ac08b1d56e8c759cc31eca1e6aedbfe4cd777f6111c597dba",
+  "quantized/commands.json": "c5a14c8222836312a2f67593ef7b6ee54b55c6ae14e4b96652b004aed07ef413",
+  "default-bf16/summary_20261110_045739.csv": "b055634030d706d7b69fac88ec6e5044b2a4105c6920fa3217f0077a23bbcbca",
+  "default-bf16/raw_runs_20261110_045739.csv": "b80e97c052d4f7de3af65707b012358abc519eb880f196f5a92d476ea2586828",
+  "specialized-bf16/commands.json": "3761291b6997b00f764eac3dcb0832d24979c24bcde52a78e6c0c91640145fbd",
+  "specialized-bf16/raw_runs_20261111_031435.csv": "d916cb330f853ecd035f2ccb1af967c8af2f9a44214abede98746ed1eb63934a",
+  "specialized-bf16/summary_20261111_031435.csv": "d99d232a856d0f7099db3b987d5c75bc3b9a53cac8845206b9c1fd37be461882"
+}
