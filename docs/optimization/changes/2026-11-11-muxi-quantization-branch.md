@@ -31,3 +31,5 @@ Shape汇总unittest 10项通过；量化实现、诊断及改动调用入口AST�
 安装本分支所附FlagGems与插件，核对实际import路径。使用原官方serve/benchmark参数；按文档设置Down/INT8PACK/SHAPE_DISPATCH量化模式。验证42层Down量化、其他投影BF16、三项原生MM专用配置，以及M193/385分界。CPU检查：python3 -m unittest discover -s benchmarks/diagnostics -p test_summarize_gemm_shapes.py -q。GPU操作前遵守根工作区环境清理规则。
 
 推送前范围复核：移除未被七篇说明直接引用的旧路线、天数专项及无关规划文档，移除W8A8/既有量化能力探测脚本。只保留七篇说明、直接引用依据、分支记录/指纹、W8A16实现及验证工具和完整FlagGems。原文件在旧工作树保留。
+
+再次精简：删除未被七篇说明或保留工具依赖引用的历史诊断脚本及两篇天数专项说明。保留完整FlagGems、最终实现、七篇说明直接依据和必要micro复现依赖；旧分支仍保留历史原型。
