@@ -1,6 +1,6 @@
 # vllm-plugin-FL
 
-本分支为 **muxifinal**。沐曦最终组合、完整配置、002采样分析、复现命令和本轮测评状态见 [009-muxifinal-integration-and-evaluation.md](009-muxifinal-integration-and-evaluation.md)。001～008为前置实现及历史结果；本轮结果以009为准。完整FlagGems源码位于 `FlagGems/`。
+本分支为 **muxifinal**。沐曦最终组合、完整配置、002采样分析、复现命令和本轮测评状态见 [009-muxifinal-integration-and-evaluation.md](009-muxifinal-integration-and-evaluation.md)。001～008为前置实现及历史结果；本轮结果以009为准。完整FlagGems源码位于 `FlagGems/`。量化专项技术报告及配图见 [report.md](report.md)，包含最终性能与精度结果。
 
 本轮新默认BF16对照已完成：4K吞吐5050.28→5668.66 tok/s（+12.24%），16K 6981.43→8675.61 tok/s（+24.27%）；TTFT分别降低35.63%/37.91%。这是完整组合收益，最终组合新测精度0.9714（102/105正确、请求错误0），达到0.950门槛；2条输出达到长度上限的审计见009。
 
@@ -224,4 +224,4 @@ If you want to use the original CUDA operators, you can set the following enviro
 export USE_FLAGGEMS=0
 ```
 
-最终整体改动、两组性能对照及官方精度：[008-overall-changes-and-evaluation.md](008-overall-changes-and-evaluation.md)。
+前版本整体改动与历史测评：[008-overall-changes-and-evaluation.md](008-overall-changes-and-evaluation.md)。当前最终组合以 [009](009-muxifinal-integration-and-evaluation.md) 和 [量化技术报告](report.md) 为准。
