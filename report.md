@@ -90,15 +90,15 @@ Down 的该次量化完整调用比 BF16 低约 14.25%；其他三个投影在�
 
 对原始 BF16 权重先转 FP32，按输出通道 n 计算：
 
-<img src="report-assets/formula-01.png" alt="公式1" width="430">
+<img src="report-assets/formula-01.png" alt="公式1" width="320">
 
-<img src="report-assets/formula-02.png" alt="公式2" width="490">
+<img src="report-assets/formula-02.png" alt="公式2" width="365">
 
 Q 为连续 INT8 `[N,K]`，s 为连续 FP32 `[N]`；全零通道使用 scale=1 避免除零。量化在本地权重分片加载完成后进行，不依赖评测集校准，不修改激活格式，也不改变上层 RowParallelLinear 的通信与 bias 处理。
 
 INT8 整数范围可由 BF16 精确表示。因此所采用的 scale-after-dot 计算为：
 
-<img src="report-assets/formula-03.png" alt="公式3" width="420">
+<img src="report-assets/formula-03.png" alt="公式3" width="315">
 
 其中乘法输入为 BF16、累加为 FP32。将每输出通道固定的 scale 提出 K 维求和，避免每个权重元素在 dot 前重复乘 scale。这不是原生 INT8×INT8 GEMM，且有限精度实现不应与逐元素先反量化再 BF16 GEMM 宣称逐位等价。
 
@@ -127,7 +127,7 @@ INT8 整数范围可由 BF16 精确表示。因此所采用的 scale-after-dot �
 
 Split-K 将 K 维划分为 S 个分片：
 
-<img src="report-assets/formula-04.png" alt="公式4" width="450">
+<img src="report-assets/formula-04.png" alt="公式4" width="335">
 
 M64、BM64、BN64、N2048、S8 时，partial 网格为 `1×32×8=256` 个 CTA；不切 K 时相应二维网格仅 32 个 CTA。增加 S 能改善并行度，但会增加归约及工作区成本，所以不能仅按 partial 单核时间选 Split 数。
 
@@ -135,7 +135,7 @@ M64、BM64、BN64、N2048、S8 时，partial 网格为 `1×32×8=256` 个 CTA；
 
 原 Separate 先将 MM 输出舍入 BF16，再独立乘 scale；最终 direct 融合在 FP32 累加值上乘 scale，只在输出时转 BF16：
 
-<img src="report-assets/formula-05.png" alt="公式5" width="510">
+<img src="report-assets/formula-05.png" alt="公式5" width="380">
 
 它们存在真实舍入差异。验证必须区分：Kernel 相对量化参考的计算误差、量化相对原始权重的误差、算法之间的舍入差异，以及模型任务精度。算子相对 L2 通过不能替代模型精度测评。本文第 7.4 节记录最终组合模型精度结果。
 
