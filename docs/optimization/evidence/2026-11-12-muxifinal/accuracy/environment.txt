@@ -1,0 +1,24 @@
+INFO 11-12 02:13:14 [__init__.py:44] Available plugins for group vllm.platform_plugins:
+INFO 11-12 02:13:14 [__init__.py:46] - fl -> vllm_fl:register
+INFO 11-12 02:13:14 [__init__.py:58] Loading plugin fl
+INFO Print the version information of mcoplib during compilation.
+
+Version info:Mcoplib_Version = '0.4.5'
+Build_Maca_Version = '3.7.0.37'
+GIT_BRANCH = 'HEAD'
+GIT_COMMIT = 'a9125e4'
+Vllm Op Version = 0.20.0
+SGlang Op Version  = 0.5.10 
+
+INFO Staring Check the current MACA version of the operating environment.
+
+INFO: Release major.minor matching,  successful:3.7. 
+
+INFO 11-12 02:13:42 [__init__.py:237] Platform plugin fl is activated
+python /opt/conda/bin/python
+torch 2.8.0+metax3.7.0.7
+triton 3.0.0
+vllm 0.24.0
+evalscope 1.11.1
+plugin /data/muxifinal-accuracy-20261112-01/wide/overlay/vllm_fl/__init__.py
+gems /data/muxifinal-accuracy-20261112-01/wide/overlay/flag_gems/__init__.py

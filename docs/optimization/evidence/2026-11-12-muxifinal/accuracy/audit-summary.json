@@ -1,0 +1,18 @@
+{
+  "requested": 105,
+  "succeeded": 105,
+  "errored": 0,
+  "incomplete": false,
+  "correct": 102,
+  "incorrect": 3,
+  "accuracy_exact": 0.9714285714285714,
+  "accuracy_reported": 0.9714,
+  "stop_reason_counts": {
+    "stop": 103,
+    "max_tokens": 2
+  },
+  "max_tokens_limit": 32768,
+  "capped_samples_correct": 2,
+  "interpretation": "Accuracy threshold met; two capped outputs retained. No claim of no behavioral anomalies or quantization-caused accuracy improvement.",
+  "archive_sha256": "7f8811248eba173d1d2c4592e13c481b3737012642fc4010c09629da14b9928b"
+}

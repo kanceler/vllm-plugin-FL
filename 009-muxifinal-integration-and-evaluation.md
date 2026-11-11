@@ -2,7 +2,7 @@
 
 ## 1. 平台数据与整体摘要
 
-2026-11-12。本分支整合 **002自适应prefill预算、003消除Attention逐层host同步、Down-only W8A16完整路径、M2048及M4096专用MM配置**。目标是在保持数值和赛事限制的前提下提高total tokens/s。本轮官方性能已完成，结果见第4节；新原始默认BF16基线也已完成；用户明确本轮不重跑精度。
+2026-11-12。本分支整合 **002自适应prefill预算、003消除Attention逐层host同步、Down-only W8A16完整路径、M2048及M4096专用MM配置**。目标是在保持数值和赛事限制的前提下提高total tokens/s。本轮官方性能已完成，结果见第4节；新原始默认BF16基线也已完成；用户后续要求的最终组合精度也已完成。
 
 | 项目 | 本轮环境 |
 |---|---|
@@ -128,7 +128,13 @@ Down较小M仍按精确配置/区间候选池选Split-K，范围外保留合法�
 
 新基线[summary](docs/optimization/evidence/2026-11-12-muxifinal/default-bf16/summary_20261112_011927.csv)、[八轮raw](docs/optimization/evidence/2026-11-12-muxifinal/default-bf16/raw_runs_20261112_011927.csv)、[命令与开关](docs/optimization/evidence/2026-11-12-muxifinal/default-bf16/commands.json)。性能指标为total tokens/s；±1%含边界归正常波动，只有严格超过1%才为有效改善。吞吐≥baseline×0.99、TTFT≤baseline×1.01仅表示没有超过1%的反向退化，不等同有效提升条件。TTFT不另行计分；赛事最终评分基线由组委会确定。
 
-用户要求本轮不再重跑精度。上一版不含新002/003/M4096映射的量化完整组合math_500 Level3报告accuracy=0.9714、105成功/0错误，达到0.950数值门槛。该结果保留为前版本证据，**不写成本轮组合重新测得的精度**。
+### 最终组合精度（后续补测）
+
+本轮已按用户后续要求对最终完整组合重新执行官方math_500 Level 3：2026-11-12 02:17:24开始评测，02:32:42评测完成、02:33:04清理完成。105题全部成功、请求错误0，102题正确、3题错误，原始报告accuracy=0.9714（精确比例102/105），达到0.950数值门槛。被测Python源码指纹与最终性能候选一致，42层Down、6项MM映射及002/003生效。
+
+输出审计：103条正常stop，2条达到官方max_tokens=32768上限，均被官方评测器判对；保留原始记录，未删样本、未改参数或评分。成功请求数不等于正确数，也不代表所有输出均正常终止。相对规定基线0.962，本次高0.0094（约0.94个百分点），但官方temperature=1.0带来随机性，不据单次结果声称量化提高模型能力；尚无同底座BF16的配对输出行为对照。
+
+证据：[原始精度JSON](docs/optimization/evidence/2026-11-12-muxifinal/accuracy/math_500.json)、[输出审计摘要](docs/optimization/evidence/2026-11-12-muxifinal/accuracy/audit-summary.json)、[官方命令](docs/optimization/evidence/2026-11-12-muxifinal/accuracy/commands.json)。旧组合0.9714仍是独立历史结果，本表使用新运行20261112_021723，未复用旧输出。
 
 ## 5. 复现命令与版本核对
 
@@ -172,7 +178,7 @@ python3 /workspace/vllm-plugin-FL/benchmarks/benchmark_throughput_serve.py \
 
 001～008原报告保持原样，对应历史版本；本篇是muxifinal当前组合入口。量化主线、候选池、通用合法回退与完整FlagGems保留，不恢复前次已删除的旧路线或无关实验。官方serve、Benchmark、模型和数据均不修改；新增002源码改变内部调度行为，系用户明确要求接入的既有优化，参数与来源单列。创新归属区分MM配置、量化实现、002/003作者贡献。
 
-范围外M、不同软件/设备需复验；更大区间仅代表点覆盖。003可能影响执行时序、002影响分块，不能借旧精度报告宣称新组合已重新验收。官方性能流程已完整完成，但本轮精度按用户要求未重测，不宣称全面验收通过或全局最优。
+范围外M、不同软件/设备需复验；更大区间仅代表点覆盖。003可能影响执行时序、002影响分块，不能借旧精度报告宣称新组合已重新验收。官方性能与最终组合精度流程均已完成，精度数值门槛通过；2条输出达到长度上限的行为记录保留，不据此宣称所有核心能力已全面验证或全局最优。
 
 容器与分支的关键文件做过字节核对：计算Kernel、int8pack接口、新配置、002与003一致。linear.py差异是清理永远关闭的其他投影选择；worker差异仅为不在C500执行的GCU缓存及昆仑芯warmup分支，活动C500路径经差异审计一致。实际运行overlay文件指纹单独保留，不用Git提交标识替代实验版本。
 
@@ -183,3 +189,5 @@ python3 /workspace/vllm-plugin-FL/benchmarks/benchmark_throughput_serve.py \
 - 实际接入：`/data/m4096-002003-integration-20261112-01/`，本机归档SHA256 `a62f9fa17a7d7c71be643dbba0a7bf8f4f175b58a3bf93bef90b1b3c7d9dbddc`。
 - 本轮官方：`/data/m4096-002003-official-20261112-02/`，控制器`/data/run_m4096_002003_official_20261112_v2.py`。01目录因旧预热检查提前停止，未启动Benchmark，不与02拼接。
 - 仓库小型证据：`docs/optimization/evidence/2026-11-12-muxifinal/`；完整日志、逐轮计时及归档保留artifacts，源码与关键指纹由Git管理。最终summary和八轮raw已收录；完整归档SHA256为 `f77dede4dc0a42cbe3742413b9d8140a183cd0af4438d3e0d4a13b92c0714cbc`。新默认基线原始包 `artifacts/default-bf16-baseline-20261112/default-bf16-baseline-20261112-results.tgz`，SHA256 `fc46c93091f5220063e2d78fc82e0fb769896eb0c99921a969039ba87b9bdf02`；关键证据收录 `default-bf16/` 子目录。
+
+- 最终精度：`/data/muxifinal-accuracy-20261112-01/`；EvalScope原始输出 `/workspace/evalscope-datasets/level3/20261112_021723`。本地完整归档 `artifacts/muxifinal-accuracy-20261112/muxifinal-accuracy-20261112-results.tgz`，SHA256 `7f8811248eba173d1d2c4592e13c481b3737012642fc4010c09629da14b9928b`。完整预测与逐题review留在归档，小型报告和审计摘要收入Git。

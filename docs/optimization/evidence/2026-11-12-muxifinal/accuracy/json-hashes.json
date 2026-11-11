@@ -1,0 +1,5 @@
+{
+  "vllm_fl/configs/moe/E=256,N=512,device_name=nvidia,model=Qwen3.6-35B-A3B-H100.json": "97ccbad3a1933385e777d0817618edecbb80ff528b412e353c89c728d7d90193",
+  "vllm_fl/configs/moe/E=256,N=512,device_name=nvidia.json": "97ccbad3a1933385e777d0817618edecbb80ff528b412e353c89c728d7d90193",
+  "flag_gems/runtime/backend/_metax/ops/w8a16_dispatch.json": "e3a0ed2edb8ae4340506be008de2a0e3a336b8e85add89a867805959399b5479"
+}

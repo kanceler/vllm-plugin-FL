@@ -23,7 +23,7 @@
     "FlagGems/src/flag_gems/runtime/backend/_metax/ops/weight_int8pack_mm.py": "826ee3b73b01f4cc329286f9e268c87a87f7b069464afe7b121e682f1a9abf03",
     "FlagGems/src/flag_gems/runtime/backend/_metax/ops/w8a16_dispatch.json": "e3a0ed2edb8ae4340506be008de2a0e3a336b8e85add89a867805959399b5479"
   },
-  "precision": "not rerun per user; 0.9714 belongs to previous combo",
+  "precision": "final combination officially rerun: math_500 Level 3, 102/105 correct, accuracy 0.9714, 105 succeeded, 0 errored; 2 max_tokens stops retained",
   "performance": "candidate and fresh default BF16 official benchmarks complete; both 8 rounds, mean of runs 2/3/4",
   "default_bf16_comparison": {
     "baseline_evidence": "docs/optimization/evidence/2026-11-12-muxifinal/default-bf16",
@@ -41,5 +41,6 @@
       "candidate_mean_ttft_ms": 17018.61
     },
     "attribution": "full combination, not quantization-only ablation"
-  }
+  },
+  "precision_evidence": "docs/optimization/evidence/2026-11-12-muxifinal/accuracy"
 }
