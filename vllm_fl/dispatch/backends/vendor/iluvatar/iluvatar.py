@@ -235,6 +235,15 @@ def patch_sampler_compile_for_iluvatar() -> None:
 patch_sampler_compile_for_iluvatar()
 
 
+def patch_row_parallel_sampling_for_iluvatar() -> None:
+    from vllm_fl.patches.iluvatar_sampling import install_row_parallel_sampling
+
+    install_row_parallel_sampling()
+
+
+patch_row_parallel_sampling_for_iluvatar()
+
+
 def patch_torch_inductor_for_iluvatar() -> None:
     """Patch torch._inductor GPUTarget to use the correct triton backend name.
 
