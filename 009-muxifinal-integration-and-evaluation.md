@@ -174,6 +174,54 @@ python3 /workspace/vllm-plugin-FL/benchmarks/benchmark_throughput_serve.py \
 
 保留原脚本RUNS=4/SKIP_FIRST=1，记录脚本SHA256，summary每场景一行、raw八行。独立micro复现：在相同导入环境下运行`python benchmarks/diagnostics/search_metax_m4096.py --projection gate_up --output <新目录>`，其他projection为qkv/o/down；`verify_m4096_integration.py --output <新目录>`验证实际注册路径。GPU任务串行。
 
+### 完整精度命令
+
+先按上文候选环境启动新的官方服务；性能和精度必须串行执行，切换任务前完成资源清理。健康检查命令（另一终端执行）：
+
+```bash
+curl --fail http://127.0.0.1:9031/health
+curl --fail http://127.0.0.1:9031/v1/models
+```
+
+以下命令逐项取自最终精度 `commands.json`，保留官方全部参数：
+
+```bash
+evalscope eval \
+  --model minicpm \
+  --api-url http://127.0.0.1:9031/v1/chat/completions \
+  --api-key EMPTY \
+  --eval-type openai_api \
+  --datasets math_500 \
+  --dataset-args '{"math_500": {"dataset_id": "/workspace/evalscope-datasets/math_500", "subset_list": ["Level 3"]}}' \
+  --eval-batch-size 8 \
+  --timeout 3600 \
+  --generation-config '{"temperature": 1.0, "top_p": 0.95, "max_tokens": 32768}' \
+  --work-dir /workspace/evalscope-datasets/level3 \
+  --ignore-errors
+```
+
+### M4096 独立搜索及接入验证完整命令
+
+以下为当前分支的重新验证入口，不冒充历史控制器命令。先加载镜像已有Conda/MACA环境，确认当前Python及import路径；不安装或升级依赖。假定本分支位于 `/workspace/vllm-plugin-FL`，所附FlagGems源码通过PYTHONPATH优先导入。输出使用新目录，四组搜索与验证串行执行；执行期间不启动模型服务。
+
+```bash
+cd /workspace/vllm-plugin-FL
+export PYTHONPATH="/workspace/vllm-plugin-FL:/workspace/vllm-plugin-FL/FlagGems/src${PYTHONPATH:+:$PYTHONPATH}"
+command -v python3
+python3 -c 'import sys, torch, triton, flag_gems, vllm_fl; print(sys.executable); print(torch.__version__, triton.__version__); print(flag_gems.__file__); print(vllm_fl.__file__)'
+git rev-parse HEAD
+git status --short
+sha256sum benchmarks/benchmark_throughput_serve.py
+repro_dir="$(mktemp -d /workspace/muxifinal-repro-XXXXXXXX)"
+python3 benchmarks/diagnostics/search_metax_m4096.py --projection gate_up --output "$repro_dir/gate_up"
+python3 benchmarks/diagnostics/search_metax_m4096.py --projection qkv --output "$repro_dir/qkv"
+python3 benchmarks/diagnostics/search_metax_m4096.py --projection o --output "$repro_dir/o"
+python3 benchmarks/diagnostics/search_metax_m4096.py --projection down --output "$repro_dir/down"
+python3 benchmarks/diagnostics/verify_m4096_integration.py --output "$repro_dir/integration"
+```
+
+默认BF16历史对照使用独立overlay：量化五项均为0、adaptive enabled为0，并移除了专用MM和003补丁。仅在当前分支设置环境变量不能还原该基线；必须使用归档基线源码及指纹，不能将关闭量化后的当前组合标成默认BF16。基线的官方服务和性能命令与上文完全相同，历史精确环境见 `docs/optimization/evidence/2026-11-12-muxifinal/default-bf16/commands.json`。
+
 ## 6. 与已有改动的关系、合规与限制
 
 001～008原报告保持原样，对应历史版本；本篇是muxifinal当前组合入口。量化主线、候选池、通用合法回退与完整FlagGems保留，不恢复前次已删除的旧路线或无关实验。官方serve、Benchmark、模型和数据均不修改；新增002源码改变内部调度行为，系用户明确要求接入的既有优化，参数与来源单列。创新归属区分MM配置、量化实现、002/003作者贡献。

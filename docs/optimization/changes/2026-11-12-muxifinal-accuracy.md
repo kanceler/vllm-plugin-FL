@@ -36,3 +36,7 @@
 ## 7. 复现方式
 
 服务及评测的精确argv与环境见 `../evidence/2026-11-12-muxifinal/accuracy/commands.json`，配置见task_config.yaml，源码见hashes.json及json-hashes.json。环境与最终性能一致。控制器 `/data/run_muxifinal_accuracy_20261112.py`，任务 `/data/muxifinal-accuracy-20261112-01/`；官方输出 `/workspace/evalscope-datasets/level3/20261112_021723`。完整本地包 `artifacts/muxifinal-accuracy-20261112/muxifinal-accuracy-20261112-results.tgz`，SHA256 `7f8811248eba173d1d2c4592e13c481b3737012642fc4010c09629da14b9928b`。
+
+### 完整可执行复现入口（文档补充）
+
+完整候选环境变量、官方服务、双场景性能、精度及四投影M4096独立验证命令见 [最终组合复现命令](../../../009-muxifinal-integration-and-evaluation.md#5-复现命令与版本核对)。该入口依据归档commands.json展开，不以路径或省略参数代替命令；历史基线源码与当前组合的差异也单列说明。
