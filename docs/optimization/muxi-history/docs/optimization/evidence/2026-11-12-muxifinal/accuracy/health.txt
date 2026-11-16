@@ -1,0 +1,1 @@
+HTTP200; down-only42; six MM overrides; 002 on cap4096; 003 device prefix; fused policy M4096 hit

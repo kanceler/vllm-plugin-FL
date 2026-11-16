@@ -1,0 +1,22 @@
+{
+  "torch": "2.8.0+metax3.7.0.7",
+  "triton": "3.0.0",
+  "device": "MetaX C500",
+  "mm": "/data/m4096-config-search-20261111-01/o/overlay/flag_gems/runtime/backend/_metax/ops/mm.py",
+  "backend": "/data/m4096-config-search-20261111-01/o/overlay/flag_gems/runtime/backend/_metax/ops/weight_int8pack_mm.py",
+  "mm_sha256": "3abfeba5c64c159370543602a2afc329efb6c7fc09e46659c11faa6b64485213",
+  "backend_sha256": "826ee3b73b01f4cc329286f9e268c87a87f7b069464afe7b121e682f1a9abf03",
+  "convert": [
+    4096,
+    4
+  ],
+  "shape": [
+    4096,
+    2048,
+    2048
+  ],
+  "projection": "o",
+  "threshold": 0.005,
+  "selection": "fresh full-call timing; compilation cache allowed",
+  "scope": "BF16 full MM for three projections; fixed conversion+scale-direct full path for Down"
+}

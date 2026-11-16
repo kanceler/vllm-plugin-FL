@@ -1,0 +1,216 @@
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 128, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(196608, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 128, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 32, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.6519935131073}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 64, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(131072, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 32, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.605348587036133}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 64, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(131072, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 32, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 28.539648056030273}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 128, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.250868797302246}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 64, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 32, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.6714329719543457}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 128, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(196608, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 128, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(163840, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 128, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 64, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.1381332874298096}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 64, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.753284454345703}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 128, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 128, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.987910747528076}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 128, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(163840, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 128, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(163840, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 32, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.701470136642456}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 64, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 4.721066951751709}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 128, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(81920, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 128, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 64, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.0768213272094727}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 64, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 32, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.6546597480773926}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 128, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.8424233198165894}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 32, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 6.274019718170166}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 32, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(131072, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 64, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.4439427852630615}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 32, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.5949866771698}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 32, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.9080122709274292}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 32, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.6915717124938965}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 32, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.639225959777832}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 32, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.2251007556915283}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 64, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.495709180831909}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 32, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 6.385862350463867}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 32, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.8085206747055054}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 64, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 4.0776591300964355}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 64, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 4.187667369842529}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 128, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(163840, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 64, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.4905076026916504}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 32, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.935049057006836}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 32, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.955533742904663}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 64, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.5725924968719482}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 128, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 128, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 128, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 4.054363250732422}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 128, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(131072, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 64, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 26.295806884765625}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 64, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(81920, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 128, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(131072, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 32, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.6372389793395996}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 32, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.6508679389953613}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 128, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 32, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.9055050611495972}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 128, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 128, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(81920, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 64, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 4.753514766693115}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 32, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.7335314750671387}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 64, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.7655935287475586}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 32, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 27.717247009277344}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 32, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 8.752256393432617}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 128, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(196608, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 128, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(262144, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 32, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 27.240575790405273}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 64, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.7538816928863525}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 32, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.9061670303344727}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 64, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.3863539695739746}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 128, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(131072, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 64, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.2091461420059204}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 32, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.0964479446411133}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 128, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.884608268737793}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 64, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(81920, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 32, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.8129833936691284}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 64, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(131072, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 32, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.6685680150985718}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 128, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.2369027137756348}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 32, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 8.578559875488281}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 64, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.2567574977874756}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 64, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(262144, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 64, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.6241462230682373}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 128, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.809471845626831}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 128, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(196608, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 64, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.7168185710906982}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 128, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(81920, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 32, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.9209600687026978}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 128, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 64, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(131072, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 128, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 64, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.230072498321533}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 32, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.738675117492676}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 128, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 32, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 4.6056952476501465}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 64, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 4.470698833465576}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 64, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.7735679149627686}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 32, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.2681407928466797}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 128, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.8483376502990723}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 32, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.58196759223938}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 32, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.651489496231079}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 32, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.2884554862976074}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 128, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.862088918685913}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 128, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(131072, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 64, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.759411334991455}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 32, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.943716526031494}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 32, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.608747720718384}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 128, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.1140692234039307}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 128, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 128, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.1481740474700928}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 32, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.4111191034317017}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 128, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(81920, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 32, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.778167247772217}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 32, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.7293057441711426}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 64, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.0474119186401367}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 32, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.2699947357177734}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 128, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(196608, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 128, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(81920, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 128, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(196608, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 64, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.2469441890716553}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 128, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(262144, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 64, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.401024103164673}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 32, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 27.56198501586914}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 32, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.5633693933486938}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 64, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.6255605220794678}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 64, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.8069332838058472}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 64, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 64, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.2749547958374023}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 32, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.7772116661071777}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 128, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(131072, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 64, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 4.187136650085449}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 128, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(163840, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 128, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(196608, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 64, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(81920, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 128, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 32, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 5.257087707519531}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 64, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(131072, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 32, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.958524703979492}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 128, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 32, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.6104319095611572}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 128, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.817497730255127}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 64, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(81920, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 64, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 4.476330280303955}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 128, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(131072, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 128, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(81920, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 128, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 64, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 32, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.6115169525146484}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 128, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.862034320831299}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 128, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(262144, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 64, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 32, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.9212160110473633}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 64, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.384050130844116}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 32, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.7126526832580566}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 64, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.466850996017456}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 128, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(131072, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 32, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.0967607498168945}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 128, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 64, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.4572625160217285}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 128, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.2854743003845215}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 64, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(81920, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 128, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(131072, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 64, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 64, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(81920, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 64, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 64, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(81920, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 64, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.4250545501708984}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 64, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 32, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.8431456089019775}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 32, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.70499849319458}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 64, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 4.089690685272217}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 32, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.939190149307251}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 64, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.7530715465545654}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 32, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.928359866142273}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 128, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.1157476902008057}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 32, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.8983196020126343}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 32, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.6730880737304688}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 64, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.2715580463409424}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 32, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.3484480381011963}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 64, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.423997402191162}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 32, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.7323009967803955}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 64, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 26.334209442138672}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 64, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.666203260421753}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 128, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(81920, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 32, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.646174430847168}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 64, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.7686657905578613}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 32, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.57782244682312}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 64, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.58703875541687}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 64, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(81920, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 64, 64, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.6027398109436035}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 64, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.532543659210205}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 256, 128, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(262144, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 64, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.782442569732666}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 32, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.1420700550079346}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 32, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.348660945892334}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 128, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 64, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.3017280101776123}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 256, 128, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(163840, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 32, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 2.940375566482544}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 128, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(163840, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 128, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.288576126098633}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 32, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.6915199756622314}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 128, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(81920, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 128, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(196608, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 256, 64, 8, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 32, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 5.177972793579102}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 128, 128, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 4.057380676269531}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 32, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.2614550590515137}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 128, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(131072, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 32, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.7879807949066162}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 128, 4, 4, "basic"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(163840, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 32, 8, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.2959096431732178}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 32, 8, 2, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.8296403884887695}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 64, 64, 8, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.234891176223755}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [128, 128, 64, 4, 2, "basic"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 1.9168366193771362}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [256, 128, 128, 4, 2, "cpasync"], "kind": "quant", "seed": 20261205, "failure": "OutOfResources(98304, 65536, 'shared memory')"}
+{"projection": "gate_up", "shape": [4096, 12288, 2048], "config": [64, 64, 32, 4, 4, "cpasync"], "kind": "quant", "seed": 20261205, "l2": 0.001656008418649435, "screen_ms": 3.4420478343963623}

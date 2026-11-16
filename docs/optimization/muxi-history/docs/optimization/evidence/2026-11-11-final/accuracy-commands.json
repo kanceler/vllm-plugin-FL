@@ -1,0 +1,51 @@
+{
+  "serve": [
+    "vllm",
+    "serve",
+    "/workspace/MiniCPM5-2B",
+    "--port",
+    "9031",
+    "--served-model-name",
+    "minicpm",
+    "--gpu-memory-utilization",
+    "0.85",
+    "--max-model-len",
+    "131072"
+  ],
+  "benchmark": [
+    "evalscope",
+    "eval",
+    "--model",
+    "minicpm",
+    "--api-url",
+    "http://127.0.0.1:9031/v1/chat/completions",
+    "--api-key",
+    "EMPTY",
+    "--eval-type",
+    "openai_api",
+    "--datasets",
+    "math_500",
+    "--dataset-args",
+    "{\"math_500\": {\"dataset_id\": \"/workspace/evalscope-datasets/math_500\", \"subset_list\": [\"Level 3\"]}}",
+    "--eval-batch-size",
+    "8",
+    "--timeout",
+    "3600",
+    "--generation-config",
+    "{\"temperature\": 1.0, \"top_p\": 0.95, \"max_tokens\": 32768}",
+    "--work-dir",
+    "/workspace/evalscope-datasets/level3",
+    "--ignore-errors"
+  ],
+  "env": {
+    "MACA_PATH": "/opt/maca",
+    "LD_LIBRARY_PATH": "/opt/maca/lib:/opt/maca/ompi/lib:/opt/maca/ucx/lib:/opt/mxdriver/lib:/opt/maca/lib:/opt/maca/ompi/lib:/opt/maca/ucx/lib:/opt/mxdriver/lib:",
+    "PYTHONPATH": "/data/down-full-accuracy-20261111-01/wide/overlay",
+    "VLLM_PLUGINS": "fl",
+    "VLLM_FL_W8A16_DOWN": "1",
+    "VLLM_FL_W8A16_DOWN_INT8PACK": "1",
+    "VLLM_FL_W8A16_DOWN_FUSED": "0",
+    "VLLM_FL_W8A16_SHAPE_DISPATCH": "1",
+    "VLLM_FL_W8A16_FORCE_SEPARATE": "0"
+  }
+}

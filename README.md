@@ -1,3 +1,5 @@
+> 本分支量化工作入口：[跨平台改动总索引](量化改动总索引.md) · [沐曦C500](沐曦C500量化改动索引.md) · [天数BI-V150](BI-V150-KV量化改动索引.md) · [量化技术报告](docs/optimization/report/量化专项技术报告.md)
+
 # vllm-plugin-FL
 
 vllm-plugin-FL is a plugin for the [vLLM](https://github.com/vllm-project/vllm) inference/serving framework, built on FlagOS's unified multi-chip backend — including the unified operator library [FlagGems](https://github.com/flagos-ai/FlagGems) and the unified communication library [FlagCX](https://github.com/flagos-ai/FlagCX). It extends vLLM's capabilities and performance across diverse hardware environments. Without changing vLLM's original interfaces or usage patterns, the same command can run model inference/serving on different chips.

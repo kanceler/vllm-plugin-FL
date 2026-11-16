@@ -1,0 +1,38 @@
+{
+  "serve": [
+    "vllm",
+    "serve",
+    "/workspace/MiniCPM5-2B",
+    "--port",
+    "9031",
+    "--served-model-name",
+    "minicpm",
+    "--gpu-memory-utilization",
+    "0.85",
+    "--max-model-len",
+    "131072"
+  ],
+  "benchmark": [
+    "python3",
+    "/workspace/vllm-plugin-FL/benchmarks/benchmark_throughput_serve.py",
+    "--model",
+    "/workspace/MiniCPM5-2B",
+    "--served-model-name",
+    "minicpm",
+    "--port",
+    "9031",
+    "--test-cases",
+    "[[4096,1024,64,256],[16384,1024,64,128]]"
+  ],
+  "env": {
+    "MACA_PATH": "/opt/maca",
+    "LD_LIBRARY_PATH": "/opt/maca/lib:/opt/maca/ompi/lib:/opt/maca/ucx/lib:/opt/mxdriver/lib:/opt/maca/lib:/opt/maca/ompi/lib:/opt/maca/ucx/lib:/opt/mxdriver/lib:",
+    "PYTHONPATH": "/data/bf16-wide-baseline-20261111-02/bf16-wide/overlay",
+    "VLLM_PLUGINS": "fl",
+    "VLLM_FL_W8A16_DOWN": "0",
+    "VLLM_FL_W8A16_DOWN_INT8PACK": "0",
+    "VLLM_FL_W8A16_DOWN_FUSED": "0",
+    "VLLM_FL_W8A16_SHAPE_DISPATCH": "0",
+    "VLLM_FL_W8A16_FORCE_SEPARATE": "0"
+  }
+}

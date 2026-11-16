@@ -1,0 +1,82 @@
+[
+  {
+    "mode": "off",
+    "scenes": [
+      "16384-decode"
+    ],
+    "M_gpu_ms": {
+      "64": 810.9907519999992
+    },
+    "coverage": 1.0
+  },
+  {
+    "mode": "off",
+    "scenes": [
+      "4096-decode"
+    ],
+    "M_gpu_ms": {
+      "64": 811.6493339999996
+    },
+    "coverage": 1.0
+  },
+  {
+    "mode": "off",
+    "scenes": [
+      "4096-prefill"
+    ],
+    "M_gpu_ms": {
+      "2048": 842.2919680000005
+    },
+    "coverage": 1.0
+  },
+  {
+    "mode": "off",
+    "scenes": [
+      "16384-prefill"
+    ],
+    "M_gpu_ms": {
+      "2048": 852.93056
+    },
+    "coverage": 1.0
+  },
+  {
+    "mode": "on",
+    "scenes": [
+      "4096-prefill"
+    ],
+    "M_gpu_ms": {
+      "2048": 845.2674560000005
+    },
+    "coverage": 1.0
+  },
+  {
+    "mode": "on",
+    "scenes": [
+      "16384-decode"
+    ],
+    "M_gpu_ms": {
+      "64": 799.7959240000029
+    },
+    "coverage": 1.0
+  },
+  {
+    "mode": "on",
+    "scenes": [
+      "16384-prefill"
+    ],
+    "M_gpu_ms": {
+      "4096": 2145.3806079999995
+    },
+    "coverage": 1.0
+  },
+  {
+    "mode": "on",
+    "scenes": [
+      "4096-decode"
+    ],
+    "M_gpu_ms": {
+      "64": 800.0492320000036
+    },
+    "coverage": 1.0
+  }
+]
