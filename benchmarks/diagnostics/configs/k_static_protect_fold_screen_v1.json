@@ -1,0 +1,56 @@
+{
+  "status": "diagnostic_screen_only",
+  "source": "seed20261207 results-02; equal-case geomean; one config per batch independent of KV length",
+  "records": [
+    {
+      "batch": 1,
+      "config": {
+        "block_m": 16,
+        "segments": 32,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      }
+    },
+    {
+      "batch": 16,
+      "config": {
+        "block_m": 16,
+        "segments": 8,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      }
+    },
+    {
+      "batch": 56,
+      "config": {
+        "block_m": 16,
+        "segments": 16,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      }
+    },
+    {
+      "batch": 64,
+      "config": {
+        "block_m": 16,
+        "segments": 8,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      }
+    },
+    {
+      "batch": 80,
+      "config": {
+        "block_m": 16,
+        "segments": 1,
+        "stages": 1,
+        "tile": 64,
+        "warps": 4
+      }
+    }
+  ]
+}

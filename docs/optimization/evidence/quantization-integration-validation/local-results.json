@@ -1,0 +1,7 @@
+{
+  "k_static_fold_integration_v1.json": true,
+  "tianshu_kernel_hashes": true,
+  "cpu_tests": 18,
+  "gpu_validation": "not_run_no_confirmed_tianshu_connection",
+  "metax_validation": "deferred_by_user"
+}

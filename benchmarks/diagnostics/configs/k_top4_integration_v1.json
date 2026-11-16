@@ -1,0 +1,1557 @@
+{
+  "version": 2,
+  "status": "service_adapter_pending_validation_graph_stable_decode_batch_policy",
+  "identity": {
+    "device": "Iluvatar BI-V150",
+    "torch": "2.10.0",
+    "triton": "3.6.0",
+    "files": {
+      "k_top4.py": "d6368cfe77551bf9589be09537882387996163a7d3aa76b944a82682094af857",
+      "v_only.py": "0f08a4dfe8a04565c5853c407a5b79744296f08b221eba773cdd7f36c8583923",
+      "config_model.py": "7d5066c2bbf187a5f952eb3dee1ef5eb5e184e95feeeb5901683eb4b1b7c2a64"
+    }
+  },
+  "layout": {
+    "query_heads": 16,
+    "kv_heads": 2,
+    "head_dim": 128,
+    "page_size": 16,
+    "cache": "k144_v128_scale4",
+    "dtype": "bfloat16"
+  },
+  "records": [
+    {
+      "case": [
+        1,
+        4096,
+        1,
+        true,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 16,
+        "warps": 2,
+        "stages": 1,
+        "segments": 32
+      },
+      "selection": "offline_measured_validated_candidate",
+      "writer": "direct_load_w1",
+      "source": "combined-confirm-01",
+      "variant": "configured_write_load_w1",
+      "complete_ms": 0.05190935929616292,
+      "origin": "frozen_v1_preserved",
+      "selection_status": "previously_validated_not_researched_this_round"
+    },
+    {
+      "case": [
+        1,
+        16384,
+        1,
+        true,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 16,
+        "warps": 2,
+        "stages": 1,
+        "segments": 32
+      },
+      "selection": "offline_measured_validated_candidate",
+      "writer": "direct_load_w1",
+      "source": "combined-confirm-01",
+      "variant": "configured_write_load_w1",
+      "complete_ms": 0.15019501050313314,
+      "origin": "frozen_v1_preserved",
+      "selection_status": "previously_validated_not_researched_this_round"
+    },
+    {
+      "case": [
+        64,
+        16384,
+        1,
+        false,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 1
+      },
+      "selection": "offline_measured_validated_candidate",
+      "writer": "direct_load_w1",
+      "source": "combined-confirm-01",
+      "variant": "write_load_w1",
+      "complete_ms": 4.233249918619792,
+      "origin": "frozen_v1_preserved",
+      "selection_status": "previously_validated_not_researched_this_round"
+    },
+    {
+      "case": [
+        4,
+        4097,
+        1,
+        false,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 64,
+        "warps": 4,
+        "stages": 1,
+        "segments": 1
+      },
+      "selection": "offline_measured_validated_candidate",
+      "writer": "direct_load_w1",
+      "source": "combined-confirm-01",
+      "variant": "configured_write_load_w1",
+      "complete_ms": 0.5664528528849284,
+      "origin": "frozen_v1_preserved",
+      "selection_status": "previously_validated_not_researched_this_round"
+    },
+    {
+      "case": [
+        1,
+        128,
+        128,
+        false,
+        false
+      ],
+      "config": {
+        "block_m": 256,
+        "tile": 128,
+        "warps": 16,
+        "stages": 1,
+        "segments": 1
+      },
+      "selection": "offline_measured_validated_candidate",
+      "writer": "direct_load_w1",
+      "source": "combined-confirm-01",
+      "variant": "write_load_w1",
+      "complete_ms": 0.024610642592112222,
+      "origin": "frozen_v1_preserved",
+      "selection_status": "previously_validated_not_researched_this_round"
+    },
+    {
+      "case": [
+        1,
+        4096,
+        128,
+        false,
+        false
+      ],
+      "config": {
+        "block_m": 256,
+        "tile": 128,
+        "warps": 16,
+        "stages": 1,
+        "segments": 1
+      },
+      "selection": "offline_measured_validated_candidate",
+      "writer": "direct_load_w1",
+      "source": "combined-confirm-01",
+      "variant": "write_load_w1",
+      "complete_ms": 0.2959177017211914,
+      "origin": "frozen_v1_preserved",
+      "selection_status": "previously_validated_not_researched_this_round"
+    },
+    {
+      "case": [
+        1,
+        17408,
+        1,
+        true,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 16,
+        "warps": 2,
+        "stages": 1,
+        "segments": 32
+      },
+      "selection": "offline_measured_validated_candidate",
+      "writer": "direct_load_w1",
+      "source": "combined-confirm-01",
+      "variant": "configured_write_load_w1",
+      "complete_ms": 0.1578221797943115,
+      "origin": "frozen_v1_preserved",
+      "selection_status": "previously_validated_not_researched_this_round"
+    },
+    {
+      "case": [
+        8,
+        8193,
+        1,
+        false,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 64,
+        "warps": 4,
+        "stages": 1,
+        "segments": 1
+      },
+      "selection": "offline_measured_validated_candidate",
+      "writer": "direct_load_w1",
+      "source": "combined-confirm-01",
+      "variant": "configured_write_load_w1",
+      "complete_ms": 1.1408821105957032,
+      "origin": "frozen_v1_preserved",
+      "selection_status": "previously_validated_not_researched_this_round"
+    },
+    {
+      "case": [
+        1,
+        1024,
+        17,
+        false,
+        false
+      ],
+      "config": {
+        "block_m": 32,
+        "tile": 128,
+        "warps": 4,
+        "stages": 1,
+        "segments": 1
+      },
+      "selection": "offline_measured_validated_candidate",
+      "writer": "direct_load_w1",
+      "source": "combined-confirm-01",
+      "variant": "write_load_w1",
+      "complete_ms": 0.1590884526570638,
+      "origin": "frozen_v1_preserved",
+      "selection_status": "previously_validated_not_researched_this_round"
+    },
+    {
+      "case": [
+        1,
+        17,
+        1,
+        false,
+        true
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 1
+      },
+      "selection": "offline_measured_validated_candidate",
+      "writer": "direct_load_w1",
+      "source": "combined-confirm-01",
+      "variant": "write_load_w1",
+      "complete_ms": 0.020197178920110068,
+      "origin": "frozen_v1_preserved",
+      "selection_status": "previously_validated_not_researched_this_round"
+    },
+    {
+      "case": [
+        16,
+        4096,
+        1,
+        true,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 8
+      },
+      "writer": "load_w1",
+      "source": "selected-decode-01",
+      "variant": "winner",
+      "complete_ms": 0.28423233032226564,
+      "origin": "K_focused_search_then_independent_seed_confirmation",
+      "selection_status": "configuration_confirmed_writer_near_ties_retained",
+      "legacy_complete_ms": 0.3122923135757446,
+      "paired_legacy_reduction_percent": {
+        "min": 8.391717318484314,
+        "median": 9.158954738935844,
+        "max": 9.686590680609875
+      },
+      "alternatives": [
+        {
+          "variant": "canonical",
+          "config": {
+            "block_m": 16,
+            "tile": 16,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "load_w1",
+          "complete_ms": 0.3066854000091553
+        },
+        {
+          "variant": "winner",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 8
+          },
+          "writer": "load_w1",
+          "complete_ms": 0.28423233032226564
+        },
+        {
+          "variant": "writer_load_w2",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 8
+          },
+          "writer": "load_w2",
+          "complete_ms": 0.2865638494491577
+        },
+        {
+          "variant": "writer_load_w4",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 8
+          },
+          "writer": "load_w4",
+          "complete_ms": 0.2867492437362671
+        },
+        {
+          "variant": "writer_sum_w1",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 8
+          },
+          "writer": "sum_w1",
+          "complete_ms": 0.28481078147888184
+        },
+        {
+          "variant": "writer_sum_w4",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 8
+          },
+          "writer": "sum_w4",
+          "complete_ms": 0.2883076906204224
+        },
+        {
+          "variant": "legacy_writer",
+          "config": {
+            "block_m": 16,
+            "tile": 16,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "sum_w4",
+          "complete_ms": 0.3122923135757446
+        }
+      ]
+    },
+    {
+      "case": [
+        16,
+        16384,
+        1,
+        true,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 16
+      },
+      "writer": "load_w1",
+      "source": "selected-decode-01",
+      "variant": "winner",
+      "complete_ms": 1.0356338500976563,
+      "origin": "K_focused_search_then_independent_seed_confirmation",
+      "selection_status": "configuration_confirmed_writer_near_ties_retained",
+      "legacy_complete_ms": 1.1153961181640626,
+      "paired_legacy_reduction_percent": {
+        "min": 6.78716263878143,
+        "median": 7.140746014919874,
+        "max": 8.229626180425885
+      },
+      "alternatives": [
+        {
+          "variant": "canonical",
+          "config": {
+            "block_m": 16,
+            "tile": 16,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "load_w1",
+          "complete_ms": 1.1051661491394043
+        },
+        {
+          "variant": "winner",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "load_w1",
+          "complete_ms": 1.0356338500976563
+        },
+        {
+          "variant": "writer_load_w2",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "load_w2",
+          "complete_ms": 1.0361739158630372
+        },
+        {
+          "variant": "writer_load_w4",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "load_w4",
+          "complete_ms": 1.0400400161743164
+        },
+        {
+          "variant": "writer_sum_w1",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "sum_w1",
+          "complete_ms": 1.0360069274902344
+        },
+        {
+          "variant": "writer_sum_w4",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "sum_w4",
+          "complete_ms": 1.0418530464172364
+        },
+        {
+          "variant": "legacy_writer",
+          "config": {
+            "block_m": 16,
+            "tile": 16,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "sum_w4",
+          "complete_ms": 1.1153961181640626
+        }
+      ]
+    },
+    {
+      "case": [
+        32,
+        4096,
+        1,
+        true,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 8
+      },
+      "writer": "load_w1",
+      "source": "selected-decode-01",
+      "variant": "winner",
+      "complete_ms": 0.5374753952026368,
+      "origin": "K_focused_search_then_independent_seed_confirmation",
+      "selection_status": "configuration_confirmed_writer_near_ties_retained",
+      "legacy_complete_ms": 0.5944200038909913,
+      "paired_legacy_reduction_percent": {
+        "min": 8.65584013098195,
+        "median": 9.537694891772174,
+        "max": 10.050547977852432
+      },
+      "alternatives": [
+        {
+          "variant": "canonical",
+          "config": {
+            "block_m": 16,
+            "tile": 16,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "load_w1",
+          "complete_ms": 0.5872931003570556
+        },
+        {
+          "variant": "winner",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 8
+          },
+          "writer": "load_w1",
+          "complete_ms": 0.5374753952026368
+        },
+        {
+          "variant": "writer_load_w2",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 8
+          },
+          "writer": "load_w2",
+          "complete_ms": 0.5391038417816162
+        },
+        {
+          "variant": "writer_load_w4",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 8
+          },
+          "writer": "load_w4",
+          "complete_ms": 0.5402576923370361
+        },
+        {
+          "variant": "writer_sum_w1",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 8
+          },
+          "writer": "sum_w1",
+          "complete_ms": 0.537129259109497
+        },
+        {
+          "variant": "writer_sum_w4",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 8
+          },
+          "writer": "sum_w4",
+          "complete_ms": 0.54158616065979
+        },
+        {
+          "variant": "legacy_writer",
+          "config": {
+            "block_m": 16,
+            "tile": 16,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "sum_w4",
+          "complete_ms": 0.5944200038909913
+        }
+      ]
+    },
+    {
+      "case": [
+        32,
+        16384,
+        1,
+        true,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 16
+      },
+      "writer": "load_w1",
+      "source": "selected-decode-01",
+      "variant": "winner",
+      "complete_ms": 2.015027618408203,
+      "origin": "K_focused_search_then_independent_seed_confirmation",
+      "selection_status": "configuration_confirmed_writer_near_ties_retained",
+      "legacy_complete_ms": 2.1783470153808593,
+      "paired_legacy_reduction_percent": {
+        "min": 7.044169937013567,
+        "median": 7.497400359974393,
+        "max": 7.835726925148501
+      },
+      "alternatives": [
+        {
+          "variant": "canonical",
+          "config": {
+            "block_m": 16,
+            "tile": 16,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "load_w1",
+          "complete_ms": 2.173126983642578
+        },
+        {
+          "variant": "winner",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "load_w1",
+          "complete_ms": 2.015027618408203
+        },
+        {
+          "variant": "writer_load_w2",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "load_w2",
+          "complete_ms": 2.020066833496094
+        },
+        {
+          "variant": "writer_load_w4",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "load_w4",
+          "complete_ms": 2.01806526184082
+        },
+        {
+          "variant": "writer_sum_w1",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "sum_w1",
+          "complete_ms": 2.012918472290039
+        },
+        {
+          "variant": "writer_sum_w4",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "sum_w4",
+          "complete_ms": 2.02288703918457
+        },
+        {
+          "variant": "legacy_writer",
+          "config": {
+            "block_m": 16,
+            "tile": 16,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "sum_w4",
+          "complete_ms": 2.1783470153808593
+        }
+      ]
+    },
+    {
+      "case": [
+        63,
+        16384,
+        1,
+        true,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 8
+      },
+      "writer": "load_w1",
+      "source": "selected-decode-01",
+      "variant": "winner",
+      "complete_ms": 3.9965869903564455,
+      "origin": "K_focused_search_then_independent_seed_confirmation",
+      "selection_status": "configuration_confirmed_writer_near_ties_retained",
+      "legacy_complete_ms": 4.303646469116211,
+      "paired_legacy_reduction_percent": {
+        "min": 6.749235475635662,
+        "median": 7.124700766751557,
+        "max": 8.532591844941283
+      },
+      "alternatives": [
+        {
+          "variant": "canonical",
+          "config": {
+            "block_m": 16,
+            "tile": 16,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "load_w1",
+          "complete_ms": 4.295957565307617
+        },
+        {
+          "variant": "winner",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 8
+          },
+          "writer": "load_w1",
+          "complete_ms": 3.9965869903564455
+        },
+        {
+          "variant": "writer_load_w2",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 8
+          },
+          "writer": "load_w2",
+          "complete_ms": 4.0020599365234375
+        },
+        {
+          "variant": "writer_load_w4",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 8
+          },
+          "writer": "load_w4",
+          "complete_ms": 4.003525161743164
+        },
+        {
+          "variant": "writer_sum_w1",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 8
+          },
+          "writer": "sum_w1",
+          "complete_ms": 3.9816261291503907
+        },
+        {
+          "variant": "writer_sum_w4",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 8
+          },
+          "writer": "sum_w4",
+          "complete_ms": 4.013352966308593
+        },
+        {
+          "variant": "legacy_writer",
+          "config": {
+            "block_m": 16,
+            "tile": 16,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "sum_w4",
+          "complete_ms": 4.303646469116211
+        }
+      ]
+    },
+    {
+      "case": [
+        64,
+        16384,
+        1,
+        true,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 16
+      },
+      "writer": "load_w1",
+      "source": "selected-decode-01",
+      "variant": "winner",
+      "complete_ms": 4.023509979248047,
+      "origin": "K_focused_search_then_independent_seed_confirmation",
+      "selection_status": "configuration_confirmed_writer_near_ties_retained",
+      "legacy_complete_ms": 4.31036148071289,
+      "paired_legacy_reduction_percent": {
+        "min": 6.240467404782846,
+        "median": 6.661248434640365,
+        "max": 6.869333373978681
+      },
+      "alternatives": [
+        {
+          "variant": "canonical",
+          "config": {
+            "block_m": 16,
+            "tile": 16,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "load_w1",
+          "complete_ms": 4.302360153198242
+        },
+        {
+          "variant": "winner",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "load_w1",
+          "complete_ms": 4.023509979248047
+        },
+        {
+          "variant": "writer_load_w2",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "load_w2",
+          "complete_ms": 4.028768539428711
+        },
+        {
+          "variant": "writer_load_w4",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "load_w4",
+          "complete_ms": 4.024997711181641
+        },
+        {
+          "variant": "writer_sum_w1",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "sum_w1",
+          "complete_ms": 4.025387573242187
+        },
+        {
+          "variant": "writer_sum_w4",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "sum_w4",
+          "complete_ms": 4.033504486083984
+        },
+        {
+          "variant": "legacy_writer",
+          "config": {
+            "block_m": 16,
+            "tile": 16,
+            "warps": 2,
+            "stages": 1,
+            "segments": 16
+          },
+          "writer": "sum_w4",
+          "complete_ms": 4.31036148071289
+        }
+      ]
+    },
+    {
+      "case": [
+        65,
+        16384,
+        1,
+        false,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 64,
+        "warps": 4,
+        "stages": 1,
+        "segments": 1
+      },
+      "writer": "load_w1",
+      "source": "selected-decode-01",
+      "variant": "winner",
+      "complete_ms": 7.082965087890625,
+      "origin": "K_focused_search_then_independent_seed_confirmation",
+      "selection_status": "configuration_confirmed_writer_near_ties_retained",
+      "legacy_complete_ms": 7.320869445800781,
+      "paired_legacy_reduction_percent": {
+        "min": 3.097438312462608,
+        "median": 3.3936828154757626,
+        "max": 6.253491016156176
+      },
+      "alternatives": [
+        {
+          "variant": "canonical",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "load_w1",
+          "complete_ms": 7.3120979309082035
+        },
+        {
+          "variant": "winner",
+          "config": {
+            "block_m": 16,
+            "tile": 64,
+            "warps": 4,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "load_w1",
+          "complete_ms": 7.082965087890625
+        },
+        {
+          "variant": "writer_load_w2",
+          "config": {
+            "block_m": 16,
+            "tile": 64,
+            "warps": 4,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "load_w2",
+          "complete_ms": 7.057872772216797
+        },
+        {
+          "variant": "writer_load_w4",
+          "config": {
+            "block_m": 16,
+            "tile": 64,
+            "warps": 4,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "load_w4",
+          "complete_ms": 7.063209533691406
+        },
+        {
+          "variant": "writer_sum_w1",
+          "config": {
+            "block_m": 16,
+            "tile": 64,
+            "warps": 4,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "sum_w1",
+          "complete_ms": 7.080779266357422
+        },
+        {
+          "variant": "writer_sum_w4",
+          "config": {
+            "block_m": 16,
+            "tile": 64,
+            "warps": 4,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "sum_w4",
+          "complete_ms": 7.04327621459961
+        },
+        {
+          "variant": "legacy_writer",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "sum_w4",
+          "complete_ms": 7.320869445800781
+        }
+      ]
+    },
+    {
+      "case": [
+        80,
+        16384,
+        1,
+        false,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 64,
+        "warps": 4,
+        "stages": 1,
+        "segments": 1
+      },
+      "writer": "load_w1",
+      "source": "selected-decode-01",
+      "variant": "winner",
+      "complete_ms": 7.367022705078125,
+      "origin": "K_focused_search_then_independent_seed_confirmation",
+      "selection_status": "configuration_confirmed_writer_near_ties_retained",
+      "legacy_complete_ms": 7.883897399902343,
+      "paired_legacy_reduction_percent": {
+        "min": 5.883986935859276,
+        "median": 6.6420525068988105,
+        "max": 8.33551981685302
+      },
+      "alternatives": [
+        {
+          "variant": "canonical",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "load_w1",
+          "complete_ms": 7.899055480957031
+        },
+        {
+          "variant": "winner",
+          "config": {
+            "block_m": 16,
+            "tile": 64,
+            "warps": 4,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "load_w1",
+          "complete_ms": 7.367022705078125
+        },
+        {
+          "variant": "writer_load_w2",
+          "config": {
+            "block_m": 16,
+            "tile": 64,
+            "warps": 4,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "load_w2",
+          "complete_ms": 7.3445579528808596
+        },
+        {
+          "variant": "writer_load_w4",
+          "config": {
+            "block_m": 16,
+            "tile": 64,
+            "warps": 4,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "load_w4",
+          "complete_ms": 7.30072250366211
+        },
+        {
+          "variant": "writer_sum_w1",
+          "config": {
+            "block_m": 16,
+            "tile": 64,
+            "warps": 4,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "sum_w1",
+          "complete_ms": 7.3085784912109375
+        },
+        {
+          "variant": "writer_sum_w4",
+          "config": {
+            "block_m": 16,
+            "tile": 64,
+            "warps": 4,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "sum_w4",
+          "complete_ms": 7.368102264404297
+        },
+        {
+          "variant": "legacy_writer",
+          "config": {
+            "block_m": 16,
+            "tile": 32,
+            "warps": 2,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "sum_w4",
+          "complete_ms": 7.883897399902343
+        }
+      ]
+    },
+    {
+      "case": [
+        4,
+        2048,
+        512,
+        false,
+        false
+      ],
+      "config": {
+        "block_m": 256,
+        "tile": 128,
+        "warps": 16,
+        "stages": 1,
+        "segments": 1
+      },
+      "writer": "load_w1",
+      "source": "writer-confirm-0",
+      "variant": "canonical",
+      "complete_ms": 1.1568599700927735,
+      "origin": "K_focused_search_then_independent_seed_confirmation",
+      "selection_status": "canonical_attention_preferred_sum_w1_near_tie_for_large_writes",
+      "legacy_complete_ms": 1.258626937866211,
+      "paired_legacy_reduction_percent": {
+        "min": 8.023830726171832,
+        "median": 8.103714701856513,
+        "max": 8.256895605406955
+      },
+      "alternatives": [
+        {
+          "variant": "canonical",
+          "config": {
+            "block_m": 256,
+            "tile": 128,
+            "warps": 16,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "load_w1",
+          "complete_ms": 1.1568599700927735
+        },
+        {
+          "variant": "writer_load_w2",
+          "config": {
+            "block_m": 256,
+            "tile": 128,
+            "warps": 16,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "load_w2",
+          "complete_ms": 1.1894838333129882
+        },
+        {
+          "variant": "writer_load_w4",
+          "config": {
+            "block_m": 256,
+            "tile": 128,
+            "warps": 16,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "load_w4",
+          "complete_ms": 1.2354130744934082
+        },
+        {
+          "variant": "writer_sum_w1",
+          "config": {
+            "block_m": 256,
+            "tile": 128,
+            "warps": 16,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "sum_w1",
+          "complete_ms": 1.1588138580322265
+        },
+        {
+          "variant": "writer_sum_w4",
+          "config": {
+            "block_m": 256,
+            "tile": 128,
+            "warps": 16,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "sum_w4",
+          "complete_ms": 1.258626937866211
+        }
+      ]
+    },
+    {
+      "case": [
+        16,
+        4096,
+        1024,
+        false,
+        false
+      ],
+      "config": {
+        "block_m": 256,
+        "tile": 128,
+        "warps": 16,
+        "stages": 1,
+        "segments": 1
+      },
+      "writer": "load_w1",
+      "source": "writer-confirm-1",
+      "variant": "canonical",
+      "complete_ms": 16.70487823486328,
+      "origin": "K_focused_search_then_independent_seed_confirmation",
+      "selection_status": "canonical_attention_preferred_sum_w1_near_tie_for_large_writes",
+      "legacy_complete_ms": 17.4720458984375,
+      "paired_legacy_reduction_percent": {
+        "min": 4.382723801495869,
+        "median": 4.3871883811101515,
+        "max": 4.398371281514601
+      },
+      "alternatives": [
+        {
+          "variant": "canonical",
+          "config": {
+            "block_m": 256,
+            "tile": 128,
+            "warps": 16,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "load_w1",
+          "complete_ms": 16.70487823486328
+        },
+        {
+          "variant": "writer_load_w2",
+          "config": {
+            "block_m": 256,
+            "tile": 128,
+            "warps": 16,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "load_w2",
+          "complete_ms": 16.919578552246094
+        },
+        {
+          "variant": "writer_load_w4",
+          "config": {
+            "block_m": 256,
+            "tile": 128,
+            "warps": 16,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "load_w4",
+          "complete_ms": 17.29253234863281
+        },
+        {
+          "variant": "writer_sum_w1",
+          "config": {
+            "block_m": 256,
+            "tile": 128,
+            "warps": 16,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "sum_w1",
+          "complete_ms": 16.710032653808593
+        },
+        {
+          "variant": "writer_sum_w4",
+          "config": {
+            "block_m": 256,
+            "tile": 128,
+            "warps": 16,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "sum_w4",
+          "complete_ms": 17.4720458984375
+        }
+      ]
+    },
+    {
+      "case": [
+        64,
+        2048,
+        2048,
+        false,
+        false
+      ],
+      "config": {
+        "block_m": 256,
+        "tile": 128,
+        "warps": 16,
+        "stages": 1,
+        "segments": 1
+      },
+      "writer": "load_w1",
+      "source": "writer-confirm-2",
+      "variant": "canonical",
+      "complete_ms": 44.098304748535156,
+      "origin": "K_focused_search_then_independent_seed_confirmation",
+      "selection_status": "canonical_attention_preferred_sum_w1_near_tie_for_large_writes",
+      "legacy_complete_ms": 48.88686752319336,
+      "paired_legacy_reduction_percent": {
+        "min": 9.780470273578546,
+        "median": 9.794662972726808,
+        "max": 9.823318076677001
+      },
+      "alternatives": [
+        {
+          "variant": "canonical",
+          "config": {
+            "block_m": 256,
+            "tile": 128,
+            "warps": 16,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "load_w1",
+          "complete_ms": 44.098304748535156
+        },
+        {
+          "variant": "writer_load_w2",
+          "config": {
+            "block_m": 256,
+            "tile": 128,
+            "warps": 16,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "load_w2",
+          "complete_ms": 44.5181884765625
+        },
+        {
+          "variant": "writer_load_w4",
+          "config": {
+            "block_m": 256,
+            "tile": 128,
+            "warps": 16,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "load_w4",
+          "complete_ms": 47.46543884277344
+        },
+        {
+          "variant": "writer_sum_w1",
+          "config": {
+            "block_m": 256,
+            "tile": 128,
+            "warps": 16,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "sum_w1",
+          "complete_ms": 44.0951042175293
+        },
+        {
+          "variant": "writer_sum_w4",
+          "config": {
+            "block_m": 256,
+            "tile": 128,
+            "warps": 16,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "sum_w4",
+          "complete_ms": 48.88686752319336
+        }
+      ]
+    },
+    {
+      "case": [
+        32,
+        16384,
+        8192,
+        false,
+        false
+      ],
+      "config": {
+        "block_m": 256,
+        "tile": 128,
+        "warps": 16,
+        "stages": 1,
+        "segments": 1
+      },
+      "writer": "load_w1",
+      "source": "writer-confirm-3",
+      "variant": "canonical",
+      "complete_ms": 877.308837890625,
+      "origin": "K_focused_search_then_independent_seed_confirmation",
+      "selection_status": "canonical_attention_preferred_sum_w1_near_tie_for_large_writes",
+      "legacy_complete_ms": 886.7947387695312,
+      "paired_legacy_reduction_percent": {
+        "min": 1.0578593037764872,
+        "median": 1.0702442920052069,
+        "max": 1.0732364814097117
+      },
+      "alternatives": [
+        {
+          "variant": "canonical",
+          "config": {
+            "block_m": 256,
+            "tile": 128,
+            "warps": 16,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "load_w1",
+          "complete_ms": 877.308837890625
+        },
+        {
+          "variant": "writer_load_w2",
+          "config": {
+            "block_m": 256,
+            "tile": 128,
+            "warps": 16,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "load_w2",
+          "complete_ms": 878.01318359375
+        },
+        {
+          "variant": "writer_load_w4",
+          "config": {
+            "block_m": 256,
+            "tile": 128,
+            "warps": 16,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "load_w4",
+          "complete_ms": 883.9116821289062
+        },
+        {
+          "variant": "writer_sum_w1",
+          "config": {
+            "block_m": 256,
+            "tile": 128,
+            "warps": 16,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "sum_w1",
+          "complete_ms": 877.284423828125
+        },
+        {
+          "variant": "writer_sum_w4",
+          "config": {
+            "block_m": 256,
+            "tile": 128,
+            "warps": 16,
+            "stages": 1,
+            "segments": 1
+          },
+          "writer": "sum_w4",
+          "complete_ms": 886.7947387695312
+        }
+      ]
+    }
+  ],
+  "exclusions": [
+    "Do not generalize batch<64 to tile64; length17 regressed",
+    "Unknown shapes use canonical baseline configuration; no timing search",
+    "No model accuracy or service coverage claim",
+    "Prefill BM256/tile128/warps16/stages2 exceeds shared memory on this device",
+    "Original service threshold64 is conditional on capture-size adjustment; no live service coverage claim",
+    "V-only advantage is preferred but not required to retain K improvements"
+  ],
+  "selection_policy": "Prefer independently confirmed full-path configuration; retain load_w1 and all measured writer alternatives. Small writer rank changes are not a unique optimum claim.",
+  "candidate_bindings": {
+    "k_top4_frozen.py": "8a5ede44b861b5e0679a8ffb5a4363d20e7f9fad0a7ed5ef98e2a3d77a173b5b",
+    "k_top4_frozen_v2.py": "541cb06961ccc52d028131cfa895c4264095e9f8cfb846046ae50273e6533473"
+  },
+  "source_bindings": {
+    "vllm_fl.attention.k_top4": "d6368cfe77551bf9589be09537882387996163a7d3aa76b944a82682094af857",
+    "vllm_fl.attention.v_only": "09dc6f5a932c4325d1e72901dcb2f75a248aa9aedb6b02750d9347c4d196b2b0",
+    "vllm_fl.attention.config_model": "7d5066c2bbf187a5f952eb3dee1ef5eb5e184e95feeeb5901683eb4b1b7c2a64",
+    "vllm_fl.attention.tile_policy": "cfc33443c8d3600f1ed0ffeff08d01c67001da07e30e02e37f304721f04eb27e",
+    "vllm_fl.attention.int8_kv_repair": "961011504053572c9cac3b19ee4d623c89f162af8c0313a2e2e3188a2970615e",
+    "vllm_fl.dispatch.backends.vendor.iluvatar.iluvatar": "73ab446ca31f7927b5e87b0c69b05e55f53382d925a320b41006f865cee8f603",
+    "vllm.v1.attention.ops.triton_unified_attention": "bab2c0b9f9a7793ca411796b48ebb4734433160e7e99eabf46ddb7f1c30cb6e0",
+    "vllm.v1.attention.backends.triton_attn": "1219c4d1820b56e99ef6686de8a49c8c5aa57707794bcabf3322023799a03605",
+    "vllm_fl.dispatch.backends.flaggems.flaggems": "4140f978ff018917435a55ffe1aaa834b820e71c64206210aa8536ba5f17fb90",
+    "vllm_fl.worker.model_runner": "bf610da5c422a6ffaf0608e9c9db0a2699da9cc9fd18f4ed00364157b8e48c8e",
+    "vllm_fl.attention.k_top4_service": "83c88602d92f5104ca061aee5d22e7547b8c27bd1adc05d71e6b22d758082e57"
+  },
+  "integration_provenance": {
+    "original": "k_top4_service_v2.json",
+    "gpu_validation": "not_run",
+    "note": "provider/candidate numeric policy retained; integrated plugin bindings explicit"
+  }
+}

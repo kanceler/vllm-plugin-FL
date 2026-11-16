@@ -1,0 +1,92 @@
+[
+  {
+    "note": "014",
+    "source": "worktrees/vllm-plugin-FL-tianshu-int8-kv/docs/optimization/changes/2026-11-13-tianshu-vonly-validation.md",
+    "copy": "docs/optimization/evidence/quantization-history/014-1.md",
+    "sha256": "e7dfaaeef121a701892b07600df3e53582b16f7bd26624b305a004add5a89b55"
+  },
+  {
+    "note": "014",
+    "source": "worktrees/vllm-plugin-FL-tianshu-int8-kv/docs/optimization/changes/2026-11-15-vonly-decode-ablation.md",
+    "copy": "docs/optimization/evidence/quantization-history/014-2.md",
+    "sha256": "6adc084fec0d75871a93ba5632838fdeb69eaafec7cf43df3b52de99987e369b"
+  },
+  {
+    "note": "015",
+    "source": "worktrees/vllm-plugin-FL-tianshu-k-top4/docs/optimization/changes/2026-11-15-k-top4-service-accuracy.md",
+    "copy": "docs/optimization/evidence/quantization-history/015-1.md",
+    "sha256": "b8e86af3293370081bd8cfb9b4c9372431cdc420186393471deabe071f7a6a7b"
+  },
+  {
+    "note": "016",
+    "source": "worktrees/vllm-plugin-FL-tianshu-k-top4/docs/optimization/changes/2026-11-16-k-top4-joint-frozen-callpath.md",
+    "copy": "docs/optimization/evidence/quantization-history/016-1.md",
+    "sha256": "8167ebf01dc450bf1c5d2e08c784dbbdeef90492dd5a8bc42c9705d070c2f02b"
+  },
+  {
+    "note": "017",
+    "source": "worktrees/vllm-plugin-FL-static-kv-final/001-固定通道保护与静态缩放折入查询.md",
+    "copy": "docs/optimization/evidence/quantization-history/017-1.md",
+    "sha256": "c9af6c37ad3f208fbf7faa21da6f876e4fd7930116090eadf2a91425045302d1"
+  },
+  {
+    "note": "018",
+    "source": "worktrees/vllm-plugin-FL-static-kv-final/002-查询变换与缓存写入融合.md",
+    "copy": "docs/optimization/evidence/quantization-history/018-1.md",
+    "sha256": "ec17bf2a24e5aba12a55b5a6966e964ffcde2bf1ad276a25edd561c48bf2e4a6"
+  },
+  {
+    "note": "019",
+    "source": "worktrees/vllm-plugin-FL-static-kv-final/003-联合缓存接口与模型精度验证.md",
+    "copy": "docs/optimization/evidence/quantization-history/019-1.md",
+    "sha256": "13a8a5d2f7f4db1069d4296ec72835c20b01e5ee5f056bfeb9a1fe03f6475094"
+  },
+  {
+    "note": "019",
+    "source": "worktrees/vllm-plugin-FL-static-kv-final/004-完整复现与版本说明.md",
+    "copy": "docs/optimization/evidence/quantization-history/019-2.md",
+    "sha256": "dabac54d3288c95674551a8c19b8ce9ef91feafedb5ef0496f7e6c4d24196a83"
+  },
+  {
+    "note": "020",
+    "source": "worktrees/vllm-plugin-FL-biv150-static-kv-compat/docs/optimization/changes/2026-11-16-biv150-static-kv-013-compat.md",
+    "copy": "docs/optimization/evidence/quantization-history/020-1.md",
+    "sha256": "53a87e1addc03cf12af17913f8af78a4ab16ac974b71dde5cb87d1e1fbc04f72"
+  },
+  {
+    "note": "021",
+    "source": "worktrees/vllm-plugin-FL-quantization-integration/../../vllm-plugin-FL/docs/optimization/changes/2026-11-16-static-kv-down-combined-diagnostic.md",
+    "copy": "docs/optimization/evidence/quantization-history/021-1.md",
+    "sha256": "3dd0794831f82943652636674214f2d8f3078a7469fe95d059ca6cd0d86b89d5"
+  },
+  {
+    "note": "022",
+    "source": "worktrees/vllm-plugin-FL-w8a16-final/004-开关与完整复现命令.md",
+    "copy": "docs/optimization/evidence/quantization-history/022-1.md",
+    "sha256": "f9734cfc7ad6f79c13d81489417efd4869a5847dbac90a74ddd16e299f07b6d1"
+  },
+  {
+    "note": "023",
+    "source": "worktrees/vllm-plugin-FL-w8a16-final/001-复用沐曦分片归约与天数小批量优化.md",
+    "copy": "docs/optimization/evidence/quantization-history/023-1.md",
+    "sha256": "051fa43db0374157c9e586213bb9a457e0047663184c1902c6e3b9ccff8b40fb"
+  },
+  {
+    "note": "023",
+    "source": "worktrees/vllm-plugin-FL-w8a16-final/006-Down M64冷热缓存计时口径复核.md",
+    "copy": "docs/optimization/evidence/quantization-history/023-2.md",
+    "sha256": "48f15ac3d2355d1a657e8d366eba27fb392108f875acdc2da2a6427a67084acf"
+  },
+  {
+    "note": "024",
+    "source": "worktrees/vllm-plugin-FL-w8a16-final/003-大批量转换融合与运行时接入.md",
+    "copy": "docs/optimization/evidence/quantization-history/024-1.md",
+    "sha256": "5ae5bc67dd173bb47dd70681b33a9da187ed56707c41786f7d74b4eadba6bf91"
+  },
+  {
+    "note": "025",
+    "source": "worktrees/vllm-plugin-FL-w8a16-final/002-算法分界与四投影独立开关.md",
+    "copy": "docs/optimization/evidence/quantization-history/025-1.md",
+    "sha256": "bd8f83f3a15bb311021a65b098bf7e5b90f62059b64a5504e662d01a73cb3f24"
+  }
+]

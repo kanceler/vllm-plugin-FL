@@ -191,6 +191,36 @@ class PlatformFL(Platform):
                 logger.info("Setting kv cache block size to 64 for MUSA.")
             else:
                 cache_config.block_size = 16
+        if os.environ.get("VLLM_FL_K_STATIC_FOLD", "0") == "1":
+            if cls.vendor_name != "iluvatar":
+                raise ValueError("Static K is validated only on Iluvatar")
+            if any(os.environ.get(k, "0") == "1" for k in ("VLLM_FL_K_TOP4_JOINT", "VLLM_FL_K_TOP4", "VLLM_FL_V_ONLY")):
+                raise ValueError("Static K and previous KV modes are mutually exclusive")
+            cache_config.block_size = 32
+            # The native backend capability changes the compiled graph: KV
+            # update now belongs to Attention.forward. Bind that ABI to the
+            # standard extension-config hash, preserving older cached graphs.
+            import hashlib
+            from vllm_fl.attention.k_static_fold_policy import POLICY_PATH
+            if not isinstance(vllm_config.additional_config, dict):
+                raise ValueError("Static K requires dictionary extension config")
+            extra = dict(vllm_config.additional_config)
+            extra["fl_k_static_fold_joint_qkv_abi_v1"] = hashlib.sha256(POLICY_PATH.read_bytes()).hexdigest()
+            from vllm_fl.attention.static_kv_compat import feature_enabled
+            extra["fl_k_static_fold_compat_abi_v1"] = {
+                "mixed": feature_enabled("VLLM_FL_MIXED_ATTN_SPLIT"),
+                "direct_index": feature_enabled("VLLM_FL_BIV150_DECODE_DIRECT_INDEX"),
+                "sampling": feature_enabled("VLLM_FL_BIV150_ROW_PARALLEL_SAMPLING"),
+            }
+            vllm_config.additional_config = extra
+            logger.info("Static K layout selects page32/276B joint QKV backend")
+        if os.environ.get("VLLM_FL_K_TOP4_JOINT", "0") == "1":
+            if cls.vendor_name != "iluvatar":
+                raise ValueError("Joint K cache layout is validated only on Iluvatar")
+            # Page size is part of the implemented cache format, not a serve override.
+            from vllm_fl.attention.k_top4_joint_policy import policy
+            cache_config.block_size = policy()["layout"]["page_size"]
+            logger.info("Joint K layout selects page size %s", cache_config.block_size)
         if cls.device_type == "npu":
             from vllm_fl.dispatch.backends.vendor.ascend.patch import refresh_block_size
 

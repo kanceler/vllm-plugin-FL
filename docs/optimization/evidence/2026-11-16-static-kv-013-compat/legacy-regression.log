@@ -1,0 +1,20 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.11, pytest-9.1.1, pluggy-1.6.0
+rootdir: /workspace/experiments/tianshu-static-kv-013-compat-20261116-01/source
+configfile: pyproject.toml
+plugins: anyio-4.14.2
+collected 83 items
+
+tests/unit_tests/attention/test_mixed_policy.py ......................   [ 26%]
+tests/unit_tests/attention/test_decode_index_policy.py ................. [ 46%]
+.........                                                                [ 57%]
+tests/unit_tests/patches/test_iluvatar_sampling.py ..................... [ 83%]
+..............                                                           [100%]
+
+=============================== warnings summary ===============================
+../../../../usr/local/lib/python3.12/site-packages/flag_gems/utils/libentry.py:411
+  /usr/local/lib/python3.12/site-packages/flag_gems/utils/libentry.py:411: RuntimeWarning: active Triton backend does not provide a replay benchmarker; falling back to event timing
+    resolved_benchmark = resolve_benchmarker(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 83 passed, 1 warning in 13.31s ========================

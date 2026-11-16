@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
 
+import os
 import functools
 import gc
 import itertools
@@ -7570,6 +7571,39 @@ class ModelRunnerFL(
                 continue
             # Skip modules that don't need KV cache (eg encoder-only attention)
             if spec := attn_module.get_kv_cache_spec(self.vllm_config):
+                if os.environ.get("VLLM_FL_K_STATIC_FOLD", "0") == "1":
+                    if attn_module.get_attn_backend().__module__ != "vllm_fl.attention.k_static_fold_service":
+                        raise RuntimeError("Static K allocation requires its matching backend")
+                    if (type(spec) is not FullAttentionSpec or spec.head_size != 128
+                        or spec.head_size_v != 128 or spec.dtype != torch.bfloat16
+                        or spec.block_size != 32 or spec.num_kv_heads != 2
+                        or spec.sliding_window is not None or spec.attention_chunk_size is not None):
+                        raise ValueError(f"Unsupported static K cache spec: {spec!r}")
+                    spec = replace(spec, dtype=torch.uint8,
+                        page_size_padded=spec.block_size * spec.num_kv_heads * 276)
+                    logger.info("Static K cache %s: page32, 276 bytes/token/head", layer_name)
+                if os.environ.get("VLLM_FL_K_TOP4_JOINT", "0") == "1":
+                    if attn_module.get_attn_backend().__module__ != "vllm_fl.attention.k_top4_joint_service":
+                        raise RuntimeError("Joint K allocation requires its matching backend")
+                    if (type(spec) is not FullAttentionSpec or spec.head_size != 128
+                        or spec.head_size_v != 128 or spec.dtype != torch.bfloat16
+                        or spec.block_size != 32 or spec.num_kv_heads != 2
+                        or spec.sliding_window is not None or spec.attention_chunk_size is not None):
+                        raise ValueError(f"Unsupported joint K cache spec: {spec!r}")
+                    spec = replace(spec, dtype=torch.uint8,
+                        page_size_padded=spec.block_size * spec.num_kv_heads * 276)
+                    logger.info("Joint K cache %s: page32 separate_meta, 276 bytes/token/head", layer_name)
+                if os.environ.get("VLLM_FL_K_TOP4", "0") == "1":
+                    if attn_module.get_attn_backend().__module__ != "vllm_fl.attention.k_top4_service":
+                        raise RuntimeError("K top4 allocation requires the K top4 backend")
+                    if (type(spec) is not FullAttentionSpec or spec.head_size != 128
+                        or spec.head_size_v != 128 or spec.dtype != torch.bfloat16
+                        or spec.block_size != 16 or spec.num_kv_heads != 2
+                        or spec.sliding_window is not None or spec.attention_chunk_size is not None):
+                        raise ValueError("Unsupported K top4 cache spec")
+                    spec = replace(spec, dtype=torch.uint8,
+                        page_size_padded=spec.block_size * spec.num_kv_heads * 276)
+                    logger.info("K top4 cache %s: raw uint8, 276 bytes/token/head", layer_name)
                 if isinstance(spec, AttentionSpec):
                     backend = attn_module.get_attn_backend()
                     # indexes_kv_by_block_stride() -> get_kv_cache_stride_order()

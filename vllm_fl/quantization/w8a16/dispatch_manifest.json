@@ -1,0 +1,2041 @@
+{
+  "device": "Iluvatar BI-V150",
+  "torch": "2.10.0",
+  "triton": "3.6.0",
+  "provider_sha256": "fd120991ed1c5cab988d02cbdb1d97ccde1e9e2eedad55affe90321d875f32ed",
+  "schema_version": 2,
+  "status": "large_m_runtime_validated_isolated_microbench",
+  "policy_note": "exact sampled choices; conservative Separate in unmeasured transition gaps; no runtime tuning",
+  "measurement_source": "results-audit including explicitly annotated prior measurements",
+  "groups": {
+    "down": {
+      "shape": [
+        2048,
+        6144
+      ],
+      "points": {
+        "1": {
+          "algorithm": "splitk_muxi",
+          "config": [
+            32,
+            64,
+            64,
+            4,
+            1,
+            8
+          ],
+          "layout": "nk",
+          "convert": [
+            "vector",
+            256
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "2": {
+          "algorithm": "splitk_muxi",
+          "config": [
+            32,
+            64,
+            64,
+            4,
+            1,
+            8
+          ],
+          "layout": "nk",
+          "convert": [
+            "vector",
+            256
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "16": {
+          "algorithm": "splitk_muxi",
+          "config": [
+            32,
+            64,
+            64,
+            4,
+            1,
+            8
+          ],
+          "layout": "nk",
+          "convert": [
+            "vector",
+            256
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "32": {
+          "algorithm": "splitk_muxi",
+          "config": [
+            32,
+            64,
+            64,
+            4,
+            1,
+            8
+          ],
+          "layout": "nk",
+          "convert": [
+            "vector",
+            256
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "64": {
+          "algorithm": "splitk_muxi",
+          "config": [
+            64,
+            64,
+            64,
+            8,
+            1,
+            4
+          ],
+          "layout": "nk",
+          "convert": [
+            "vector",
+            256
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "128": {
+          "algorithm": "splitk_muxi",
+          "config": [
+            64,
+            64,
+            64,
+            8,
+            1,
+            4
+          ],
+          "layout": "nk",
+          "convert": [
+            "serial",
+            256
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "256": {
+          "algorithm": "splitk_muxi",
+          "config": [
+            64,
+            64,
+            64,
+            8,
+            1,
+            4
+          ],
+          "layout": "nk",
+          "convert": [
+            "vector",
+            256
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "264": {
+          "algorithm": "separate",
+          "config": [
+            256,
+            256,
+            32,
+            16,
+            2
+          ],
+          "layout": "kn",
+          "convert": [
+            64,
+            128,
+            4
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "272": {
+          "algorithm": "separate",
+          "config": [
+            256,
+            256,
+            32,
+            16,
+            2
+          ],
+          "layout": "kn",
+          "convert": [
+            64,
+            128,
+            4
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "288": {
+          "algorithm": "separate",
+          "config": [
+            256,
+            256,
+            32,
+            16,
+            2
+          ],
+          "layout": "kn",
+          "convert": [
+            64,
+            128,
+            4
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "320": {
+          "algorithm": "separate",
+          "config": [
+            256,
+            256,
+            32,
+            16,
+            2
+          ],
+          "layout": "kn",
+          "convert": [
+            64,
+            128,
+            4
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "384": {
+          "algorithm": "separate",
+          "config": [
+            256,
+            256,
+            64,
+            16,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            4096,
+            16
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "512": {
+          "algorithm": "separate",
+          "config": [
+            256,
+            256,
+            32,
+            16,
+            2
+          ],
+          "layout": "kn",
+          "convert": [
+            64,
+            128,
+            4
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "1024": {
+          "algorithm": "separate",
+          "config": [
+            256,
+            256,
+            32,
+            16,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            2048,
+            8
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "2048": {
+          "config": [
+            256,
+            256,
+            32,
+            16,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            1024,
+            4
+          ],
+          "group": 2,
+          "fast": true,
+          "algorithm": "separate_hotspot",
+          "source": "2026-11-13-tianshu-hotspot-joint-01:10_paired_confirmations"
+        },
+        "4096": {
+          "config": [
+            256,
+            256,
+            32,
+            16,
+            2
+          ],
+          "layout": "kn",
+          "convert": [
+            128,
+            128,
+            8
+          ],
+          "group": 0,
+          "fast": true,
+          "algorithm": "separate_hotspot",
+          "source": "2026-11-13-tianshu-hotspot-joint-01:10_paired_confirmations"
+        }
+      },
+      "ranges": [
+        {
+          "min_m": 2,
+          "max_m": 16,
+          "choice": {
+            "algorithm": "splitk_muxi",
+            "config": [
+              32,
+              64,
+              64,
+              4,
+              1,
+              8
+            ],
+            "layout": "nk",
+            "convert": [
+              "vector",
+              256
+            ],
+            "source": "MetaX_small_M_grouping_with_Iluvatar_measured_configuration"
+          }
+        },
+        {
+          "min_m": 17,
+          "max_m": 47,
+          "choice": {
+            "algorithm": "splitk_muxi",
+            "config": [
+              32,
+              64,
+              64,
+              4,
+              1,
+              8
+            ],
+            "layout": "nk",
+            "convert": [
+              "vector",
+              256
+            ],
+            "source": "MetaX_small_M_grouping_with_Iluvatar_measured_configuration"
+          }
+        },
+        {
+          "min_m": 48,
+          "max_m": 63,
+          "choice": {
+            "algorithm": "splitk_muxi",
+            "config": [
+              64,
+              64,
+              64,
+              8,
+              1,
+              4
+            ],
+            "layout": "nk",
+            "convert": [
+              "vector",
+              256
+            ],
+            "source": "MetaX_small_M_grouping_with_Iluvatar_measured_configuration"
+          }
+        },
+        {
+          "min_m": 65,
+          "max_m": 127,
+          "choice": {
+            "algorithm": "splitk_muxi",
+            "config": [
+              64,
+              64,
+              64,
+              8,
+              1,
+              4
+            ],
+            "layout": "nk",
+            "convert": [
+              "vector",
+              256
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 129,
+          "max_m": 255,
+          "choice": {
+            "algorithm": "splitk_muxi",
+            "config": [
+              64,
+              64,
+              64,
+              8,
+              1,
+              4
+            ],
+            "layout": "nk",
+            "convert": [
+              "serial",
+              256
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 257,
+          "max_m": 263,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              256,
+              256,
+              32,
+              16,
+              2
+            ],
+            "layout": "kn",
+            "convert": [
+              64,
+              128,
+              4
+            ],
+            "source": "conservative_Separate_in_transition_gap"
+          }
+        },
+        {
+          "min_m": 265,
+          "max_m": 271,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              256,
+              256,
+              32,
+              16,
+              2
+            ],
+            "layout": "kn",
+            "convert": [
+              64,
+              128,
+              4
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 273,
+          "max_m": 287,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              256,
+              256,
+              32,
+              16,
+              2
+            ],
+            "layout": "kn",
+            "convert": [
+              64,
+              128,
+              4
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 289,
+          "max_m": 319,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              256,
+              256,
+              32,
+              16,
+              2
+            ],
+            "layout": "kn",
+            "convert": [
+              64,
+              128,
+              4
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 321,
+          "max_m": 383,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              256,
+              256,
+              32,
+              16,
+              2
+            ],
+            "layout": "kn",
+            "convert": [
+              64,
+              128,
+              4
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 385,
+          "max_m": 511,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              256,
+              256,
+              64,
+              16,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              4096,
+              16
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 513,
+          "max_m": 1023,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              256,
+              256,
+              32,
+              16,
+              2
+            ],
+            "layout": "kn",
+            "convert": [
+              64,
+              128,
+              4
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 1025,
+          "max_m": 2047,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              256,
+              256,
+              32,
+              16,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              2048,
+              8
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 2049,
+          "max_m": 4095,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              256,
+              256,
+              32,
+              16,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              2048,
+              8
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        }
+      ],
+      "transition_intervals": [
+        [
+          256,
+          264
+        ]
+      ]
+    },
+    "gate_up": {
+      "shape": [
+        12288,
+        2048
+      ],
+      "points": {
+        "64": {
+          "algorithm": "fused_native",
+          "config": [
+            64,
+            64,
+            64,
+            8,
+            1
+          ],
+          "layout": "nk",
+          "convert": [
+            2048,
+            8
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "96": {
+          "algorithm": "fused_native",
+          "config": [
+            64,
+            64,
+            64,
+            8,
+            1
+          ],
+          "layout": "nk",
+          "convert": [
+            2048,
+            8
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "128": {
+          "algorithm": "fused_native",
+          "config": [
+            64,
+            64,
+            64,
+            8,
+            1
+          ],
+          "layout": "nk",
+          "convert": [
+            2048,
+            8
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "192": {
+          "algorithm": "fused_native",
+          "config": [
+            64,
+            64,
+            64,
+            8,
+            1
+          ],
+          "layout": "nk",
+          "convert": [
+            2048,
+            8
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "200": {
+          "algorithm": "separate",
+          "config": [
+            256,
+            256,
+            32,
+            16,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            2048,
+            8
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "208": {
+          "algorithm": "separate",
+          "config": [
+            256,
+            256,
+            32,
+            16,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            2048,
+            8
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "224": {
+          "algorithm": "separate",
+          "config": [
+            256,
+            256,
+            32,
+            16,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            2048,
+            8
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "256": {
+          "algorithm": "separate",
+          "config": [
+            256,
+            256,
+            32,
+            16,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            2048,
+            8
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "512": {
+          "algorithm": "separate",
+          "config": [
+            256,
+            256,
+            32,
+            16,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            1024,
+            4
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "1024": {
+          "algorithm": "separate",
+          "config": [
+            256,
+            256,
+            32,
+            8,
+            2
+          ],
+          "layout": "kn",
+          "convert": [
+            64,
+            128,
+            16
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "2048": {
+          "config": [
+            256,
+            256,
+            32,
+            16,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            4096,
+            16
+          ],
+          "group": 4,
+          "fast": true,
+          "algorithm": "separate_hotspot",
+          "source": "2026-11-13-tianshu-hotspot-joint-01:10_paired_confirmations"
+        },
+        "4096": {
+          "config": [
+            256,
+            256,
+            32,
+            16,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            4096,
+            16
+          ],
+          "group": 8,
+          "fast": true,
+          "algorithm": "separate_hotspot",
+          "source": "2026-11-13-tianshu-hotspot-joint-01:10_paired_confirmations"
+        },
+        "1": {
+          "algorithm": "gemv",
+          "config": [
+            2,
+            1,
+            4
+          ],
+          "layout": "nk",
+          "convert": [
+            2048,
+            8
+          ],
+          "source": "prior_same_provider_microbench; revalidated_runtime"
+        },
+        "2": {
+          "algorithm": "fused_native",
+          "config": [
+            16,
+            64,
+            64,
+            4,
+            1
+          ],
+          "layout": "nk",
+          "convert": [
+            2048,
+            8
+          ],
+          "source": "prior_same_provider_microbench; revalidated_runtime"
+        }
+      },
+      "ranges": [
+        {
+          "min_m": 2,
+          "max_m": 16,
+          "choice": {
+            "algorithm": "fused_native",
+            "config": [
+              16,
+              64,
+              64,
+              4,
+              1
+            ],
+            "layout": "nk",
+            "convert": [
+              2048,
+              8
+            ],
+            "source": "prior_tiny_M2_candidate; representative_holdout_validation_required"
+          }
+        },
+        {
+          "min_m": 17,
+          "max_m": 63,
+          "choice": {
+            "algorithm": "fused_native",
+            "config": [
+              64,
+              64,
+              64,
+              8,
+              1
+            ],
+            "layout": "nk",
+            "convert": [
+              2048,
+              8
+            ],
+            "source": "offline_microbench_graph_median"
+          }
+        },
+        {
+          "min_m": 65,
+          "max_m": 95,
+          "choice": {
+            "algorithm": "fused_native",
+            "config": [
+              64,
+              64,
+              64,
+              8,
+              1
+            ],
+            "layout": "nk",
+            "convert": [
+              2048,
+              8
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 97,
+          "max_m": 127,
+          "choice": {
+            "algorithm": "fused_native",
+            "config": [
+              64,
+              64,
+              64,
+              8,
+              1
+            ],
+            "layout": "nk",
+            "convert": [
+              2048,
+              8
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 129,
+          "max_m": 191,
+          "choice": {
+            "algorithm": "fused_native",
+            "config": [
+              64,
+              64,
+              64,
+              8,
+              1
+            ],
+            "layout": "nk",
+            "convert": [
+              2048,
+              8
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 193,
+          "max_m": 199,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              256,
+              256,
+              32,
+              16,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              2048,
+              8
+            ],
+            "source": "conservative_Separate_in_transition_gap"
+          }
+        },
+        {
+          "min_m": 201,
+          "max_m": 207,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              256,
+              256,
+              32,
+              16,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              2048,
+              8
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 209,
+          "max_m": 223,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              256,
+              256,
+              32,
+              16,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              2048,
+              8
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 225,
+          "max_m": 255,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              256,
+              256,
+              32,
+              16,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              2048,
+              8
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 257,
+          "max_m": 511,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              256,
+              256,
+              32,
+              16,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              2048,
+              8
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 513,
+          "max_m": 1023,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              256,
+              256,
+              32,
+              16,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              1024,
+              4
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 1025,
+          "max_m": 2047,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              256,
+              256,
+              32,
+              8,
+              2
+            ],
+            "layout": "kn",
+            "convert": [
+              64,
+              128,
+              16
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 2049,
+          "max_m": 4095,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              256,
+              256,
+              32,
+              8,
+              2
+            ],
+            "layout": "kn",
+            "convert": [
+              64,
+              128,
+              16
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        }
+      ],
+      "transition_intervals": [
+        [
+          192,
+          200
+        ]
+      ]
+    },
+    "qkv": {
+      "shape": [
+        2560,
+        2048
+      ],
+      "points": {
+        "64": {
+          "algorithm": "fused_native",
+          "config": [
+            64,
+            32,
+            64,
+            8,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            2048,
+            8
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "96": {
+          "algorithm": "fused_native",
+          "config": [
+            64,
+            32,
+            64,
+            8,
+            1
+          ],
+          "layout": "nk",
+          "convert": [
+            2048,
+            8
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "128": {
+          "algorithm": "fused_native",
+          "config": [
+            64,
+            32,
+            64,
+            8,
+            1
+          ],
+          "layout": "nk",
+          "convert": [
+            2048,
+            8
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "136": {
+          "algorithm": "separate",
+          "config": [
+            64,
+            128,
+            64,
+            8,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            8192,
+            16
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "144": {
+          "algorithm": "separate",
+          "config": [
+            64,
+            128,
+            64,
+            8,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            8192,
+            16
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "160": {
+          "algorithm": "separate",
+          "config": [
+            64,
+            128,
+            64,
+            8,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            8192,
+            16
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "192": {
+          "algorithm": "separate",
+          "config": [
+            64,
+            128,
+            64,
+            8,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            8192,
+            16
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "256": {
+          "algorithm": "separate",
+          "config": [
+            256,
+            256,
+            64,
+            16,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            1024,
+            4
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "512": {
+          "algorithm": "separate",
+          "config": [
+            256,
+            256,
+            32,
+            16,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            1024,
+            4
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "1024": {
+          "algorithm": "separate",
+          "config": [
+            128,
+            128,
+            32,
+            8,
+            2
+          ],
+          "layout": "kn",
+          "convert": [
+            64,
+            128,
+            16
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "2048": {
+          "config": [
+            128,
+            128,
+            32,
+            8,
+            2
+          ],
+          "layout": "kn",
+          "convert": [
+            128,
+            64,
+            8
+          ],
+          "group": 0,
+          "fast": true,
+          "algorithm": "separate_hotspot",
+          "source": "2026-11-13-tianshu-hotspot-joint-01:10_paired_confirmations"
+        },
+        "4096": {
+          "config": [
+            256,
+            256,
+            32,
+            16,
+            2
+          ],
+          "layout": "kn",
+          "convert": [
+            128,
+            64,
+            8
+          ],
+          "group": 1,
+          "fast": true,
+          "algorithm": "separate_hotspot",
+          "source": "2026-11-13-tianshu-hotspot-joint-01:10_paired_confirmations"
+        },
+        "1": {
+          "algorithm": "gemv",
+          "config": [
+            2,
+            1,
+            8
+          ],
+          "layout": "nk",
+          "convert": [
+            2048,
+            8
+          ],
+          "source": "prior_same_provider_microbench; revalidated_runtime"
+        }
+      },
+      "ranges": [
+        {
+          "min_m": 2,
+          "max_m": 63,
+          "choice": {
+            "algorithm": "fused_native",
+            "config": [
+              64,
+              32,
+              64,
+              8,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              2048,
+              8
+            ],
+            "source": "small_M_family_from_M64; representative_holdout_validation_required"
+          }
+        },
+        {
+          "min_m": 65,
+          "max_m": 95,
+          "choice": {
+            "algorithm": "fused_native",
+            "config": [
+              64,
+              32,
+              64,
+              8,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              2048,
+              8
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 97,
+          "max_m": 127,
+          "choice": {
+            "algorithm": "fused_native",
+            "config": [
+              64,
+              32,
+              64,
+              8,
+              1
+            ],
+            "layout": "nk",
+            "convert": [
+              2048,
+              8
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 129,
+          "max_m": 135,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              64,
+              128,
+              64,
+              8,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              8192,
+              16
+            ],
+            "source": "conservative_Separate_in_transition_gap"
+          }
+        },
+        {
+          "min_m": 137,
+          "max_m": 143,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              64,
+              128,
+              64,
+              8,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              8192,
+              16
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 145,
+          "max_m": 159,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              64,
+              128,
+              64,
+              8,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              8192,
+              16
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 161,
+          "max_m": 191,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              64,
+              128,
+              64,
+              8,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              8192,
+              16
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 193,
+          "max_m": 255,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              64,
+              128,
+              64,
+              8,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              8192,
+              16
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 257,
+          "max_m": 511,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              256,
+              256,
+              64,
+              16,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              1024,
+              4
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 513,
+          "max_m": 1023,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              256,
+              256,
+              32,
+              16,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              1024,
+              4
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 1025,
+          "max_m": 2047,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              128,
+              128,
+              32,
+              8,
+              2
+            ],
+            "layout": "kn",
+            "convert": [
+              64,
+              128,
+              16
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 2049,
+          "max_m": 4095,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              128,
+              128,
+              32,
+              8,
+              2
+            ],
+            "layout": "kn",
+            "convert": [
+              64,
+              128,
+              16
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        }
+      ],
+      "transition_intervals": [
+        [
+          128,
+          136
+        ]
+      ]
+    },
+    "o": {
+      "shape": [
+        2048,
+        2048
+      ],
+      "points": {
+        "64": {
+          "algorithm": "fused_native",
+          "config": [
+            64,
+            32,
+            64,
+            8,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            2048,
+            8
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "96": {
+          "algorithm": "fused_native",
+          "config": [
+            64,
+            64,
+            128,
+            8,
+            1
+          ],
+          "layout": "nk",
+          "convert": [
+            2048,
+            8
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "128": {
+          "algorithm": "fused_native",
+          "config": [
+            64,
+            64,
+            128,
+            8,
+            1
+          ],
+          "layout": "nk",
+          "convert": [
+            2048,
+            8
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "136": {
+          "algorithm": "separate",
+          "config": [
+            64,
+            64,
+            128,
+            8,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            4096,
+            16
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "144": {
+          "algorithm": "separate",
+          "config": [
+            64,
+            64,
+            128,
+            8,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            4096,
+            16
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "160": {
+          "algorithm": "separate",
+          "config": [
+            64,
+            64,
+            128,
+            8,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            4096,
+            16
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "192": {
+          "algorithm": "separate",
+          "config": [
+            64,
+            64,
+            128,
+            8,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            4096,
+            16
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "256": {
+          "algorithm": "separate",
+          "config": [
+            256,
+            256,
+            32,
+            16,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            4096,
+            16
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "512": {
+          "algorithm": "separate",
+          "config": [
+            256,
+            256,
+            32,
+            16,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            4096,
+            16
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "1024": {
+          "algorithm": "separate",
+          "config": [
+            256,
+            256,
+            32,
+            16,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            2048,
+            8
+          ],
+          "source": "offline_microbench_graph_median"
+        },
+        "2048": {
+          "config": [
+            256,
+            256,
+            32,
+            16,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            4096,
+            16
+          ],
+          "group": 0,
+          "fast": true,
+          "algorithm": "separate_hotspot",
+          "source": "2026-11-13-tianshu-hotspot-joint-01:10_paired_confirmations"
+        },
+        "4096": {
+          "config": [
+            256,
+            256,
+            32,
+            16,
+            2
+          ],
+          "layout": "nk",
+          "convert": [
+            1024,
+            4
+          ],
+          "group": 0,
+          "fast": true,
+          "algorithm": "separate_hotspot",
+          "source": "2026-11-13-tianshu-hotspot-joint-01:10_paired_confirmations"
+        },
+        "1": {
+          "algorithm": "gemv",
+          "config": [
+            2,
+            1,
+            8
+          ],
+          "layout": "nk",
+          "convert": [
+            2048,
+            8
+          ],
+          "source": "prior_same_provider_microbench; revalidated_runtime"
+        }
+      },
+      "ranges": [
+        {
+          "min_m": 2,
+          "max_m": 63,
+          "choice": {
+            "algorithm": "fused_native",
+            "config": [
+              64,
+              32,
+              64,
+              8,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              2048,
+              8
+            ],
+            "source": "small_M_family_from_M64; representative_holdout_validation_required"
+          }
+        },
+        {
+          "min_m": 65,
+          "max_m": 95,
+          "choice": {
+            "algorithm": "fused_native",
+            "config": [
+              64,
+              32,
+              64,
+              8,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              2048,
+              8
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 97,
+          "max_m": 127,
+          "choice": {
+            "algorithm": "fused_native",
+            "config": [
+              64,
+              64,
+              128,
+              8,
+              1
+            ],
+            "layout": "nk",
+            "convert": [
+              2048,
+              8
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 129,
+          "max_m": 135,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              64,
+              64,
+              128,
+              8,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              4096,
+              16
+            ],
+            "source": "conservative_Separate_in_transition_gap"
+          }
+        },
+        {
+          "min_m": 137,
+          "max_m": 143,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              64,
+              64,
+              128,
+              8,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              4096,
+              16
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 145,
+          "max_m": 159,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              64,
+              64,
+              128,
+              8,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              4096,
+              16
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 161,
+          "max_m": 191,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              64,
+              64,
+              128,
+              8,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              4096,
+              16
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 193,
+          "max_m": 255,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              64,
+              64,
+              128,
+              8,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              4096,
+              16
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 257,
+          "max_m": 511,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              256,
+              256,
+              32,
+              16,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              4096,
+              16
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 513,
+          "max_m": 1023,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              256,
+              256,
+              32,
+              16,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              4096,
+              16
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 1025,
+          "max_m": 2047,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              256,
+              256,
+              32,
+              16,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              2048,
+              8
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        },
+        {
+          "min_m": 2049,
+          "max_m": 4095,
+          "choice": {
+            "algorithm": "separate",
+            "config": [
+              256,
+              256,
+              32,
+              16,
+              2
+            ],
+            "layout": "nk",
+            "convert": [
+              4096,
+              16
+            ],
+            "source": "same_algorithm_between_samples"
+          }
+        }
+      ],
+      "transition_intervals": [
+        [
+          128,
+          136
+        ]
+      ]
+    }
+  },
+  "kernel_hashes": {
+    "backend.py": "b555acf266739b75655d17c48078052d0d4ce5a16b97b811a88e06f04b5d8ff2",
+    "splitk.py": "02d9cff06130ec46a9a58bfedeb97500d517a1f30a93fd0096af69a7fb7f8462",
+    "gemv.py": "bb2bb782c9519d4a917318e14f8abc17253108515cc57cbbc2cc4b7272aa0e80",
+    "hotspot.py": "e9e63b48ea0b13e3a9c1d0b7ef8623de6ba4153b065355c131727f1cbf53b819"
+  },
+  "large_m_source": "2026-11-13-tianshu-hotspot-joint-01/results/summary.json"
+}

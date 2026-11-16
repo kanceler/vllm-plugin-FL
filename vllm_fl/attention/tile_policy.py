@@ -193,16 +193,20 @@ def install_tile_policy() -> bool:
         return False
 
     binding_mod.unified_attention = tuned
+    binding_mod._fl_tuned_launcher = tuned
     _installed = True
 
-    # Extend the existing launch policy without changing attention selection.
+    from vllm_fl.attention.int8_kv_repair import install_int8_kv_repair
+    # Keep an independent raw INT8 numeric variant before #013 wraps the BF16
+    # head. Public BF16 #011/#013 and static-KV variants must not share JIT state.
+    install_int8_kv_repair(publish=False)
+
     from vllm_fl.attention.mixed_policy import install_mixed_policy
-
-    install_mixed_policy(binding_mod)
-
     from vllm_fl.attention.decode_index_policy import install_decode_index_policy
 
+    install_mixed_policy(binding_mod)
     install_decode_index_policy(binding_mod)
+    install_int8_kv_repair()
 
     from vllm_fl.attention.config_model import device_profile
 

@@ -9,6 +9,7 @@ Iluvatar uses a CUDA-compatible architecture.
 
 from __future__ import annotations
 
+import os
 import logging
 from typing import Optional, Union
 
@@ -500,4 +501,16 @@ class IluvatarBackend(Backend):
             install_tile_policy()
         except Exception:  # noqa: BLE001
             pass
+        if os.environ.get("VLLM_FL_K_STATIC_FOLD", "0") == "1":
+            if any(os.environ.get(k, "0") == "1" for k in ("VLLM_FL_K_TOP4_JOINT", "VLLM_FL_K_TOP4", "VLLM_FL_V_ONLY", "VLLM_FL_USE_FLAGGEMS_ATTN")):
+                raise ValueError("Static K and other KV/Attention modes are mutually exclusive")
+            return "vllm_fl.attention.k_static_fold_service.KStaticFoldBackend"
+        if os.environ.get("VLLM_FL_K_TOP4_JOINT", "0") == "1":
+            if any(os.environ.get(k, "0") == "1" for k in ("VLLM_FL_K_TOP4", "VLLM_FL_V_ONLY")):
+                raise ValueError("Joint K, previous K and V-only modes are mutually exclusive")
+            return "vllm_fl.attention.k_top4_joint_service.KTop4JointBackend"
+        if os.environ.get("VLLM_FL_K_TOP4", "0") == "1":
+            if os.environ.get("VLLM_FL_V_ONLY", "0") == "1":
+                raise ValueError("K top4 and V-only modes are mutually exclusive")
+            return "vllm_fl.attention.k_top4_service.KTop4Backend"
         return AttentionBackendEnum.TRITON_ATTN.get_path()

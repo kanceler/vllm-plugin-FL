@@ -1,0 +1,22 @@
+{
+  "reason": "User requested two rounds per case after official benchmark already started",
+  "runs_per_case": 2,
+  "official_runs_unchanged": 4,
+  "official_skip_first_unchanged": 1,
+  "summary": "raw two rounds only; no fabricated official average",
+  "manager": 7522,
+  "client": 7910,
+  "server": 7525,
+  "original_command": [
+    "python3",
+    "/workspace/vllm-plugin-FL/benchmarks/benchmark_throughput_serve.py",
+    "--model",
+    "/workspace/MiniCPM5-2B",
+    "--served-model-name",
+    "minicpm",
+    "--port",
+    "9031",
+    "--test-cases",
+    "[[4096,1024,64,256],[16384,1024,64,128]]"
+  ]
+}

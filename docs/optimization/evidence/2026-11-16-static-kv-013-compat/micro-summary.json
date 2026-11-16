@@ -1,0 +1,86 @@
+{
+  "micro-01": [
+    {
+      "batch": 64,
+      "max_q": 1,
+      "kv_length": 4096,
+      "control_ms": 0.8396868705749512,
+      "candidate_ms": 0.8584395408630371,
+      "reduction_pct": -2.2332932602894706
+    },
+    {
+      "batch": 32,
+      "max_q": 1,
+      "kv_length": 16384,
+      "control_ms": 1.6096242904663085,
+      "candidate_ms": 1.6457630157470704,
+      "reduction_pct": -2.245165253457526
+    },
+    {
+      "batch": 18,
+      "max_q": 17,
+      "kv_length": 4096,
+      "control_ms": 0.49637537002563475,
+      "candidate_ms": 0.6832673072814941,
+      "reduction_pct": -37.65133174238833
+    },
+    {
+      "batch": 4,
+      "max_q": 17,
+      "kv_length": 257,
+      "control_ms": 0.04059038460254669,
+      "candidate_ms": 0.04060269296169281,
+      "reduction_pct": -0.03032333708250512
+    }
+  ],
+  "micro-audit-01": [
+    {
+      "batch": 18,
+      "max_q": 128,
+      "kv_length": 4096,
+      "control_ms": 0.8971127510070801,
+      "candidate_ms": 0.5339034557342529,
+      "reduction_pct": 40.48647116709644
+    },
+    {
+      "batch": 34,
+      "max_q": 128,
+      "kv_length": 16384,
+      "control_ms": 5.811259841918945,
+      "candidate_ms": 2.759085273742676,
+      "reduction_pct": 52.521736270674246
+    },
+    {
+      "batch": 18,
+      "max_q": 512,
+      "kv_length": 4096,
+      "control_ms": 1.738715362548828,
+      "candidate_ms": 1.3782485008239747,
+      "reduction_pct": 20.73179253425562
+    },
+    {
+      "batch": 34,
+      "max_q": 512,
+      "kv_length": 16384,
+      "control_ms": 9.057942199707032,
+      "candidate_ms": 6.010382843017578,
+      "reduction_pct": 33.64516232823856
+    },
+    {
+      "batch": 65,
+      "max_q": 512,
+      "kv_length": 16384,
+      "control_ms": 11.598886108398437,
+      "candidate_ms": 5.4854789733886715,
+      "reduction_pct": 52.70684682887967
+    },
+    {
+      "batch": 65,
+      "max_q": 17,
+      "kv_length": 16384,
+      "control_ms": 5.997085952758789,
+      "candidate_ms": 5.046372985839843,
+      "reduction_pct": 15.852915472748851
+    }
+  ]
+}

@@ -1,0 +1,180 @@
+{
+  "status": "diagnostic_fixed_policy_v2_pending_dispatch_confirmation",
+  "selection": "seed20261211 search04, one mode/config per batch/qlen/branch across all measured KV lengths, equal-case geomean relative base; batch72/80 jointly screened at KV257/4096/16384 seed20261214 including internal3D",
+  "fallback": "q_in_write_heads warps1 with prior fixed static/canonical launch; not yet verified outside search",
+  "records": [
+    {
+      "batch": 1,
+      "qlen": 1,
+      "segmented": true,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 32,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1,
+      "override_reason": "Retain known prior long-KV optimum32; short-only search16 lacks cross-length evidence and nearly ties32."
+    },
+    {
+      "batch": 1,
+      "qlen": 128,
+      "segmented": false,
+      "mode": "q_in_write",
+      "config": {
+        "block_m": 256,
+        "segments": 1,
+        "stages": 1,
+        "tile": 128,
+        "warps": 16
+      },
+      "writer_warps": 4
+    },
+    {
+      "batch": 4,
+      "qlen": 17,
+      "segmented": false,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 128,
+        "segments": 1,
+        "stages": 1,
+        "tile": 64,
+        "warps": 8
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 4,
+      "qlen": 512,
+      "segmented": false,
+      "mode": "q_in_write",
+      "config": {
+        "block_m": 256,
+        "segments": 1,
+        "stages": 1,
+        "tile": 128,
+        "warps": 16
+      },
+      "writer_warps": 4
+    },
+    {
+      "batch": 16,
+      "qlen": 1,
+      "segmented": true,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 8,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 24,
+      "qlen": 1,
+      "segmented": true,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 16,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 40,
+      "qlen": 1,
+      "segmented": true,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 8,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 48,
+      "qlen": 1,
+      "segmented": true,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 8,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 56,
+      "qlen": 1,
+      "segmented": true,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 8,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 64,
+      "qlen": 1,
+      "segmented": true,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 8,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 2
+    },
+    {
+      "batch": 72,
+      "qlen": 1,
+      "segmented": false,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 8,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1,
+      "candidate_threshold": 72,
+      "selection_note": "input segmented flag matches original baseline; candidate segments>1 explicitly expands private workspace/threshold"
+    },
+    {
+      "batch": 80,
+      "qlen": 1,
+      "segmented": false,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 8,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1,
+      "candidate_threshold": 80,
+      "selection_note": "input segmented flag matches original baseline; candidate segments>1 explicitly expands private workspace/threshold"
+    }
+  ]
+}

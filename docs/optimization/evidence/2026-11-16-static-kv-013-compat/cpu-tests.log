@@ -1,0 +1,22 @@
+test_all_verified_segment_counts_and_80_rows (test_static_kv_compat.CompactTests.test_all_verified_segment_counts_and_80_rows) ... ok
+test_final_numeric_source_is_preserved (test_static_kv_compat.CompactTests.test_final_numeric_source_is_preserved) ... ok
+test_guarded_head_fallback_and_compact_grid (test_static_kv_compat.CompactTests.test_guarded_head_fallback_and_compact_grid) ... [FL] Static KV compact Decode active: grid=(32, 2, 8); capture/eager evidence only
+ok
+test_layout_features_and_unsupported_shapes (test_static_kv_compat.CompactTests.test_layout_features_and_unsupported_shapes) ... ok
+test_actual_forward_writes_once_then_splits (test_static_kv_compat.IntegrationTests.test_actual_forward_writes_once_then_splits) ... [FL] Static KV Mixed split active: decode_rows=16; KV write once; capture/eager evidence only
+ok
+test_original_bf16_entry_is_not_modified_by_repair_build (test_static_kv_compat.IntegrationTests.test_original_bf16_entry_is_not_modified_by_repair_build) ... ok
+test_repair_build_then_bf16_wrap_then_publish (test_static_kv_compat.IntegrationTests.test_repair_build_then_bf16_wrap_then_publish) ... [FL] INT8 KV repair enabled: explicit empty-prefix mass; final tile policy
+ok
+test_disabled_mixed_and_special_features (test_static_kv_compat.PrefixTests.test_disabled_mixed_and_special_features) ... ok
+test_holes_bad_counts_and_prefill_not_compact (test_static_kv_compat.PrefixTests.test_holes_bad_counts_and_prefill_not_compact) ... ok
+test_mixed_prefixes_rebased_once (test_static_kv_compat.PrefixTests.test_mixed_prefixes_rebased_once) ... ok
+test_pure_decode_and_tail_padding (test_static_kv_compat.PrefixTests.test_pure_decode_and_tail_padding) ... ok
+test_reuse_existing_011_gpu_prefixes (test_static_kv_compat.PrefixTests.test_reuse_existing_011_gpu_prefixes) ... ok
+test_small_prefix_and_missing_cpu_fall_back (test_static_kv_compat.PrefixTests.test_small_prefix_and_missing_cpu_fall_back) ... ok
+test_split_keeps_cache_and_scales_identity (test_static_kv_compat.PrefixTests.test_split_keeps_cache_and_scales_identity) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.007s
+
+OK

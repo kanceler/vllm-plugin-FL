@@ -1,0 +1,250 @@
+{
+  "version": 1,
+  "status": "frozen_offline_joint_policy_pending_callpath_validation",
+  "identity": {
+    "device": "Iluvatar BI-V150",
+    "torch": "2.10.0",
+    "triton": "3.6.0"
+  },
+  "layout": {
+    "page_size": 32,
+    "head_major": false,
+    "vector_meta": false,
+    "bytes_per_token_head": 276
+  },
+  "records": [
+    {
+      "batch": 1,
+      "segmented": true,
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 32
+      },
+      "writer_warps": 1,
+      "lengths": [
+        129,
+        17408
+      ],
+      "relative_geomean": 0.9343048662431908
+    },
+    {
+      "batch": 2,
+      "segmented": true,
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 32
+      },
+      "writer_warps": 1,
+      "lengths": [
+        4096
+      ],
+      "relative_geomean": 0.6039632323217037
+    },
+    {
+      "batch": 4,
+      "segmented": true,
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 16
+      },
+      "writer_warps": 1,
+      "lengths": [
+        16384
+      ],
+      "relative_geomean": 0.8595648119781638
+    },
+    {
+      "batch": 8,
+      "segmented": true,
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 8
+      },
+      "writer_warps": 1,
+      "lengths": [
+        4096
+      ],
+      "relative_geomean": 0.8497946261285444
+    },
+    {
+      "batch": 16,
+      "segmented": true,
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 8
+      },
+      "writer_warps": 1,
+      "lengths": [
+        4096
+      ],
+      "relative_geomean": 0.9021516737207188
+    },
+    {
+      "batch": 24,
+      "segmented": true,
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 32
+      },
+      "writer_warps": 1,
+      "lengths": [
+        16384
+      ],
+      "relative_geomean": 0.8314110752961864
+    },
+    {
+      "batch": 32,
+      "segmented": true,
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 16
+      },
+      "writer_warps": 1,
+      "lengths": [
+        4096
+      ],
+      "relative_geomean": 0.930319456661399
+    },
+    {
+      "batch": 40,
+      "segmented": true,
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 32
+      },
+      "writer_warps": 1,
+      "lengths": [
+        16384
+      ],
+      "relative_geomean": 0.8338178458816807
+    },
+    {
+      "batch": 48,
+      "segmented": true,
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 32
+      },
+      "writer_warps": 1,
+      "lengths": [
+        16384
+      ],
+      "relative_geomean": 0.8325988385499679
+    },
+    {
+      "batch": 56,
+      "segmented": true,
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 16
+      },
+      "writer_warps": 1,
+      "lengths": [
+        4096,
+        16384
+      ],
+      "relative_geomean": 0.8475811331160845
+    },
+    {
+      "batch": 64,
+      "segmented": true,
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 8
+      },
+      "writer_warps": 1,
+      "lengths": [
+        4096,
+        16384
+      ],
+      "relative_geomean": 0.9264615302916945
+    },
+    {
+      "batch": 72,
+      "segmented": false,
+      "config": {
+        "block_m": 16,
+        "tile": 64,
+        "warps": 4,
+        "stages": 1,
+        "segments": 1
+      },
+      "writer_warps": 1,
+      "lengths": [
+        16384
+      ],
+      "relative_geomean": 1.0018086753698363
+    },
+    {
+      "batch": 80,
+      "segmented": false,
+      "config": {
+        "block_m": 16,
+        "tile": 64,
+        "warps": 4,
+        "stages": 1,
+        "segments": 1
+      },
+      "writer_warps": 1,
+      "lengths": [
+        16384
+      ],
+      "relative_geomean": 0.9665645218522315
+    }
+  ],
+  "selection": "one config per batch/branch across all measured KV lengths; geometric mean of ratios to old K; fixed before independent validation",
+  "source_bindings": {
+    "vllm_fl/attention/k_top4_joint_kernel.py": "ef6dd485497669e803228446ee3b1fa3d38edb232a3e2e8e20613c9eca4698b1",
+    "vllm_fl/attention/k_top4_joint_service.py": "64e13fc1132393302a6ede06af05ad5cb7436f002ba1688098091798dd88148a",
+    "vllm_fl/attention/k_top4_joint_policy.py": "9aa276ad20f02e0ffaae18229cbada0928e4833d2cbe64867206126ec24c6132",
+    "vllm_fl/attention/k_top4.py": "d6368cfe77551bf9589be09537882387996163a7d3aa76b944a82682094af857",
+    "vllm_fl/attention/v_only.py": "0f08a4dfe8a04565c5853c407a5b79744296f08b221eba773cdd7f36c8583923",
+    "vllm_fl/attention/tile_policy.py": "1697fd5abb7b6fe5dfe923a45f881718c0d026cba9547248fc903cfd6a859880",
+    "vllm_fl/attention/config_model.py": "7d5066c2bbf187a5f952eb3dee1ef5eb5e184e95feeeb5901683eb4b1b7c2a64",
+    "vllm_fl/attention/int8_kv_repair.py": "3ba4a84e8564646db032384f1cfc9b1107bbf59b9c73b7e3d46af9346a147827",
+    "vllm_fl/platform.py": "cc59c6716a6b823887862180fd3dcdd8045ae80aba794af6039e9c508759ad2d",
+    "vllm_fl/worker/model_runner.py": "de066bd113b019e84563692081a617149dd1ef0fbab0fdd6fa883ae4b2bac4ce",
+    "vllm_fl/dispatch/backends/vendor/iluvatar/iluvatar.py": "445f2265da946d308d4d4e49686ed9eb0ca5834b562d75eeb0ce6709e82fa92a",
+    "vllm_fl/dispatch/backends/flaggems/flaggems.py": "c06890072644d9de524926a9ae7e6532a48878ef6957bc26ac86e1a28cda64f9",
+    "benchmarks/diagnostics/k_top4_frozen.py": "8a5ede44b861b5e0679a8ffb5a4363d20e7f9fad0a7ed5ef98e2a3d77a173b5b"
+  },
+  "provider_bindings": {
+    "vllm.v1.attention.ops.triton_unified_attention": "bab2c0b9f9a7793ca411796b48ebb4734433160e7e99eabf46ddb7f1c30cb6e0",
+    "vllm.v1.attention.backends.triton_attn": "1219c4d1820b56e99ef6686de8a49c8c5aa57707794bcabf3322023799a03605"
+  },
+  "frozen_source_result_sha256": "fc0d6484f6064db1f19bc4925313022c403b3b43f5a652f0b7acc2575e4a99a9",
+  "original_vonly_sha256": "0f08a4dfe8a04565c5853c407a5b79744296f08b221eba773cdd7f36c8583923"
+}

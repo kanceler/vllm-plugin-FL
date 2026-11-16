@@ -1,0 +1,599 @@
+{
+  "version": 1,
+  "status": "static_kv_013_compatibility_validation_pending",
+  "identity": {
+    "device": "Iluvatar BI-V150",
+    "torch": "2.10.0",
+    "triton": "3.6.0"
+  },
+  "layout": {
+    "page_size": 32,
+    "head_major": false,
+    "bytes_per_token_head": 276,
+    "format": "static_per_channel_protect4_permuted_separate_meta"
+  },
+  "records": [
+    {
+      "batch": 1,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 32,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 2,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 32,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 4,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 16,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 8,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 8,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 16,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 8,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 24,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 16,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 32,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 16,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 40,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 8,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 48,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 8,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 56,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 8,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 64,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 8,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 2
+    },
+    {
+      "batch": 72,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 8,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 80,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 8,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 88,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 1,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 96,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 1,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 104,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 1,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 112,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 1,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 120,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 1,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 128,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 1,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 136,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 1,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 144,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 1,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 152,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 1,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 160,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 1,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 168,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 1,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 176,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 1,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 184,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 1,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 192,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 1,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 200,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 1,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 208,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 1,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 216,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 1,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 224,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 1,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 232,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 1,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 240,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 1,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 248,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 1,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 256,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 1,
+        "stages": 1,
+        "tile": 32,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 7,
+      "qlen": 1,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 16,
+        "segments": 16,
+        "stages": 1,
+        "tile": 16,
+        "warps": 2
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 4,
+      "qlen": 17,
+      "input_threshold": 64,
+      "mode": "q_in_write_heads",
+      "config": {
+        "block_m": 128,
+        "segments": 1,
+        "stages": 1,
+        "tile": 64,
+        "warps": 8
+      },
+      "writer_warps": 1
+    },
+    {
+      "batch": 1,
+      "qlen": 128,
+      "input_threshold": 64,
+      "mode": "q_in_write",
+      "config": {
+        "block_m": 256,
+        "segments": 1,
+        "stages": 1,
+        "tile": 128,
+        "warps": 16
+      },
+      "writer_warps": 4
+    },
+    {
+      "batch": 4,
+      "qlen": 512,
+      "input_threshold": 64,
+      "mode": "q_in_write",
+      "config": {
+        "block_m": 256,
+        "segments": 1,
+        "stages": 1,
+        "tile": 128,
+        "warps": 16
+      },
+      "writer_warps": 4
+    }
+  ],
+  "source_bindings": {
+    "benchmarks/diagnostics/k_top4_frozen.py": "8a5ede44b861b5e0679a8ffb5a4363d20e7f9fad0a7ed5ef98e2a3d77a173b5b",
+    "vllm_fl/attention/config_model.py": "7d5066c2bbf187a5f952eb3dee1ef5eb5e184e95feeeb5901683eb4b1b7c2a64",
+    "vllm_fl/attention/int8_kv_repair.py": "961011504053572c9cac3b19ee4d623c89f162af8c0313a2e2e3188a2970615e",
+    "vllm_fl/attention/k_static_fold_kernel.py": "a3495fc9b7b19970793fdaa7674062827d4c925ad4052d87729b353df1ab1a49",
+    "vllm_fl/attention/k_static_fold_launch.py": "7745fbfedf0d713eb0f1076eab06bdf4ef26bcdb49920e58989c05e70eb3c349",
+    "vllm_fl/attention/k_static_fold_policy.py": "913e99711ae6556dc5605ccad91b519daa1b0af3794ab38b0b238ba2a12d2721",
+    "vllm_fl/attention/k_static_fold_service.py": "786bf2b665a01fb75d7ea96777b9399f6c9aeee337139e79caeaf989ca1de8f1",
+    "vllm_fl/attention/k_static_fold_writer.py": "3603fbb8b41023404edaac133020a9fc70a6d3d46386c42654f9cef227845632",
+    "vllm_fl/attention/k_top4.py": "d6368cfe77551bf9589be09537882387996163a7d3aa76b944a82682094af857",
+    "vllm_fl/attention/k_top4_joint_kernel.py": "ef6dd485497669e803228446ee3b1fa3d38edb232a3e2e8e20613c9eca4698b1",
+    "vllm_fl/attention/k_top4_joint_policy.py": "9aa276ad20f02e0ffaae18229cbada0928e4833d2cbe64867206126ec24c6132",
+    "vllm_fl/attention/k_top4_joint_service.py": "64e13fc1132393302a6ede06af05ad5cb7436f002ba1688098091798dd88148a",
+    "vllm_fl/attention/tile_policy.py": "cfc33443c8d3600f1ed0ffeff08d01c67001da07e30e02e37f304721f04eb27e",
+    "vllm_fl/attention/v_only.py": "09dc6f5a932c4325d1e72901dcb2f75a248aa9aedb6b02750d9347c4d196b2b0",
+    "vllm_fl/dispatch/backends/flaggems/flaggems.py": "4140f978ff018917435a55ffe1aaa834b820e71c64206210aa8536ba5f17fb90",
+    "vllm_fl/dispatch/backends/vendor/iluvatar/iluvatar.py": "73ab446ca31f7927b5e87b0c69b05e55f53382d925a320b41006f865cee8f603",
+    "vllm_fl/platform.py": "625d689262304c1fe04bd81b69e2d360a10c16173e275aa8de122ba4659baef8",
+    "vllm_fl/worker/model_runner.py": "bf610da5c422a6ffaf0608e9c9db0a2699da9cc9fd18f4ed00364157b8e48c8e",
+    "vllm_fl/attention/static_kv_compat.py": "423d57bfef70bf24167c8aaca2507dfd45b22612802de2e6b057aa785149b9a6",
+    "vllm_fl/attention/mixed_policy.py": "d36f41bbffefc9b0a727ca651a05666faf332b907066ddab277b1e90f5090732",
+    "vllm_fl/attention/decode_index_policy.py": "947153486d1ba488a13262490a914043559298e4aacf8f2dd2fe085c4f1318c0",
+    "vllm_fl/patches/iluvatar_sampling.py": "e1f6dbe26d844f512472b29b20186489208a59cad1af12e1d6f559cbb8433d3d"
+  },
+  "provider_bindings": {
+    "vllm.v1.attention.ops.triton_unified_attention": "bab2c0b9f9a7793ca411796b48ebb4734433160e7e99eabf46ddb7f1c30cb6e0",
+    "vllm.v1.attention.backends.triton_attn": "1219c4d1820b56e99ef6686de8a49c8c5aa57707794bcabf3322023799a03605"
+  },
+  "calibration_sha256": "422841e5684671f7fa855aa1dc9771f7890860d2236e8952df3a0cfb25064d80",
+  "switch": "VLLM_FL_K_STATIC_FOLD",
+  "global_seq_threshold": 80,
+  "max_segments": 32,
+  "reference_snapshot": "k_static_fold_biv150_v1",
+  "official_accuracy": "not_run",
+  "compatibility_base": "210c7755c00bb00aa92ff9c00bbe8e32fafb2218",
+  "parent_static_manifest_sha256": "517e652e6de91fd318d5e8f6cd929f671c6a154f438eaf8fcb332a4e5ae4400b"
+}
