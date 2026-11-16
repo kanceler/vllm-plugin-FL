@@ -8,3 +8,5 @@
 静态KV精度101/105；完整官方双场景性能待验证，不含Down叠加。
 
 - [KV INT8量化专项报告](report.md)
+
+- 配套FlagGems源码位于FlagGems/，来源4ae85e2，清单见flaggems-source-manifest.json。

@@ -1,3 +1,5 @@
+> 本静态KV分支内附配套 `FlagGems/` 源码（4ae85e2）；请优先按 [004复现说明](004-完整复现与版本说明.md) 配置导入，不另拉不同版本覆盖。
+
 # vllm-plugin-FL
 
 vllm-plugin-FL is a plugin for the [vLLM](https://github.com/vllm-project/vllm) inference/serving framework, built on FlagOS's unified multi-chip backend — including the unified operator library [FlagGems](https://github.com/flagos-ai/FlagGems) and the unified communication library [FlagCX](https://github.com/flagos-ai/FlagCX). It extends vLLM's capabilities and performance across diverse hardware environments. Without changing vLLM's original interfaces or usage patterns, the same command can run model inference/serving on different chips.
