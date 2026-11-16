@@ -1,0 +1,47 @@
+{
+  "baseline_commit": "f82fa1670509f081aa13b58464cb6e5627fc10c4",
+  "comparison": "historical four-run summary vs two-round KV diagnostic; not contemporaneous A/B",
+  "baseline_16k_source": "s2final-baseline-record.md section4.2; local raw CSV unavailable",
+  "rows": [
+    {
+      "input_length": 4096,
+      "round": 1,
+      "baseline_tps": 3073.11,
+      "candidate_tps": 2986.77,
+      "throughput_change_percent": -2.809531712174318,
+      "baseline_ttft_ms": 5115.36,
+      "candidate_ttft_ms": 5387.51,
+      "ttft_reduction_percent": -5.320251165118406
+    },
+    {
+      "input_length": 4096,
+      "round": 2,
+      "baseline_tps": 3073.11,
+      "candidate_tps": 3243.05,
+      "throughput_change_percent": 5.529902932208741,
+      "baseline_ttft_ms": 5115.36,
+      "candidate_ttft_ms": 5105.03,
+      "ttft_reduction_percent": 0.20194082136936187
+    },
+    {
+      "input_length": 16384,
+      "round": 1,
+      "baseline_tps": 2790.28,
+      "candidate_tps": 2597.72,
+      "throughput_change_percent": -6.9010995312298595,
+      "baseline_ttft_ms": 177074.49,
+      "candidate_ttft_ms": 88101.33,
+      "ttft_reduction_percent": 50.24617605844861
+    },
+    {
+      "input_length": 16384,
+      "round": 2,
+      "baseline_tps": 2790.28,
+      "candidate_tps": 2842.64,
+      "throughput_change_percent": 1.876514184956335,
+      "baseline_ttft_ms": 177074.49,
+      "candidate_ttft_ms": 81062.23,
+      "ttft_reduction_percent": 54.22139575271401
+    }
+  ]
+}
