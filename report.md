@@ -11,6 +11,10 @@
 
 静态方案已完成 42 层参数加载和真实模型接入，官方 math_500 Level 3 得到 101/105，精确准确率 0.9619047619；105 请求全部成功、正常 stop，无长度封顶。独立完整调用在部分长 KV 形状取得收益，短 KV 和部分 Prefill 仍有退化。当前尚未完成本版本官方四轮双场景吞吐及 TTFT 验收，本文不报告正式端到端加速比。
 
+![图1：静态KV联合执行架构](report-assets/01-architecture.png)
+
+*图1：独立校准参数在模型加载时固定；Q处理、物理KV写入、Attention与归约构成实际执行链。图中INT8是缓存表示，dot仍使用BF16操作数。*
+
 ## 第一章　目标、环境与测量对象
 
 ### 1.1 专项目标
@@ -77,6 +81,10 @@ score = FP32_accumulate(q_eff · k_eff) / sqrt(D)
 
 V 沿用动态 per-token/head scale：`s_v=max(max_abs(v)/127,1e-6)`，写入 INT8，读取时恢复为 BF16 后参与 PV。GPU writer 对 K/V 使用其已固化的带符号半单位偏移、截断及 `[-128,127]` 裁剪；不将 CPU 原型的抽象 round 视为所有边界逐位相同的实现。
 
+<img src="report-assets/05-formulas.png" alt="静态K scale折Q与保护通道公式" width="820">
+
+*保护通道不缩放Q；未保护通道在Q端乘静态scale并舍入BF16。公式预渲染以兼容Markdown预览，脚本保留数学表达。*
+
 ### 2.4 42 层生产参数如何得到
 
 生产校准使用 8 段独立自写中文、英文、代码及符号说明文本，不使用 math_500。每例取 512/4096 token，另英文 16384，BF16 轨迹 Decode 8 步；Decode 只统计新增 token。每层累计 53384 个 token，按动态 top4 频率确定固定四通道，并列按小索引；其他通道 scale 为通道最大绝对值/127，先设下限再乘 margin2。
@@ -100,6 +108,10 @@ V 沿用动态 per-token/head scale：`s_v=max(max_abs(v)/127,1e-6)`，写入 IN
 
 减少比例为 `1−276/512=46.09375%`，仅对应缓存格式。同等纯 KV 字节预算下理论 token 槽位比为 `512/276≈1.855`；模型还占用权重、图、Q/归约工作区及分配器空间，不能把该比例当作实测容量或吞吐比。真实精度服务记录 KV 容量 971168 tokens，没有同环境容量 A/B，不归因其差值。[E3]
 
+![图2：BF16与静态KV的分配字节布局](report-assets/02-cache-layout.png)
+
+*图2：276字节包含保护元数据和V scale。46.09%是每token/head格式节省，非模型总显存或吞吐收益；空出的容量仍可能被新增token吃满。*
+
 ### 3.2 折Q之后，为什么还要融合写入
 
 静态方案的第一版执行为“独立 Q 变换→KV writer→Attention→归约”。长 KV 能摊薄前两项成本，短 KV 和小 Prefill 则容易被新增 launch 和 Q 读写拖慢。因此后续优化接着处理调用成本，而非继续只减少缓存字节。
@@ -115,6 +127,10 @@ V 沿用动态 per-token/head scale：`s_v=max(max_abs(v)/127,1e-6)`，写入 IN
 最终采用的主要模式为 `q_in_write_heads`。先处理 Q，再判断负 slot，保证图 padding 中不写 KV 的 token 仍得到正确 Q 变换；实际写入遵守物理 slot_mapping，不假设逻辑 token 连续对应物理缓存。
 
 融合仍写出变换后的 BF16 Q 工作区，不能描述成彻底消除 Q 中间存储。收益来自减少独立调用和调整并行划分；它还要接受完整调用验证。[E2]
+
+![图3：Q变换与实际缓存写入融合](report-assets/03-fusion.png)
+
+*图3：减少独立Q处理调用，但仍保留BF16 Q工作区及必要归约。前后各阶段不按独立中位数相加，性能以完整调用比较。*
 
 ### 3.3 分段配置必须跟随新执行链重新验证
 
@@ -151,6 +167,10 @@ worker 为匹配的 FullAttentionSpec 分配 uint8/276B 页，核对 TP、head�
 4K 的35个标准capture尺寸均更快，耗时下降1.69%～38.20%；16K、batch≤64的11点下降2.55%～49.38%。这些是所测形状的完整算子结果，不等于模型请求分布或耗时覆盖。短KV和部分Prefill仍负收益，不能宣称所有输入均优于V-only；大幅改善同时含配置与分段差异，不能作为静态位宽本身的收益。
 
 早期真实90快照的四种融合调用共360次与静态原型逐位相等，总误差90/90通过；但这组数据来自5/42层旧探索张量。生产fixture另有8例调用、字节与图增长检查，使用合成scale；两者均不能替代42层参数上的模型评测。
+
+![图4：静态KV完整调用的正负收益](report-assets/04-microbench.png)
+
+*图4：从本节原始耗时表直接计算，正值为耗时降低。分母为早期V-only固定对照，不是BF16模型基线；图中保留Q128、Q512 Prefill退化，选择的代表点不等于全输入覆盖。*
 
 ### 4.2 最终静态组合的官方精度
 
@@ -215,3 +235,14 @@ Down权重量化改变的是另一条计算链，存在提供者、容量与模�
 | E5：[两轮诊断原始CSV](docs/optimization/evidence/2026-11-16-static-kv/diagnostic-raw.csv) | 两轮静态KV性能诊断；大包不随Git提交，需另行提供 |
 
 最终精度服务manifest SHA256为`517e652e6de91fd318d5e8f6cd929f671c6a154f438eaf8fcb332a4e5ae4400b`，校准SHA256为`422841e5684671f7fa855aa1dc9771f7890860d2236e8952df3a0cfb25064d80`。运行时清单保留其创建时状态，实验完成事实由独立验证摘要绑定，不为写成绩重生成已测配置。
+
+## 图件与复现
+
+本报告新增五幅图，均提供PNG和SVG；SVG将字体转为路径便于跨环境预览。架构/布局图来自实现说明，micro图从本报告4.1节耗时表解析生成，未引入新测量或模拟成绩。中文图注解释英文图内标签与单位。
+
+```bash
+cd /workspace/vllm-plugin-FL
+MPLCONFIGDIR=/tmp/static-kv-report-mpl python3 report-assets/generate_figures.py
+```
+
+制图只需CPU侧Matplotlib和NumPy，不需要加载模型。图件生成不属于模型验证，也不改变开关、源码或校准。
