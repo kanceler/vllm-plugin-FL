@@ -1,0 +1,239 @@
+{
+  "version": 1,
+  "status": "diagnostic_only_not_service_dispatch",
+  "identity": {
+    "device": "Iluvatar BI-V150",
+    "torch": "2.10.0",
+    "triton": "3.6.0",
+    "files": {
+      "k_top4.py": "d6368cfe77551bf9589be09537882387996163a7d3aa76b944a82682094af857",
+      "v_only.py": "0f08a4dfe8a04565c5853c407a5b79744296f08b221eba773cdd7f36c8583923",
+      "config_model.py": "7d5066c2bbf187a5f952eb3dee1ef5eb5e184e95feeeb5901683eb4b1b7c2a64"
+    }
+  },
+  "layout": {
+    "query_heads": 16,
+    "kv_heads": 2,
+    "head_dim": 128,
+    "page_size": 16,
+    "cache": "k144_v128_scale4",
+    "dtype": "bfloat16"
+  },
+  "records": [
+    {
+      "case": [
+        1,
+        4096,
+        1,
+        true,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 16,
+        "warps": 2,
+        "stages": 1,
+        "segments": 32
+      },
+      "selection": "offline_measured_validated_candidate",
+      "writer": "direct_load_w1",
+      "source": "combined-confirm-01",
+      "variant": "configured_write_load_w1",
+      "complete_ms": 0.05190935929616292
+    },
+    {
+      "case": [
+        1,
+        16384,
+        1,
+        true,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 16,
+        "warps": 2,
+        "stages": 1,
+        "segments": 32
+      },
+      "selection": "offline_measured_validated_candidate",
+      "writer": "direct_load_w1",
+      "source": "combined-confirm-01",
+      "variant": "configured_write_load_w1",
+      "complete_ms": 0.15019501050313314
+    },
+    {
+      "case": [
+        64,
+        16384,
+        1,
+        false,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 1
+      },
+      "selection": "offline_measured_validated_candidate",
+      "writer": "direct_load_w1",
+      "source": "combined-confirm-01",
+      "variant": "write_load_w1",
+      "complete_ms": 4.233249918619792
+    },
+    {
+      "case": [
+        4,
+        4097,
+        1,
+        false,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 64,
+        "warps": 4,
+        "stages": 1,
+        "segments": 1
+      },
+      "selection": "offline_measured_validated_candidate",
+      "writer": "direct_load_w1",
+      "source": "combined-confirm-01",
+      "variant": "configured_write_load_w1",
+      "complete_ms": 0.5664528528849284
+    },
+    {
+      "case": [
+        1,
+        128,
+        128,
+        false,
+        false
+      ],
+      "config": {
+        "block_m": 256,
+        "tile": 128,
+        "warps": 16,
+        "stages": 1,
+        "segments": 1
+      },
+      "selection": "offline_measured_validated_candidate",
+      "writer": "direct_load_w1",
+      "source": "combined-confirm-01",
+      "variant": "write_load_w1",
+      "complete_ms": 0.024610642592112222
+    },
+    {
+      "case": [
+        1,
+        4096,
+        128,
+        false,
+        false
+      ],
+      "config": {
+        "block_m": 256,
+        "tile": 128,
+        "warps": 16,
+        "stages": 1,
+        "segments": 1
+      },
+      "selection": "offline_measured_validated_candidate",
+      "writer": "direct_load_w1",
+      "source": "combined-confirm-01",
+      "variant": "write_load_w1",
+      "complete_ms": 0.2959177017211914
+    },
+    {
+      "case": [
+        1,
+        17408,
+        1,
+        true,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 16,
+        "warps": 2,
+        "stages": 1,
+        "segments": 32
+      },
+      "selection": "offline_measured_validated_candidate",
+      "writer": "direct_load_w1",
+      "source": "combined-confirm-01",
+      "variant": "configured_write_load_w1",
+      "complete_ms": 0.1578221797943115
+    },
+    {
+      "case": [
+        8,
+        8193,
+        1,
+        false,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 64,
+        "warps": 4,
+        "stages": 1,
+        "segments": 1
+      },
+      "selection": "offline_measured_validated_candidate",
+      "writer": "direct_load_w1",
+      "source": "combined-confirm-01",
+      "variant": "configured_write_load_w1",
+      "complete_ms": 1.1408821105957032
+    },
+    {
+      "case": [
+        1,
+        1024,
+        17,
+        false,
+        false
+      ],
+      "config": {
+        "block_m": 32,
+        "tile": 128,
+        "warps": 4,
+        "stages": 1,
+        "segments": 1
+      },
+      "selection": "offline_measured_validated_candidate",
+      "writer": "direct_load_w1",
+      "source": "combined-confirm-01",
+      "variant": "write_load_w1",
+      "complete_ms": 0.1590884526570638
+    },
+    {
+      "case": [
+        1,
+        17,
+        1,
+        false,
+        true
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 1
+      },
+      "selection": "offline_measured_validated_candidate",
+      "writer": "direct_load_w1",
+      "source": "combined-confirm-01",
+      "variant": "write_load_w1",
+      "complete_ms": 0.020197178920110068
+    }
+  ],
+  "exclusions": [
+    "Do not generalize batch<64 to tile64; length17 regressed",
+    "Unknown shapes use canonical baseline configuration; no timing search",
+    "No model accuracy or service coverage claim"
+  ]
+}

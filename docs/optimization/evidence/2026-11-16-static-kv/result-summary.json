@@ -1,0 +1,45 @@
+{
+  "correct": 101.0,
+  "total": 105,
+  "exact_accuracy": 0.9619047619047619,
+  "official_reported_accuracy": 0.9619,
+  "wrong_indices": [
+    18,
+    70,
+    87,
+    101
+  ],
+  "finish_reasons": {
+    "stop": 105
+  },
+  "source_manifest_sha256": "517e652e6de91fd318d5e8f6cd929f671c6a154f438eaf8fcb332a4e5ae4400b",
+  "calibration_sha256": "422841e5684671f7fa855aa1dc9771f7890860d2236e8952df3a0cfb25064d80",
+  "report": "/workspace/evalscope-datasets/level3/20261116_033656/reports/minicpm/math_500.json",
+  "execution_summary": {
+    "requested": 105,
+    "succeeded": 105,
+    "errored": 0,
+    "incomplete": false,
+    "subsets": {
+      "Level 3": {
+        "requested": 105,
+        "succeeded": 105,
+        "errored": 0
+      }
+    }
+  },
+  "archive_sha256": "1653fd230d88201978f698330976e335770e4e31edbd4cf38006e5de6854c4f3",
+  "switch": "VLLM_FL_K_STATIC_FOLD=1",
+  "layers": 42,
+  "graphs": 35,
+  "official_throughput": "not_run",
+  "official_TTFT": "not_run",
+  "versions": {
+    "torch": "2.10.0",
+    "triton": "3.6.0",
+    "vllm": "0.24.0",
+    "evalscope": "1.11.1",
+    "openai": "2.46.0",
+    "transformers": "5.14.1"
+  }
+}

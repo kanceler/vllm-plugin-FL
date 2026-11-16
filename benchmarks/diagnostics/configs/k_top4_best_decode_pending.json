@@ -1,0 +1,149 @@
+{
+  "status": "pending_independent_seed_confirmation",
+  "records": [
+    {
+      "case": [
+        16,
+        4096,
+        1,
+        true,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 8
+      },
+      "source": "refine-decode-01",
+      "sample_winner": "segments8"
+    },
+    {
+      "case": [
+        16,
+        16384,
+        1,
+        true,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 16
+      },
+      "source": "refine-decode-01",
+      "sample_winner": "winner"
+    },
+    {
+      "case": [
+        32,
+        4096,
+        1,
+        true,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 8
+      },
+      "source": "refine-decode-01",
+      "sample_winner": "segments8"
+    },
+    {
+      "case": [
+        32,
+        16384,
+        1,
+        true,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 16
+      },
+      "source": "refine-decode-01",
+      "sample_winner": "winner"
+    },
+    {
+      "case": [
+        63,
+        16384,
+        1,
+        true,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 8
+      },
+      "source": "refine-decode-01",
+      "sample_winner": "segments8"
+    },
+    {
+      "case": [
+        64,
+        16384,
+        1,
+        true,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 32,
+        "warps": 2,
+        "stages": 1,
+        "segments": 16
+      },
+      "source": "refine-decode-01",
+      "sample_winner": "writer_sum_w4"
+    },
+    {
+      "case": [
+        65,
+        16384,
+        1,
+        false,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 64,
+        "warps": 4,
+        "stages": 1,
+        "segments": 1
+      },
+      "source": "refine-decode-01",
+      "sample_winner": "writer_load_w2"
+    },
+    {
+      "case": [
+        80,
+        16384,
+        1,
+        false,
+        false
+      ],
+      "config": {
+        "block_m": 16,
+        "tile": 64,
+        "warps": 4,
+        "stages": 1,
+        "segments": 1
+      },
+      "source": "refine-decode-01",
+      "sample_winner": "writer_load_w2"
+    }
+  ]
+}

@@ -184,6 +184,8 @@ class FlagGemsBackend(Backend):
             "VLLM_FL_USE_FLAGGEMS_ATTN", "0"
         ).lower() in ("1", "true", "yes")
 
+        if use_flaggems_attn and os.environ.get("VLLM_FL_K_STATIC_FOLD", "0") == "1":
+            raise ValueError("Static K cannot use the FlagGems Attention override")
         if use_flaggems_attn:
             print("Using FlagGems attention backend.")
             return "vllm_fl.dispatch.backends.flaggems.impl.attention.AttentionFLBackend"
@@ -197,6 +199,18 @@ class FlagGemsBackend(Backend):
         except Exception as exc:  # noqa: BLE001
             logger.warning("attention tile policy not installed: %r", exc)
 
+        if os.environ.get("VLLM_FL_K_STATIC_FOLD", "0") == "1":
+            if any(os.environ.get(k, "0") == "1" for k in ("VLLM_FL_K_TOP4_JOINT", "VLLM_FL_K_TOP4", "VLLM_FL_V_ONLY", "VLLM_FL_USE_FLAGGEMS_ATTN")):
+                raise ValueError("Static K and other KV/Attention modes are mutually exclusive")
+            return "vllm_fl.attention.k_static_fold_service.KStaticFoldBackend"
+        if os.environ.get("VLLM_FL_K_TOP4_JOINT", "0") == "1":
+            if any(os.environ.get(k, "0") == "1" for k in ("VLLM_FL_K_TOP4", "VLLM_FL_V_ONLY")):
+                raise ValueError("Joint K, previous K and V-only modes are mutually exclusive")
+            return "vllm_fl.attention.k_top4_joint_service.KTop4JointBackend"
+        if os.environ.get("VLLM_FL_K_TOP4", "0") == "1":
+            if os.environ.get("VLLM_FL_V_ONLY", "0") == "1":
+                raise ValueError("K top4 and V-only modes are mutually exclusive")
+            return "vllm_fl.attention.k_top4_service.KTop4Backend"
         return AttentionBackendEnum.TRITON_ATTN.get_path()
 
     def moe_align_block_size(

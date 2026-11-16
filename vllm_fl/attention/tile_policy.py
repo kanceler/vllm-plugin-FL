@@ -195,6 +195,9 @@ def install_tile_policy() -> bool:
     binding_mod.unified_attention = tuned
     _installed = True
 
+    from vllm_fl.attention.int8_kv_repair import install_int8_kv_repair
+    install_int8_kv_repair()
+
     from vllm_fl.attention.config_model import device_profile
 
     prof = device_profile()

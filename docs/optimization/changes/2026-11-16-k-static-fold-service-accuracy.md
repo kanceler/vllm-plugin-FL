@@ -1,0 +1,121 @@
+# 静态K固定保护＋scale折Q：模型开关接入与官方精度
+
+## 1. 基本信息与摘要
+
+2026-11-16，Iluvatar BI-V150，分支feat/tianshu-k-top4，HEAD f82fa1670509f081aa13b58464cb6e5627fc10c4。用户明确要求将已采用算子接入为开关，完成后执行官方精度。新增VLLM_FL_K_STATIC_FOLD=1并完成42层真实接入，官方精度101/105（0.9619）通过，默认关闭，与动态joint/旧top4/V-only/FlagGems Attention覆写互斥。无官方serve或eval参数更改，未提交或推送。
+
+本轮涉及vllm_fl/attention/k_static_fold_kernel.py、writer.py、launch.py、policy.py、service.py，configs下模型42层校准与服务manifest，以及platform.py、worker/model_runner.py、两个后端选择入口；新增独立校准、manifest生成、生产算子验证及官方精度控制器。本次接入、独立校准与完整官方精度实测见第4节。
+
+## 2. 问题与原因分析
+
+此前静态方案只是固化算子：只有5层类别留一研究参数，现有单独KV update hook没有Q，不能直接挂上新开关就认为真实路径融合。需要42层统一静态参数和真正的Q/K/V联合入口。
+
+安装版vLLM已经提供AttentionBackend.forward_includes_kv_cache_update能力。设为True后，Attention.forward将Q/K/V共同传给后端，省去独立unified_kv_cache_update节点。新后端在forward内部执行融合Q变换与实际K/V写入，再Attention/归约；未修改官方vLLM文件或删除主要选择逻辑。
+
+首次模型启动命中旧AOT图，旧图仍含独立KV update，被新后端保护断言拦截。仅更换后端路径不保证外部开关进入编译缓存hash。修复是在平台标准additional_config扩展中加入服务manifest内容hash作为联合KV ABI指纹，参与vLLM原生compute_hash；不是修改官方命令，也不删除旧缓存或重装依赖。
+
+## 3. 具体实现
+
+### 统一42层独立参数
+
+calibrate_k_static_fold_model.py使用8段独立自写中文、英文、代码、符号说明文本，512/4096 tokens各一遍，另英文16384；每例BF16轨迹Decode8步。对RoPE后每层/KV head按channel累计max abs和动态top4频率；Decode只累计新增token，不重复整个前缀。每层共53384个校准token，固定频率最高4通道（并列小索引优先），其余scale=独立校准channel max/127×2，下限先取1e-6再乘2。margin2沿用预定方案，不依据官方评测结果调参。
+
+生成一套42层参数，含每层2×128置换和FP32 scale、保护位置、模型config及safetensors完整SHA256。校准与验证不使用math_500；4段全新留出文本用于同样512/4096及英文16384、Prefill/Decode第8步的42层数值筛查。文本重复构造长度、HF BF16轨迹不含量化反馈，限制明确保留。
+
+### 执行与调用管理
+
+- 固定全模型page32、token-major、separate_meta、276B/token/head；K主体INT8、4个原BF16保护值、V INT8和FP32 scale。没有持久BF16 K整块反量化或新增K scale逐token乘法。
+- Q/K在RoPE后同步置换，前4维Q/K保持原值，其余静态scale折入Q并BF16舍入；dot仍BF16×BF16、FP32累加，不是原生INT8 GEMM。
+- 新后端声明forward_includes_kv_cache_update=True，通过原生opaque Attention调用接收真实Q/K/V。metadata.slot_mapping保留实际物理映射；负slot不写KV但仍处理Q。无额外独立KV写入节点，旧hook若被误调用立即报错。
+- MetadataBuilder预分配共享Q工作区和80×16×32分段FP32工作区，各层按worker流顺序复用；层参数在capture前加载一次。query/key/value按num_actual_tokens前缀处理，支持实际不等长Prefill和Decode padding，相关模型验证见后文。
+- 选参复用最终固化策略，不依赖每步KV长度。72/80仅扩大内部Attention分段阈值和workspace；未知batch/Prefill使用同一静态缓存语义的canonical合法配置，无推理时搜索。
+- worker显式将匹配FullAttentionSpec分配为uint8/276B页，检查TP1、16Q/2KV/D128、BF16及无window/chunk spec。开关和源码/provider/模型/校准指纹不匹配时拒绝，不误测其他模式。
+
+### 编译ABI隔离
+
+platform标准扩展字段fl_k_static_fold_joint_qkv_abi_v1等于服务manifest SHA256。vLLM将additional_config纳入AOT hash，因此不同联合KV接口、实现或参数版本不能误用旧图。保留所有历史JIT/AOT缓存；首次失败目录不覆盖。
+
+## 4. 实验与验证
+
+### 独立校准与留出检查
+
+/workspace/experiments/tianshu-k-static-model-cal-20261116-01：42/42层统一参数，校准完成；9个留出案例×42层×Prefill/Decode=756条，756/756通过原门槛max abs≤0.20、NRMSE≤0.05，最坏max abs0.17198110、NRMSE0.04596736。校准证据归档experiment-artifacts/2026-11-16-k-static-model-cal-01/evidence.tar.xz，SHA256 bdbfe9905b3f8635dcd53f6616f6b8730dd80abacf8f273c29a48a5c2ef76f7a，两端一致。校准JSON SHA256 422841e5684671f7fa855aa1dc9771f7890860d2236e8952df3a0cfb25064d80。参考使用BF16操作数、FP32完整softmax再概率BF16，不是GPU online-softmax逐位模拟，也不是官方模型精度。
+
+### 生产算子与固化原型
+
+tianshu-k-static-service-20261116-01/validation-01、02/validation-01各8例通过，覆盖两种writer、writer2/4、32/8段、72/80及三种Prefill，生产代码输出与固化原型逐位相等，增长重放通过。两次同seed20261218，不算两套独立样本。该fixture显式使用合成scale0.0625验证调用/数学形式，不冒充42层校准精度；真实模型启动只加载固定42层文件。
+
+### 首次模型启动失败（保留）
+
+01目录首次startup从旧AOT缓存读取独立KV update节点，触发Static backend owns KV update inside Attention.forward，未发送官方评测请求。源代码、参数、日志与资源归档保留。采用标准编译ABI指纹后在02目录新源/新进程重新验证，后续状态如下。
+
+02目录加入ABI指纹后，真实42层参数加载、page32/threshold80/Qcapacity4096 MetadataBuilder、35/35 FULL Decode图及health200通过。AOT目录由首次旧db04c3b4ac改为64695b2dd1，旧缓存保留。实测KV容量971168tokens，不从跨次profile差值宣称容量优化。
+
+02的raw-completions smoke有一条直接EOS（finish_reason=stop、空text），被“必须非空”检查误判。旧动态joint的raw-completion也出现续写重复，不能把这类原始文本续写当chat任务能力验证。原始失败和输出保留；03只改变控制器，用与官方相同chat-completions协议并发1/2/7验证，应用实现/42层参数/manifest与02逐字节相同，复用02的同种子算子检查并单独记录VALIDATION_PROVENANCE.txt，不虚报新测。
+
+03的chat smoke并发1/2/7共10个请求全部正常非空返回，人工检查内容能分析自写请求，42层/35图通过。随后停止服务重启时，旧preflight裸bind将TCP TIME_WAIT误判为占用（/proc/net/tcp状态06，connect_ex=111，GPU无进程），未开始正式评测；保留该失败而不声称精度完成。
+
+修正控制器预检：先拒绝实际可连接的监听，再以SO_REUSEADDR绑定0.0.0.0验证端口，允许已关闭连接的TIME_WAIT。04目录复用03真实smoke完成标志，并逐文件验证应用源码和服务manifest一致，校准不变；仅控制器预检调整，不虚报重新smoke。04以全新服务运行官方精度，03:36:56开始、04:13:33完成；完整105题结果如下。
+
+01/02/03接入与smoke证据归档experiment-artifacts/2026-11-16-k-static-service-setup/evidence.tar.xz，SHA256 4217e7830e2cc002a30cf5594516b5630f0cd2b271595eb6fb3c9ad0b4dc8bc8，两端一致。
+
+### 官方精度最终结果：通过
+
+| 项目 | 本次结果 |
+|---|---:|
+| 正确 / 请求 | 101 / 105 |
+| 精确准确率（逐题评分复算） | 0.9619047619047619 |
+| 官方报告准确率 | 0.9619 |
+| 最低门槛 | 0.950 |
+| 请求成功 / API错误 | 105 / 0 |
+| incomplete | false |
+| 正常stop / max_tokens截断 | 105 / 0 |
+| 最大单题输出 | 28914 tokens |
+| 总输出 | 364276 tokens |
+
+已复核105条官方逐题评审与105条原始预测，正确数101；错误index为18、70、87、101（仅用于结果追溯，不用于校准或针对题目调整）。所有请求正常结束，无空响应、超时或达到32768上限的截断。本次精度超过0.950门槛，与给定历史BF16参考0.962接近；此前动态K一次测评102/105，本次少1题，但temperature1.0的两次非配对随机采样不能单独用于归因量化损失或统计显著性。
+
+实际模式：VLLM_FL_K_STATIC_FOLD=1、INT8_KV_REPAIR=1，K_TOP4_JOINT/K_TOP4/V_ONLY均0；42/42校准层与35/35 FULL Decode图确认，native joint Q/K/V路径实际启用。正式结果路径：/workspace/evalscope-datasets/level3/20261116_033656/reports/minicpm/math_500.json。服务manifest SHA256 517e652e6de91fd318d5e8f6cd929f671c6a154f438eaf8fcb332a4e5ae4400b，校准SHA256 422841e5684671f7fa855aa1dc9771f7890860d2236e8952df3a0cfb25064d80。
+
+运行时清单保留创建时的pending/not_run标记，不为写入成绩改变已测参数或ABI；accuracy-validation.json及本报告通过上述SHA绑定最终验证。EvalScope 1.11.1、OpenAI SDK2.46.0、transformers5.14.1。客户端exit0。退出时有resource_tracker semaphore清理警告，未造成请求错误；结束后GPU70MiB/0%/无进程，9031无监听。
+
+这只完成模型接入与官方精度，不是官方4K/16K吞吐或TTFT验收。EvalScope报告的avg_output_tps不是赛事total tokens/s，不据此宣称性能收益。
+
+## 5. 与已有改动的关系
+
+移植固化k_static_fold_biv150_v1算术和最终v2离线策略，不修改原固化快照。原动态joint/旧K/V-only实现保留；历史服务manifest绑定其旧源码树，新的接入改变全局路由文件指纹，历史对照使用归档原源码，不静默重写旧manifest来冒充同版本。
+
+此前静态完整调用性能来自诊断，不能直接当作新模型服务吞吐；旧动态K官方0.9714不能转移到本方案。本次原样官方Level3完整结果已通过精度门槛；性能仍待官方双场景验证。
+
+## 6. 合规性与风险
+
+未改官方serve、evalscope参数、评测数据或采样，不通过测试题校准或按答案调整。自研算子和KV布局实质修改，与现有量化启动参数无关。新开关默认0，冲突拒绝；最终运行指纹、层覆盖、健康和缓存布局须核对。
+
+静态参数可能对长Decode、温度采样和量化反馈敏感，独立层级数值门槛不能保证模型准确率。保留短KV与部分Prefill算子退化；没有宣称本轮官方吞吐/TTFT验收。当前缓存仍276B，额外预分配Q/归约workspace会影响容量，记录实际token容量，不承诺16K/64 KV不满载。
+
+## 7. 复现方式
+
+模型服务使用隔离source路径，未覆盖远端/workspace/vllm-plugin-FL。启用环境：
+
+```bash
+export PYTHONPATH=/workspace/experiments/tianshu-k-static-service-20261116-04/source
+export VLLM_PLUGINS=fl
+export VLLM_FL_INT8_KV_REPAIR=1
+export VLLM_FL_K_STATIC_FOLD=1
+export VLLM_FL_K_TOP4_JOINT=0
+export VLLM_FL_K_TOP4=0
+export VLLM_FL_V_ONLY=0
+```
+
+加载原有CoreX/Python环境后使用天数官方serve原参数；控制器run_k_static_fold_accuracy.py保留原命令JSON。先独立smoke服务健康、42层覆盖、35图和chat API并发1/2/7；停止释放后启动全新服务执行官方evalscope原命令（math_500 Level3、batch8、timeout3600、temperature1/top_p0.95/max_tokens32768、原work-dir、ignore-errors）。不插入评测请求或修改数据；结果目录与历史不覆盖。
+
+```bash
+cd /workspace/experiments/tianshu-k-static-service-20261116-04
+/workspace/tianshu-mixed-env-20261109/bin/python \
+ source/benchmarks/diagnostics/run_k_static_fold_accuracy.py \
+ /workspace/experiments/tianshu-k-static-service-20261116-04
+```
+
+启动时必须使用新实验目录/无state.json。完整源码、环境/命令、GPU前后状态及105题预测/评分/报告归档：experiment-artifacts/2026-11-16-k-static-service-accuracy-04/evidence.tar.xz，SHA256 1653fd230d88201978f698330976e335770e4e31edbd4cf38006e5de6854c4f3，两端一致，对应远端tianshu-k-static-service-20261116-04-v2.tar.xz。第一份归档缺少逐题摘要但原始结果相同，保留不覆盖；v2新增正确解析嵌套stop_reason的后处理摘要，不改官方结果。当前工作树各绑定应用源码、运行时JSON与归档逐字节一致。
+
+本机同目录result-summary.json提供机器可读结果与指纹。未提交、未推送，远端团队主仓库未覆盖。

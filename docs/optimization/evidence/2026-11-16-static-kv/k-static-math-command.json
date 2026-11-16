@@ -1,0 +1,30 @@
+{
+  "command": [
+    "/workspace/tianshu-mixed-env-20261109/bin/python",
+    "/usr/local/bin/vllm",
+    "serve",
+    "/workspace/MiniCPM5-2B",
+    "--port",
+    "9031",
+    "--compilation-config",
+    "{\"cudagraph_mode\": \"FULL_DECODE_ONLY\"}",
+    "--served-model-name",
+    "minicpm",
+    "--gpu-memory-utilization",
+    "0.85",
+    "--max-model-len",
+    "131072"
+  ],
+  "env": {
+    "PYTHONPATH": "/workspace/experiments/tianshu-k-static-service-20261116-04/source",
+    "VLLM_PLUGINS": "fl",
+    "VLLM_FL_V_ONLY": "0",
+    "VLLM_FL_K_TOP4": "0",
+    "VLLM_FL_K_TOP4_JOINT": "0",
+    "VLLM_FL_K_STATIC_FOLD": "1",
+    "VLLM_FL_INT8_KV_REPAIR": "1",
+    "PATH": "/usr/local/corex/bin:/usr/local/bin:/usr/bin:/bin",
+    "LD_LIBRARY_PATH": "/usr/local/corex/lib64:/usr/local/openmpi/lib:/usr/local/lib",
+    "FLAGGEMS_DB_URL": "sqlite:////workspace/experiments/tianshu-k-static-service-20261116-04/k-static-math-flaggems.db"
+  }
+}
