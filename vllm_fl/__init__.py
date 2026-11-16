@@ -176,6 +176,9 @@ def register_model():
 
     _register_flagcx_connector()
 
+    from vllm_fl.quantization.w8a16.linear import install_tianshu_separate
+    install_tianshu_separate()
+
     # Register OOT quant kernels so kernel selection can find them
     register_quant_linear()
     register_router()

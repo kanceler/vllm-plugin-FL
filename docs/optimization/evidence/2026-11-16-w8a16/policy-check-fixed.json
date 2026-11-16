@@ -1,0 +1,204 @@
+{
+  "provider": "/workspace/experiments/tianshu-boundaries-20261113-01/gems/flag_gems/runtime/backend/_iluvatar/ops/mm.py",
+  "provider_sha256": "fd120991ed1c5cab988d02cbdb1d97ccde1e9e2eedad55affe90321d875f32ed",
+  "torch": "2.10.0",
+  "triton": "3.6.0",
+  "device": "Iluvatar BI-V150",
+  "pythonpath": "/workspace/experiments/tianshu-k-static-down-perf-20261116-02/source:/workspace/experiments/tianshu-boundaries-20261113-01/gems",
+  "matches": true,
+  "cases": [
+    {
+      "m": 1,
+      "choice": {
+        "algorithm": "splitk_muxi",
+        "config": [
+          32,
+          64,
+          64,
+          4,
+          1,
+          8
+        ],
+        "layout": "nk",
+        "convert": [
+          "vector",
+          256
+        ],
+        "source": "offline_microbench_graph_median"
+      },
+      "relative_l2": 0.0
+    },
+    {
+      "m": 16,
+      "choice": {
+        "algorithm": "splitk_muxi",
+        "config": [
+          32,
+          64,
+          64,
+          4,
+          1,
+          8
+        ],
+        "layout": "nk",
+        "convert": [
+          "vector",
+          256
+        ],
+        "source": "offline_microbench_graph_median"
+      },
+      "relative_l2": 2.395816773059778e-05
+    },
+    {
+      "m": 32,
+      "choice": {
+        "algorithm": "splitk_muxi",
+        "config": [
+          32,
+          64,
+          64,
+          4,
+          1,
+          8
+        ],
+        "layout": "nk",
+        "convert": [
+          "vector",
+          256
+        ],
+        "source": "offline_microbench_graph_median"
+      },
+      "relative_l2": 3.483359978417866e-05
+    },
+    {
+      "m": 56,
+      "choice": {
+        "algorithm": "splitk_muxi",
+        "config": [
+          64,
+          64,
+          64,
+          8,
+          1,
+          4
+        ],
+        "layout": "nk",
+        "convert": [
+          "vector",
+          256
+        ],
+        "source": "MetaX_small_M_grouping_with_Iluvatar_measured_configuration"
+      },
+      "relative_l2": 7.885351806180552e-06
+    },
+    {
+      "m": 64,
+      "choice": {
+        "algorithm": "splitk_muxi",
+        "config": [
+          64,
+          64,
+          64,
+          8,
+          1,
+          4
+        ],
+        "layout": "nk",
+        "convert": [
+          "vector",
+          256
+        ],
+        "source": "offline_microbench_graph_median"
+      },
+      "relative_l2": 3.8532662074430846e-06
+    },
+    {
+      "m": 128,
+      "choice": {
+        "algorithm": "splitk_muxi",
+        "config": [
+          64,
+          64,
+          64,
+          8,
+          1,
+          4
+        ],
+        "layout": "nk",
+        "convert": [
+          "serial",
+          256
+        ],
+        "source": "offline_microbench_graph_median"
+      },
+      "relative_l2": 1.0813593689817935e-05
+    },
+    {
+      "m": 256,
+      "choice": {
+        "algorithm": "splitk_muxi",
+        "config": [
+          64,
+          64,
+          64,
+          8,
+          1,
+          4
+        ],
+        "layout": "nk",
+        "convert": [
+          "vector",
+          256
+        ],
+        "source": "offline_microbench_graph_median"
+      },
+      "relative_l2": 1.785150197974872e-05
+    },
+    {
+      "m": 2048,
+      "choice": {
+        "config": [
+          256,
+          256,
+          32,
+          16,
+          2
+        ],
+        "layout": "nk",
+        "convert": [
+          1024,
+          4
+        ],
+        "group": 2,
+        "fast": true,
+        "algorithm": "separate_hotspot",
+        "source": "2026-11-13-tianshu-hotspot-joint-01:10_paired_confirmations"
+      },
+      "relative_l2": 3.0576840799767524e-05
+    },
+    {
+      "m": 4096,
+      "choice": {
+        "config": [
+          256,
+          256,
+          32,
+          16,
+          2
+        ],
+        "layout": "kn",
+        "convert": [
+          128,
+          128,
+          8
+        ],
+        "group": 0,
+        "fast": true,
+        "algorithm": "separate_hotspot",
+        "source": "2026-11-13-tianshu-hotspot-joint-01:10_paired_confirmations"
+      },
+      "relative_l2": 3.1814444810152054e-05
+    }
+  ],
+  "complete": true
+}

@@ -1,0 +1,17 @@
+{
+  "base": "f82fa1670509f081aa13b58464cb6e5627fc10c4",
+  "files": {
+    "vllm_fl/quantization/w8a16/backend.py": "b555acf266739b75655d17c48078052d0d4ce5a16b97b811a88e06f04b5d8ff2",
+    "vllm_fl/quantization/w8a16/linear.py": "993b7056416ee273252de943e3e14f2a30982007dedac18b871f6b8b0e91157d",
+    "vllm_fl/quantization/w8a16/policy.py": "a8fccca51b632705ae80d278fa5362acda92b584a9d9148adb8b6c2bf6bf2169",
+    "vllm_fl/quantization/w8a16/cache.py": "e0c33be2012ebb67d1fdd886fb4e08abd3b1bb37133956e4fa08faa4d864a769",
+    "vllm_fl/quantization/w8a16/__init__.py": "4188ec985e1fa30d57b5132f266269a2bd29cd363b1ac5e3a611b21021ddc6dc",
+    "vllm_fl/quantization/w8a16/separate.py": "9ae478bdc2ba2329dbd5403087a85feb9e74c2622e83f148ab72c5e7b3d2155e",
+    "vllm_fl/quantization/w8a16/dispatch_manifest.json": "7876d1fbc992fcdbbbd639bbed0c046a637ba8f1e36d5797e14ab0d1c7ed0866",
+    "vllm_fl/quantization/w8a16/gemv.py": "bb2bb782c9519d4a917318e14f8abc17253108515cc57cbbc2cc4b7272aa0e80",
+    "vllm_fl/quantization/w8a16/splitk.py": "02d9cff06130ec46a9a58bfedeb97500d517a1f30a93fd0096af69a7fb7f8462",
+    "vllm_fl/quantization/w8a16/reference.py": "e5495df74fd4b097e986148e171795c560c1f8b5041adfbaab1fab2b0a330161",
+    "vllm_fl/quantization/w8a16/hotspot.py": "e9e63b48ea0b13e3a9c1d0b7ef8623de6ba4153b065355c131727f1cbf53b819"
+  },
+  "provider_sha256": "fd120991ed1c5cab988d02cbdb1d97ccde1e9e2eedad55affe90321d875f32ed"
+}

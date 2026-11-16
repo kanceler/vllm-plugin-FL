@@ -1,0 +1,138 @@
+[
+  {
+    "mode": "eager",
+    "native": {
+      "projection": "down",
+      "m": 64,
+      "n": 2048,
+      "k": 6144,
+      "algorithm": "native",
+      "layout": "nk",
+      "config": [
+        64,
+        64,
+        128,
+        16,
+        2
+      ],
+      "convert": [
+        2048,
+        8
+      ],
+      "eager": {
+        "median_us": 90.54423123598099,
+        "min_us": 89.21153843402863,
+        "max_us": 91.39615297317505
+      },
+      "graph": {
+        "median_us": 92.82692149281502,
+        "min_us": 92.20769256353378,
+        "max_us": 93.0461511015892
+      }
+    },
+    "splitk": {
+      "projection": "down",
+      "m": 64,
+      "n": 2048,
+      "k": 6144,
+      "algorithm": "splitk_muxi",
+      "layout": "nk",
+      "config": [
+        64,
+        64,
+        64,
+        8,
+        1,
+        4
+      ],
+      "convert": [
+        "vector",
+        256
+      ],
+      "eager": {
+        "median_us": 77.81346142292023,
+        "min_us": 77.51923054456711,
+        "max_us": 78.04615050554276
+      },
+      "graph": {
+        "median_us": 80.79038560390472,
+        "min_us": 80.33845946192741,
+        "max_us": 81.04230463504791
+      }
+    },
+    "reduction_pct": 14.060277103553043,
+    "paired_range": [
+      12.907956307829526,
+      14.880275379832565
+    ],
+    "wins": 10
+  },
+  {
+    "mode": "graph",
+    "native": {
+      "projection": "down",
+      "m": 64,
+      "n": 2048,
+      "k": 6144,
+      "algorithm": "native",
+      "layout": "nk",
+      "config": [
+        64,
+        64,
+        128,
+        16,
+        2
+      ],
+      "convert": [
+        2048,
+        8
+      ],
+      "eager": {
+        "median_us": 90.54423123598099,
+        "min_us": 89.21153843402863,
+        "max_us": 91.39615297317505
+      },
+      "graph": {
+        "median_us": 92.82692149281502,
+        "min_us": 92.20769256353378,
+        "max_us": 93.0461511015892
+      }
+    },
+    "splitk": {
+      "projection": "down",
+      "m": 64,
+      "n": 2048,
+      "k": 6144,
+      "algorithm": "splitk_muxi",
+      "layout": "nk",
+      "config": [
+        64,
+        64,
+        64,
+        8,
+        1,
+        4
+      ],
+      "convert": [
+        "vector",
+        256
+      ],
+      "eager": {
+        "median_us": 77.81346142292023,
+        "min_us": 77.51923054456711,
+        "max_us": 78.04615050554276
+      },
+      "graph": {
+        "median_us": 80.79038560390472,
+        "min_us": 80.33845946192741,
+        "max_us": 81.04230463504791
+      }
+    },
+    "reduction_pct": 12.966643399718848,
+    "paired_range": [
+      12.131890616178676,
+      13.37453169920584
+    ],
+    "wins": 10
+  }
+]

@@ -1,0 +1,40 @@
+# 天数Down M64复用沐曦Split-K对照
+
+## 1. 基本信息与摘要
+2026-11-13，天数Iluvatar BI-V150。用户将优先级限定为仅Down M64，检查Split-K是否有正收益。分支perf/tianshu-down-m64-muxi-splitk。新增diagnostics下tianshu_muxi_splitk.py、benchmark_tianshu_down64_muxi_splitk.py，复制CPU规划器w8a16_splitk_search.py。GPU测试已完成：eager耗时降低14.0603%，图重放降低12.9666%，各10/10配对轮次同向；仅为算子结果。
+
+## 2. 问题与原因分析
+新版天数Down Split-K只有正确性适配记录，没有优化后的M64正收益证据。用户要求复用沐曦实现，不能把沐曦结果或天数BF16 Split-K历史测试当作当前W8A16结论。当前Shape为M64/N2048/K6144。
+
+## 3. 具体实现
+从FlagGems-scale-epilogue工作树_metax/ops/weight_int8pack_mm.py抽取partial、串行reduce_scale、vector_reduce三个函数体原样保留。替换外围libentry装饰器为直接triton.jit启动，移除天数不适用的pipeline="basic"参数；不导入或注册_metax后端。模块docstring保留源文件SHA256。partial加载INT8并转换BF16做dot，FP32 partial；reduce合并后乘FP32 per-output-channel scale并输出BF16。不是INT8×INT8 GEMM，不保留BF16副本。
+
+完整调用包含FP32 workspace与输出分配、partial、reduce/scale。复用沐曦规划器原候选池和合法性/资源条件，启发式剪枝原因保留但本轮不据此删除合法候选。池为BM16/32/64、BN32/64/128、BK64/128/256、warps2/4/8、stages1/2/3、S2/4/8/16/32，共1215项；不合法K划分及超workspace预算记录在pool。BF16同版本原生MM搜索原518项加BM16补充72项，共590项。Split-K前四项再交叉串行/向量reduce及block128/256/512共24项。每路径前三项两seed五轮eager/graph复测；只称有限候选池内较优。
+
+## 4. 实验与验证
+本地AST通过，三个复用函数体与沐曦源AST逐项匹配。预设数值门槛relative L2≤0.005、normalized max≤0.01、输出有限。原生参考为FP32 A×W，量化参考为FP32 A×Q后乘scale；向量归约改变加法顺序，独立验证。全部有效候选最大Kernel L2为0.001661529、normalized max为0.002245572；权重量化误差不包含在这些Kernel误差中，未单独记录，不能作为模型精度。
+
+实际候选：BF16 590项，Split-K 1215项中243项K整除条件失败、972项实际尝试；总初筛1562项，1406成功、156共享内存超限失败。前四Split-K配置交叉24个归约候选全部通过；原生与量化各三候选，两seed五轮eager/graph共120条确认计时全部通过，总1706条raw记录。没有计时缓存复用；保留磁盘编译缓存，不把尝试数写成新编译数。规划器programs_per_sm等仅记录代理值，其中warp_size按32传入，未据此进行硬件能力或性能剪枝，也不据此声称实测占用率。未调用旧规划器classify_latency函数，不套官方±1%阈值。
+
+| 模式 | BF16中位数μs | Split-K中位数μs | 耗时降低 | 10对轮次降低范围 | 同向轮数 |
+|---|---:|---:|---:|---|---:|
+| eager | 90.544231 | 77.813461 | 14.060277% | 12.907956%～14.880275% | 10/10 |
+| graph | 92.826921 | 80.790386 | 12.966643% | 12.131891%～13.374532% | 10/10 |
+
+两模式赢家均为BF16 `(BM,BN,BK,warps,stages)=(64,64,128,16,2)`；量化 `(64,64,64,8,1,S=4)`，vector reduce、block256、reduce warps4。Split-K workspace为4×64×2048×4=2MiB，每次调用真实分配，输出另分配；无预计算partial。只在所测范围内较优，不是全局最优。单权重热重复、synthetic输入、固定图捕获，不代表真实42层工作集或模型图覆盖。无模型精度、吞吐或TTFT结果。
+
+## 5. 与已有改动的关系
+复用沐曦已优化Split-K算法和搜索工具，配置在天数重新验证，不照搬C500分界。未修改生产backend、原生MM底层或runtime dispatch。天数原通用Split-K与既有Dense、Separate、GEMV均保留，不删除历史结果。前序其他投影及其他M任务按用户指令暂停。
+
+## 6. 合规性与风险
+先核对旧GPU任务PID77811归属后停止，资源状态归档在前序实验gpu-after-priority-switch.txt。新任务独立目录、串行测试，不变更官方服务或评测参数，不使用评测集校准。M64单Shape不能外推其他M/投影，synthetic热重复也不能替代真实模型。尚未完成不写COMPLETE。配置合法性与性能差分别记录。
+
+## 7. 复现方式
+远端/workspace/experiments/tianshu-down64-muxi-splitk-20261113-01/包含源码、hashes、环境、资源前态、日志与结果。
+
+```bash
+cd /workspace/experiments/tianshu-down64-muxi-splitk-20261113-01
+PYTHONPATH=$PWD/source:$PWD/gems /workspace/tianshu-mixed-env-20261109/bin/python -u source/benchmarks/diagnostics/benchmark_tianshu_down64_muxi_splitk.py results
+```
+
+使用已有Torch2.10.0/Triton3.6.0环境。results/COMPLETE已生成；运行后GPU恢复70MiB驱动占用、0%利用率、无GPU进程。全部原始数据、源码、前后资源及日志回传至本地工作区experiment-artifacts/2026-11-13-tianshu-down64-muxi-splitk-01/，原包evidence.tgz保留；selected.json记录赢家及配对统计。复现使用新结果目录，并先核对资源。未提交或推送。
