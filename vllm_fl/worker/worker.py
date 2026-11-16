@@ -481,7 +481,15 @@ class WorkerFL(WorkerBase):
     def load_model(self, *, load_dummy_weights: bool = False) -> None:
         ### TODO(lms): support manages a memory pool for device tensors.
         with set_current_vllm_config(self.vllm_config):
+            gemm_bucket_state = None
+            if getattr(current_platform, "vendor_name", None) == "metax":
+                from vllm_fl.dispatch.backends.vendor.metax.patches import gemm_bucket
+
+                if not load_dummy_weights:
+                    gemm_bucket_state = gemm_bucket.install(self.vllm_config)
             self.model_runner.load_model(load_dummy_weights=load_dummy_weights)
+            if gemm_bucket_state is not None:
+                gemm_bucket.warmup_model(gemm_bucket_state, self.model_runner.model)
         # with self._maybe_get_memory_pool_context(tag="weights"):
         #     self.model_runner.load_model(eep_scale_up=eep_scale_up)
 
