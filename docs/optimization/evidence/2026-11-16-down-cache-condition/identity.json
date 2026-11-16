@@ -1,0 +1,9 @@
+{
+  "provider": "/workspace/experiments/tianshu-boundaries-20261113-01/gems/flag_gems/runtime/backend/_iluvatar/ops/mm.py",
+  "provider_sha256": "fd120991ed1c5cab988d02cbdb1d97ccde1e9e2eedad55affe90321d875f32ed",
+  "old_splitk_source": "/workspace/experiments/tianshu_muxi_splitk.py",
+  "do_bench_module": "/usr/local/lib/python3.12/site-packages/triton/testing.py",
+  "clear_cache_in_do_bench": true,
+  "db": "sqlite:////workspace/experiments/down-history-reconcile-20261116.db",
+  "note": "GPU cache clearing is diagnostic-only, paired for every path; persistent compile caches retained"
+}
