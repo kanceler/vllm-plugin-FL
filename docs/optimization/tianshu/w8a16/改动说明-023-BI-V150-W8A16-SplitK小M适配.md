@@ -48,12 +48,12 @@ cd /workspace/experiments/tianshu-down64-muxi-splitk-20261113-01
 PYTHONPATH=$PWD/source:$PWD/gems /workspace/tianshu-mixed-env-20261109/bin/python -u source/benchmarks/diagnostics/benchmark_tianshu_down64_muxi_splitk.py results
 ```
 
-原始记录已复制到本仓库：[记录1](docs/optimization/evidence/quantization-history/023-1.md)、[记录2](docs/optimization/evidence/quantization-history/023-2.md)。副本来源和SHA256见同目录清单。
+原始记录已复制到本仓库：[记录1](../../evidence/quantization-history/023-1.md)、[记录2](../../evidence/quantization-history/023-2.md)。副本来源和SHA256见同目录清单。
 
 ## 6. 合规性与保留范围
 
-算子结果包含必要转换和归约，不代替模型精度及官方双场景结果。实际源码版本、设备、开关、命令、误差和原始数据见[原始记录](../vllm-plugin-FL-w8a16-final/001-复用沐曦分片归约与天数小批量优化.md)。当前新分支仅复核文档，没有重新执行上述实验或官方测评；此处为历史整理时状态；当前源码接入状态见末尾整合补充。
+算子结果包含必要转换和归约，不代替模型精度及官方双场景结果。实际源码版本、设备、开关、命令、误差和原始数据见[原始记录](../../../../../vllm-plugin-FL-w8a16-final/001-复用沐曦分片归约与天数小批量优化.md)。当前新分支仅复核文档，没有重新执行上述实验或官方测评；此处为历史整理时状态；当前源码接入状态见末尾整合补充。
 
 ## 整合版接入补充
 
-三个final及既有静态KV兼容实现已在当前分支定向接入；本文前述数据仍是历史实验数据。整合版仅通过CPU静态与兼容测试，GPU编译、策略命中、完整调用和模型评测待验证。当前开关、加载路径、独立缓存身份及完整官方命令见[整合运行与复现](量化整合运行与复现.md)。历史命令与旧manifest保留，不当作整合版新测。
+三个final及既有静态KV兼容实现已在当前分支定向接入；本文前述数据仍是历史实验数据。整合版仅通过CPU静态与兼容测试，GPU编译、策略命中、完整调用和模型评测待验证。当前开关、加载路径、独立缓存身份及完整官方命令见[整合运行与复现](../../../../量化整合运行与复现.md)。历史命令与旧manifest保留，不当作整合版新测。

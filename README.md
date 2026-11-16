@@ -1,4 +1,4 @@
-> 本分支量化工作入口：[跨平台改动总索引](量化改动总索引.md) · [沐曦C500](沐曦C500量化改动索引.md) · [天数BI-V150](BI-V150-KV量化改动索引.md) · [量化技术报告](docs/optimization/report/量化专项技术报告.md)
+> 本分支量化工作入口：[跨平台改动总索引](量化改动总索引.md) · [沐曦C500](docs/optimization/muxi/w8a16/README.md) · [天数BI-V150](docs/optimization/tianshu/kv/README.md) · [量化技术报告](量化专项技术报告.md)
 
 # vllm-plugin-FL
 
