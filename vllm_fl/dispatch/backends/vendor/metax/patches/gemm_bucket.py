@@ -118,9 +118,30 @@ class BucketState:
                 and parameter.is_contiguous()
             ):
                 weights.setdefault(pair, parameter.detach())
-        if weights.keys() != _PAIRS:
-            logger.warning("C500 GEMM buckets inactive: expected NT weights missing")
+        if not weights:
+            logger.warning("C500 GEMM buckets inactive: no NT bf16 weights found")
             return False
+        # A quantized projection (for example W8A16 down) has no bf16 weight.
+        # The tuner only measures timing for a given geometry, so a scratch
+        # tensor of the same shape and dtype stands in for warmup. The runtime
+        # operand is the dequantized [N,K] buffer, which presents the same NT
+        # view, so the warmed configurations stay valid.
+        synthetic = []
+        for pair in sorted(_PAIRS - set(weights)):
+            n, k = pair
+            scratch = torch.empty(
+                (n, k),
+                device=torch.device("cuda", self.device),
+                dtype=torch.bfloat16,
+            )
+            weights[pair] = scratch
+            synthetic.append(pair)
+        if synthetic:
+            logger.info(
+                "C500 GEMM buckets: quantized projections use scratch bf16 "
+                "weights for warmup: %s",
+                synthetic,
+            )
 
         start = time.monotonic()
         generator = torch.Generator(device=f"cuda:{self.device}").manual_seed(0)
@@ -156,6 +177,9 @@ class BucketState:
                     for m in variants:
                         self.launch(a[:m], weight.t(), c[:m], m, n, k)
             torch.cuda.synchronize(self.device)
+        if synthetic:
+            del scratch
+        del synthetic
         self.warmup_seconds = time.monotonic() - start
         self.ready = True
         logger.info(
