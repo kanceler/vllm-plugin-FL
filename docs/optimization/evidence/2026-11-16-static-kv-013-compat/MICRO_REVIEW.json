@@ -1,5 +1,0 @@
-{
-  "review": "Both signs retained; pure Decode about2.2% slower, one small Mixed37.7% slower; larger Mixed investigated in6 finite cases, no tuning or threshold change. Proceed with requested full combination model validation; micro is not an E2E prediction.",
-  "baseline_rerun": false,
-  "w8a16": false
-}

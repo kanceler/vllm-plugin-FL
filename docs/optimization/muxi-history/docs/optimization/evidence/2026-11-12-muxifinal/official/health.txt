@@ -1,1 +1,0 @@
-HTTP200; down-only42; 002 cap4096; 003 device prefix; six MM mappings; Down fused policy hit
