@@ -1,8 +1,8 @@
 # MiniCPM5-2B 优化方案评审复现说明
 
-本说明以赛事预装环境为起点，复现沐曦 C500 **完整 F**，不要求重跑消融。F包括Down W8A16、配套融合GEMM及专用配置、QKV/O/GateUp BF16热点配置、Top-p、GEMM分桶、自适应Prefill chunk与逐层同步消除。W8A16使用BF16激活、INT8权重在计算时转换为BF16、FP32累加及scale输出，不是原生INT8×INT8 GEMM。
+本说明以赛事预装环境为起点，分别复现沐曦 C500 **完整 F** 与天数 **静态KV＋#011–#013**，不要求重跑消融。F包括Down W8A16、配套融合GEMM及专用配置、QKV/O/GateUp BF16热点配置、Top-p、GEMM分桶、自适应Prefill chunk与逐层同步消除。W8A16使用BF16激活、INT8权重在计算时转换为BF16、FP32累加及scale输出，不是原生INT8×INT8 GEMM。
 
-本文件可作为最终交付根目录的 `readme.md`。当前待提交源码仍在整合，沐曦数据绑定已冻结F版本；加入后续天数改动后须复查身份与路径，不将其他源码版本自动视为已验证。天数官方启动命令列在末尾，整合版天数结果待设备验证。
+天数与沐曦的复现可以按任意顺序进行。每个平台在对应的赛事容器中新开终端，先初始化该平台的软件栈，再安装本包的两份配套源码。安装后完整执行对应的环境开关配置，再按官方命令启动和评测。沐曦按第3节初始化，安装后执行第4～8节。天数按第9节初始化，执行第3节的共同安装和第4节的数据准备，再回到第9节配置并启动。
 
 ## 1. 交付与固定目录
 
@@ -51,9 +51,9 @@
 
 ## 3. 环境初始化、源码部署与编译
 
-每次评测先归档上一任务，核对并停止本任务残留服务和客户端，确认GPU及9031端口无冲突。精度与性能串行执行，切换源码或优化开关必须新服务；不删除磁盘Triton/JIT/FlagGems调优缓存。不得停止其他人的任务。
+安装和测评前确认GPU及9031端口无冲突。精度与性能串行执行，切换源码或优化开关必须新服务；不删除磁盘Triton/JIT/FlagGems调优缓存。不得停止其他人的任务。
 
-在本次实测容器中初始化如下；赛事环境若已经初始化，核对路径即可：
+下列初始化仅适用于沐曦。天数使用第9节CoreX初始化，不执行本段Conda/MACA命令；随后两平台均执行本节共同安装步骤。赛事预装环境已初始化时核对实际Python和路径即可：
 
 ```bash
 source /opt/conda/etc/profile.d/conda.sh
@@ -69,26 +69,21 @@ python --version
 mx-smi
 ```
 
-将两份配套源码放到固定目录后，**先在尚未安装的干净交付快照核验**：
-
-```bash
-cd /workspace/vllm-plugin-FL
-python3 benchmarks/diagnostics/audit_quantization_integration.py
-python3 benchmarks/diagnostics/audit_integrated_flaggems.py
-```
-
-当前整合清单同时核验插件内 `FlagGems/` 快照，所以暂须保留该副本，且与同级 `/workspace/FlagGems` 的源文件一致。最终拆分清单若改变，需要同步更新本步骤；不能删掉绑定文件再绕过审计。安装会生成build/egg-info，完整快照审计应在安装前执行，安装后不将构建产物纳入原始manifest。
+将两份配套源码分别放到 `/workspace/FlagGems` 和 `/workspace/vllm-plugin-FL`，然后执行下列安装命令。
 
 按赛方方案安装源码，不重装厂商软件栈：
 
 ```bash
+export SETUPTOOLS_SCM_PRETEND_VERSION_FOR_FLAG_GEMS=5.3.5
 cd /workspace/FlagGems
 python -m pip install --no-build-isolation .
 cd /workspace/vllm-plugin-FL
 env -u VLLM_VENDOR python -m pip install --no-build-isolation .
 ```
 
-不设置不受当前setup支持的 `VLLM_VENDOR=metax`。本方案自研Kernel由Triton在服务初始化和实际调用时JIT编译，无需额外编译自研C++扩展。实测F复用预装entry point并以PYTHONPATH加载冻结源码；上述安装步骤是评审源码更新流程，不能将安装元数据版本当作实际运行源码身份。
+源码交付包不含Git元数据；上述 `SETUPTOOLS_SCM_PRETEND_VERSION_FOR_FLAG_GEMS=5.3.5` 为源码包构建明确指定包版本，避免setuptools-scm无法推导版本而安装失败。它不改变Kernel、提供者绑定或优化开关，运行时使用下文配置的源码路径。
+
+不设置不受当前setup支持的 `VLLM_VENDOR=metax`。本方案自研Kernel由Triton在服务初始化和实际调用时JIT编译，无需额外编译自研C++扩展。
 
 ## 4. 模型与数据准备
 
@@ -97,7 +92,7 @@ env -u VLLM_VENDOR python -m pip install --no-build-isolation .
 ```bash
 python - <<'PY'
 from pathlib import Path
-import json, hashlib
+import json
 model = Path('/workspace/MiniCPM5-2B')
 cfg = json.loads((model/'config.json').read_text())
 assert (cfg['num_hidden_layers'], cfg['hidden_size'], cfg['intermediate_size']) == (42, 2048, 6144)
@@ -108,19 +103,18 @@ data = Path('/workspace/evalscope-datasets/math_500/test.jsonl')
 rows = [json.loads(line) for line in data.read_text().splitlines() if line.strip()]
 assert len(rows) == 500
 assert sum(str(row['level']) in ('3', 'Level 3') for row in rows) == 105
-assert hashlib.sha256(data.read_bytes()).hexdigest() == '35dc41080a3680858b27fa7e0533d2d547825316fc5dafe5d316f4ccc5a06132'
 print('MODEL_FILES_AND_DATASET_OK')
 PY
-sha256sum /workspace/MiniCPM5-2B/model-00000-of-00001.safetensors
 ```
 
-实测单分片权重SHA256为 `14fb8e7f0a18d53d1f239773758bf581cee7e456a4523a54622c3a245b64402c`。校验应在评测前完成，勿与GPU评测并发读取完整权重。性能脚本使用其原有random负载，无需准备额外prompt文件。
+性能脚本使用其原有random负载，无需准备额外prompt文件。
 
 ## 5. 设置沐曦完整F环境
 
-**官方启动和评测命令不加自定义参数；完整F由源码和下列环境变量选择。** 仅设置 `VLLM_PLUGINS=fl` 不能保证完整F。以下在启动服务的终端执行；每次使用新的实验目录，不覆盖历史结果。
+**官方启动和评测命令不加自定义参数；完整F由源码和下列环境变量选择。** 仅设置 `VLLM_PLUGINS=fl` 不能保证完整F。以下在启动服务的终端执行。
 
 ```bash
+unset VLLM_CACHE_ROOT VLLM_VENDOR FLAGGEMS_ENABLE_OPLIST_PATH FLAGGEMS_W8A8_LINEAR_OP FLAGGEMS_W8A8_MOE_OP
 for name in $(env | cut -d= -f1 | grep '^VLLM_FL_'); do unset "$name"; done
 export PYTHONPATH=/workspace/vllm-plugin-FL:/workspace/FlagGems/src
 export PYTHONDONTWRITEBYTECODE=1
@@ -134,32 +128,13 @@ export VLLM_FL_C500_TOP_P_SELECTION=1
 export VLLM_FL_ADAPTIVE_CHUNK_ENABLED=1
 export VLLM_FL_C500_NT_TILING=1
 export VLLM_FL_C500_ATTN_NO_HOST_SYNC=1
-export F_REPRO_DIR=/workspace/benchmark_results/full-F-$(date +%Y%m%d-%H%M%S)
-mkdir "$F_REPRO_DIR"
-export VLLM_CACHE_ROOT="$F_REPRO_DIR/vllm-cache"
-env | sort | grep -E '^(VLLM_[^=]*|PYTHONPATH|MACA_PATH)=' > "$F_REPRO_DIR/run-environment.txt"
-python - <<'PY'
-from pathlib import Path
-import importlib, hashlib
-import vllm_fl, flag_gems
-mm = importlib.import_module('flag_gems.runtime.backend._metax.ops.mm')
-print('PLUGIN', vllm_fl.__file__)
-print('FLAGGEMS', flag_gems.__file__)
-print('MM', mm.__file__)
-assert Path(vllm_fl.__file__).resolve().is_relative_to('/workspace/vllm-plugin-FL')
-assert Path(mm.__file__).resolve().is_relative_to('/workspace/FlagGems')
-assert hashlib.sha256(Path(mm.__file__).read_bytes()).hexdigest() == '3abfeba5c64c159370543602a2afc329efb6c7fc09e46659c11faa6b64485213'
-assert hasattr(mm, 'mm_kernel_nt_scale_direct')
-PY
-python -m pip freeze > "$F_REPRO_DIR/pip-freeze.txt"
-mx-smi > "$F_REPRO_DIR/gpu-before.txt"
 ```
 
-后两个C500开关是消融接口，在实测原F中相应功能已启用；在当前含接口的源码中显式设置1，避免继承F−T/F−S配置。不同版本不能仅更新provider哈希冒称相同路径。
+最后两项 C500 优化开关分别启用 BF16 专用分块配置和 Attention 无主机同步路径。
 
 ## 6. 官方启动与简单测试
 
-在上述终端原样运行官方沐曦启动命令，保留完整服务日志：
+在上述终端原样运行官方沐曦启动命令：
 
 ```bash
 export VLLM_PLUGINS=fl
@@ -210,36 +185,13 @@ evalscope eval \
   --ignore-errors
 ```
 
-记录命令退出码和日志中的本次时间戳目录。`--ignore-errors`不代表出错也算完整：必须检查本次reports、predictions、reviews均对应105题，requested=105、succeeded=105、errored=0、incomplete=false，并复核逐题得分。保存完整时间戳目录及服务、客户端日志；不要从历史目录择优取分。
+根据本次日志打印的时间戳目录查看评测结果。`--ignore-errors`不代表出错也算完整：必须检查本次reports、predictions、reviews均对应105题，requested=105、succeeded=105、errored=0、incomplete=false，并复核逐题得分。工具自动保存结果；查看本次输出，不从历史目录择优取分。
 
-以下以本次目录为例；重新运行时把EVAL_RUN_DIR改为客户端日志打印的本次输出目录，再执行校验：
-
-```bash
-export EVAL_RUN_DIR=/workspace/evalscope-datasets/level3/20261118_102223
-python - <<'PY'
-import json, os
-from pathlib import Path
-root = Path(os.environ['EVAL_RUN_DIR'])
-report = json.loads((root/'reports/minicpm/math_500.json').read_text())
-reviews = [json.loads(x) for x in (root/'reviews/minicpm/math_500_Level 3.jsonl').read_text().splitlines()]
-predictions = [json.loads(x) for x in (root/'predictions/minicpm/math_500_Level 3.jsonl').read_text().splitlines()]
-summary = report['execution_summary']
-assert summary['requested'] == summary['succeeded'] == 105
-assert summary['errored'] == 0 and not summary['incomplete']
-assert len(reviews) == len(predictions) == len({r['index'] for r in reviews}) == 105
-assert all(r['sample_score']['score']['status'] == 'success' for r in reviews)
-correct = sum(r['sample_score']['score']['value']['accuracy'] for r in reviews)
-accuracy = correct / 105
-print('CORRECT', correct, 'TOTAL', 105, 'ACCURACY', accuracy)
-assert accuracy >= 0.950, 'accuracy below competition threshold'
-PY
-```
-
-本次实测目录为 `20261118_102223`，报告 `reports/minicpm/math_500.json`。完整F结果为 **102/105=0.97142857（报告0.9714，97.14%）**，105题全部成功、0错误，达到最低准确率0.950。生成参数含temperature=1.0，复现分数可能波动；还需检查输出有无明显异常，不能只凭阈值宣称所有能力均已验证。
+检查本次报告中的准确率达到 0.950，并检查输出是否存在明显异常。生成使用 temperature=1.0，分数可能波动。
 
 ## 8. 官方性能命令及校验
 
-性能与精度分别使用新的全F服务，确认前任务退出、资源释放后再开始。性能命令原样执行：
+性能与精度分别使用新的对应平台主方案服务，确认前任务退出、资源释放后再开始。性能命令原样执行：
 
 ```bash
 cd /workspace
@@ -250,53 +202,52 @@ python3 /workspace/vllm-plugin-FL/benchmarks/benchmark_throughput_serve.py \
   --test-cases '[[4096,1024,64,256],[16384,1024,64,128]]'
 ```
 
-保留脚本原有RUNS=4、SKIP_FIRST=1，每场景四轮，正式summary取第2/3/4轮平均；raw_runs共8行、summary共2行。每轮成功请求数分别256/128、状态SUCCESS；检查输入/输出token总数、失败请求和TTFT，不只看吞吐。实测官方脚本SHA256为 `0813eba574e9d1eb50c297c515baa426da1bcb61ce8c78a398b482f246005565`。
+保留脚本原有RUNS=4、SKIP_FIRST=1，每场景四轮，正式summary取第2/3/4轮平均；raw_runs共8行、summary共2行。每轮成功请求数分别256/128、状态SUCCESS；检查输入/输出token总数、失败请求和TTFT，不只看吞吐。
 
-按本次脚本输出的文件名设置RAW_CSV和SUMMARY_CSV（下列为已归档F的时间戳示例，重跑后需替换），执行：
+查看本次日志打印的 `/workspace/benchmark_results/summary_*.csv`，以 `Total tok/s` 为吞吐指标，同时查看Mean TTFT；`raw_runs_*.csv`由脚本自动生成，用于核对原始四轮与后三轮平均。无需额外复制或归档CSV，也不要求重跑消融。按赛事要求提交测评工具生成的结果，排名以组委会统一复现为准。
+
+4K 和 16K 分别用同环境、同命令的可比基线计算吞吐及 TTFT 变化。吞吐提升严格超过 1% 才算有效提升，TTFT 增加超过 1% 为有效退化。
+
+## 9. 天数主方案：静态KV＋#011–#013
+
+天数主方案为静态KV＋Mixed Attention分相（#011）＋行并行Sampling（#012）＋Decode紧凑网格（#013），W8A16独立保留且默认不联合启用。复用赛事预装CoreX环境，安装仍按第3节两份源码的pip流程，不执行MACA初始化。
+
+2026-11-18现场环境：Ubuntu24.04.2、glibc2.39、Python3.12.11，单卡Iluvatar BI-V150 32768MiB；驱动4.5.0、IX-ML4.4.0；Torch发行版2.10.0+corex.4.5.0（模块2.10.0），Triton模块3.6.0，vLLM0.24.0+empty，evalscope1.11.1、transformers5.14.1、tokenizers0.22.2、numpy1.26.4、safetensors0.8.0。
+
+先在天数容器的独立终端初始化 CoreX：
 
 ```bash
-export RAW_CSV=/workspace/benchmark_results/raw_runs_20261117_181414.csv
-export SUMMARY_CSV=/workspace/benchmark_results/summary_20261117_181414.csv
-python - <<'PY'
-import csv, os
-with open(os.environ['RAW_CSV']) as f:
-    raw = list(csv.DictReader(f))
-with open(os.environ['SUMMARY_CSV']) as f:
-    summary = list(csv.DictReader(f))
-assert len(raw) == 8 and len(summary) == 2
-for length, requests in [(4096, 256), (16384, 128)]:
-    runs = [r for r in raw if int(r['Prefill']) == length]
-    assert len(runs) == 4
-    for r in runs:
-        assert r['Run Status'] == 'SUCCESS'
-        assert float(r['Successful Requests']) == requests
-        assert float(r['Total Input Tokens']) == length * requests
-        assert float(r['Total Output Tokens']) == 1024 * requests
-    row = next(r for r in summary if int(r['Prefill']) == length)
-    for metric in ['Total tok/s', 'Mean TTFT (ms)']:
-        expected = sum(float(r[metric]) for r in runs[1:]) / 3
-        assert abs(float(row[metric]) - expected) <= 0.011
-    print(length, row['Total tok/s'], row['Mean TTFT (ms)'])
-print('RAW_AND_SUMMARY_OK')
-PY
+export PATH=/usr/local/corex/bin:/usr/local/bin:/usr/bin:/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/corex/lib64:/usr/local/openmpi/lib:/usr/local/lib:${LD_LIBRARY_PATH:-}
+which python
+python --version
 ```
 
-| 完整F | total tokens/s | Mean TTFT/ms |
-|---|---:|---:|
-| 4K | 8995.27 | 2039.00 |
-| 16K | 10381.41 | 16819.88 |
+在同一终端完成第3节的共同安装和第4节的数据准备，再完整执行以下环境配置：
 
-这些数值归属冻结F和上述环境，不保证其他环境得到完全相同数值。官方分类以可比基线计算：吞吐提升严格超过1%才算有效提升；TTFT增加超过1%为有效退化，恰好1%仍为正常波动。4K/16K分别报告，不自行换算赛事分值。
+```bash
+unset VLLM_CACHE_ROOT VLLM_VENDOR FLAGGEMS_ENABLE_OPLIST_PATH FLAGGEMS_W8A8_LINEAR_OP FLAGGEMS_W8A8_MOE_OP
+for name in $(env | cut -d= -f1 | grep '^VLLM_FL_'); do unset "$name"; done
+export PYTHONPATH=/workspace/vllm-plugin-FL:/workspace/FlagGems/src
+export PYTHONDONTWRITEBYTECODE=1
+export VLLM_PLUGINS=fl
+export VLLM_FL_K_STATIC_FOLD=1
+export VLLM_FL_INT8_KV_REPAIR=1
+export VLLM_FL_K_TOP4=0
+export VLLM_FL_K_TOP4_JOINT=0
+export VLLM_FL_V_ONLY=0
+export VLLM_FL_MIXED_ATTN_SPLIT=1
+export VLLM_FL_BIV150_DECODE_DIRECT_INDEX=1
+export VLLM_FL_BIV150_ROW_PARALLEL_SAMPLING=1
+export VLLM_FL_TIANSHU_W8A16_DOWN=0
+export VLLM_FL_TIANSHU_W8A16_GATE_UP=0
+export VLLM_FL_TIANSHU_W8A16_QKV=0
+export VLLM_FL_TIANSHU_W8A16_O=0
+```
 
-## 9. 归档与验证范围
+静态KV要求原模型42层校准、page32/276B布局以及绑定的vLLM Attention提供者，源码会自动适配缓存分配；不增加serve参数。与其他KV量化模式互斥，切换必须重启服务。
 
-每次保留源码manifest、实际import路径、环境与依赖、开关、启动/评测命令、GPU与进程状态、健康与量化覆盖、服务和客户端日志、完整精度时间戳目录、性能raw及summary。停止本任务服务后确认9031和GPU释放。旧日志和持久缓存不删除。
-
-已测F源码包SHA256：`b880572a2984027c2bf631463163a3f3d50eb848fce1c040b30d535e8c0ddbf4`，插件365项和FlagGems4782项逐文件校验通过。当前待提交分支包含后加消融接口，默认全开，但不能把整个工作树逐字节等同于冻结F。提交前应依据最终清单核验沐曦路径并补齐变更后的验证记录。
-
-## 10. 天数官方启动命令（独立平台）
-
-天数在其赛事预装环境中执行，不沿用上面的MACA初始化或C500开关；配套优化环境与整合版验证结果待天数源码对齐后补充。官方命令保持如下，不作为当前整合版天数已验收声明：
+官方启动命令原样如下：
 
 ```bash
 export VLLM_PLUGINS=fl
@@ -308,3 +259,67 @@ vllm serve /workspace/MiniCPM5-2B \
   --gpu-memory-utilization 0.85 \
   --max-model-len 131072
 ```
+
+
+服务就绪后核对静态KV初始化42层、workspace和FULL_DECODE_ONLY图捕获成功；简单测试使用第6节的 Python 请求。
+
+### 天数精度测评
+
+天数服务就绪后，在同一容器的客户端终端运行：
+
+```bash
+evalscope eval \
+  --model minicpm \
+  --api-url http://127.0.0.1:9031/v1/chat/completions \
+  --api-key EMPTY \
+  --eval-type openai_api \
+  --datasets math_500 \
+  --dataset-args '{"math_500": {"dataset_id": "/workspace/evalscope-datasets/math_500", "subset_list": ["Level 3"]}}' \
+  --eval-batch-size 8 \
+  --timeout 3600 \
+  --generation-config '{"temperature": 1.0, "top_p": 0.95, "max_tokens": 32768}' \
+  --work-dir /workspace/evalscope-datasets/level3 \
+  --ignore-errors
+```
+
+查看本次输出目录，按第7节核对 Math 500 Level 3 的完成数、错误数和准确率。
+
+### 天数 4K / 16K 性能测评
+
+天数服务就绪后，在同一容器的客户端终端运行：
+
+```bash
+cd /workspace
+python3 /workspace/vllm-plugin-FL/benchmarks/benchmark_throughput_serve.py \
+  --model /workspace/MiniCPM5-2B \
+  --served-model-name minicpm \
+  --port 9031 \
+  --test-cases '[[4096,1024,64,256],[16384,1024,64,128]]'
+```
+
+结果写入 `/workspace/benchmark_results/summary_*.csv`，按第8节核对吞吐和 TTFT。
+
+## 10. 可选：为本次运行指定独立缓存目录
+
+通常使用赛事容器的默认缓存目录即可。两平台如需单独保存本次运行的 vLLM 缓存，可在完成第5节或第9节的环境配置后、启动服务前执行：
+
+```bash
+export VLLM_CACHE_ROOT="$(mktemp -d /tmp/fl-review.XXXXXXXX)"
+```
+
+`mktemp -d` 会创建目录。切换方案时仍需重启服务。
+
+## 11. W8A16 跨平台可选适配
+
+天数提供四类投影的独立 W8A16 开关。每项设为 `1` 启用对应投影的量化，设为 `0` 关闭。天数主复现方案按第9节执行，这四项均为 `0`。
+
+| 投影类型 | 天数 W8A16 开关 | 主复现设置 |
+|---|---|---|
+| Down | `VLLM_FL_TIANSHU_W8A16_DOWN` | `0` |
+| Gate/Up | `VLLM_FL_TIANSHU_W8A16_GATE_UP` | `0` |
+| QKV | `VLLM_FL_TIANSHU_W8A16_QKV` | `0` |
+| O | `VLLM_FL_TIANSHU_W8A16_O` | `0` |
+
+需要在天数独立选择 Down 量化时，仅将表中的 Down 开关设为 `1`，其余三项保持 `0`，并将静态 KV 开关 `VLLM_FL_K_STATIC_FOLD` 和 `VLLM_FL_INT8_KV_REPAIR` 设为 `0`。切换后启动新服务。以上开关用于跨平台可选适配，不作为天数主复现方案。
+
+沐曦完整 F 的 Down 量化按第5节配置，使用沐曦的 `VLLM_FL_W8A16_DOWN` 及配套开关。
