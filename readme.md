@@ -222,9 +222,7 @@ python3 /workspace/vllm-plugin-FL/benchmarks/benchmark_throughput_serve.py \
 
 八轮均成功。复现时以本次执行生成的官方报告和汇总为准。
 
-## 9. 天数主方案：静态KV＋#011–#013
-
-天数主方案为静态KV＋Mixed Attention分相（#011）＋行并行Sampling（#012）＋Decode紧凑网格（#013），W8A16独立保留且默认不联合启用。复用赛事预装CoreX环境，安装仍按第3节两份源码的pip流程，不执行MACA初始化。
+## 9. 天数 BI-V150 完整复现
 
 2026-11-18现场环境：Ubuntu24.04.2、glibc2.39、Python3.12.11，单卡Iluvatar BI-V150 32768MiB；驱动4.5.0、IX-ML4.4.0；Torch发行版2.10.0+corex.4.5.0（模块2.10.0），Triton模块3.6.0，vLLM0.24.0+empty，evalscope1.11.1、transformers5.14.1、tokenizers0.22.2、numpy1.26.4、safetensors0.8.0。
 
@@ -313,6 +311,19 @@ python3 /workspace/vllm-plugin-FL/benchmarks/benchmark_throughput_serve.py \
 ```
 
 结果写入 `/workspace/benchmark_results/summary_*.csv`，按第8节核对吞吐和 TTFT。
+
+#### 完整热点组合诊断记录
+
+以下为天数完整热点组合（全部大 M 热点及 M64 O、QKV）的两轮端到端诊断。保留第 1 轮供查阅，第 2 轮用于该次诊断对照。
+
+| 场景 | 轮次 | 总吞吐（tokens/s） | Mean TTFT（ms） | 成功请求 |
+| --- | ---: | ---: | ---: | ---: |
+| 4K | 1 | 3175.56 | 13904.71 | 256/256 |
+| 4K | 2 | 3734.23 | 4209.22 | 256/256 |
+| 16K | 1 | 2879.74 | 91889.49 | 128/128 |
+| 16K | 2 | 3118.40 | 72323.39 | 128/128 |
+
+数据来自接入总开关前的隔离诊断。正式复现按上面的命令完整运行，以官方脚本输出的后三轮平均为准。
 
 ## 10. 可选：为本次运行指定独立缓存目录
 
