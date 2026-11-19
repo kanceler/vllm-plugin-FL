@@ -21,7 +21,7 @@ for name in manifest['files']:
         ast.parse((snapshot / name).read_bytes(), filename=name)
 provider = 'src/flag_gems/runtime/backend/_iluvatar/ops/mm.py'
 expected_provider = 'fd120991ed1c5cab988d02cbdb1d97ccde1e9e2eedad55affe90321d875f32ed'
-assert manifest['files'][provider] == expected_provider, 'historical provider identity changed'
+assert manifest['files'][provider] == expected_provider, 'submission BF16 fixed-config provider identity changed'
 if errors:
     raise SystemExit('Integrity mismatch: ' + ', '.join(errors))
 print(json.dumps({'files_verified': len(actual), 'provider_identity_matches': True,

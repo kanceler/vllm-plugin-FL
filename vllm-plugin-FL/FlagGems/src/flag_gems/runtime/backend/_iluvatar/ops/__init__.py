@@ -118,3 +118,11 @@ __all__ = [
     "var_correction",
     "var_dim",
 ]
+
+# Keep the existing provider and dispatch untouched unless explicitly enabled.
+import os as _os
+
+if _os.environ.get("FLAGGEMS_ILUVATAR_BF16_HOTSPOTS") == "1":
+    from .bf16_hotspots import install as _install_bf16_hotspots
+
+    _install_bf16_hotspots()

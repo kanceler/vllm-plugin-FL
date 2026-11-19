@@ -9,8 +9,8 @@
   "added_callables": [
     "mm_kernel_scale"
   ],
-  "cache_policy": "No provider hash bypass, no tuning cache deletion or reuse claims; original backend provider bytes retained except explicit Iluvatar overlay. GPU revalidation pending.",
-  "file_count": 4782,
+  "cache_policy": "Seven BF16 hotspots are opt-in via the Iluvatar ops loader. Original MM provider identity retained. No persistent cache deletion.",
+  "file_count": 4783,
   "files": {
     ".clang-format": "a3a8a1764e83a276e8478adecbb7693ae37f7ba373021f3ed999cea4275b85cf",
     ".coveragerc": "3aa2a1bc1fc5b568c5cc917a319ebf366a0cf77f56fed7cd262e10e0db3a09a8",
@@ -3144,7 +3144,8 @@
     "src/flag_gems/runtime/backend/_iluvatar/fused/top_k_per_row_prefill.py": "f0363befaec758a9b7c97e72229705e406cdbff0ea8fb28e6f1978f35b01ca3b",
     "src/flag_gems/runtime/backend/_iluvatar/heuristics_config_utils.py": "145fcb02a536e280cbe7007de8b965b971b8ffa93d5a4a4fb6205b4ac0599bc7",
     "src/flag_gems/runtime/backend/_iluvatar/op_black_list.yaml": "b4dbbfbb9d5750ed11f713b02e3ca99898a137f741cd038d600aa2e72bf1977b",
-    "src/flag_gems/runtime/backend/_iluvatar/ops/__init__.py": "884743e530d0d06fae2f47d4e8f28e0aabc7b5e35dfcc1846dab4ce47d6077ac",
+    "src/flag_gems/runtime/backend/_iluvatar/ops/bf16_hotspots.py": "636e8540e19258750132e9a7feebb7cac08138d31300eb68a9974004f828b6de",
+    "src/flag_gems/runtime/backend/_iluvatar/ops/__init__.py": "fc17b3632f6027e1be58c32c7718beb7dbf0312423806db9f95856c3b44357cf",
     "src/flag_gems/runtime/backend/_iluvatar/ops/_native_batch_norm_legit_functional.py": "61cc5ce52cfc3e44944411dc322ca6e3cbe362f09cf6be157cfa0311815bc00d",
     "src/flag_gems/runtime/backend/_iluvatar/ops/adaptive_max_pool3d_backward.py": "cd6d2aaa69eeab2437c408c1365d029bc8dddcbb159c3a2706424fd3efb482d0",
     "src/flag_gems/runtime/backend/_iluvatar/ops/addmm.py": "a39e446578995324395fec16a37548af694b477be8ff8bcd8598643786487d47",
@@ -4794,5 +4795,8 @@
     "triton_src/div.py": "8b034ca174a7297cd1450cf15c1d46a8b8682a9ae8f1347d122acc6242e4d676",
     "triton_src/fill.py": "0bf2e1388dd9ac9ee901d444294fe4f819781edc45ce570b8547ae1374976bc8",
     "triton_src/zeros.py": "8aa90cfdd91232f2cccd4ad27c9e7b11cb2a384192e6c942351190dae1887c88"
-  }
+  },
+  "modified_callables": [
+    "_launch_mm"
+  ]
 }

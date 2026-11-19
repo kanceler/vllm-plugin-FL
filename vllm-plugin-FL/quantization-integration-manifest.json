@@ -245,7 +245,7 @@
     "vllm_fl/worker/model_runner.py": "bf610da5c422a6ffaf0608e9c9db0a2699da9cc9fd18f4ed00364157b8e48c8e",
     "vllm_fl/worker/scheduler_fl.py": "ebac7e38a6deb7093c110f8e30893f74aaafd70877ee424e86ca0cd59d3114d8",
     "vllm_fl/worker/worker.py": "7d4261bc051f5f3862625cfbdf98115cb1597f391f62d53579d947ee4255b86a",
-    "benchmarks/diagnostics/audit_integrated_flaggems.py": "0b370e99ed4e3b0476ccdbe09f6e859b8ae900103ad18dca38598f4a74790d03",
+    "benchmarks/diagnostics/audit_integrated_flaggems.py": "26b961c834cc5bb5d8bada4cd526e42b8e887e173bf1bf7807d8abefc990e87d",
     "benchmarks/diagnostics/audit_metax_down_partial.py": "07e895d28d4f826c94d6ece1f4e002d4469bae3ccad92308cd778c821486bd0b",
     "benchmarks/diagnostics/audit_quantization_integration.py": "ef9a135f3d94b50f7ddc8cbfe4c13b763de2a5364d3dd131e2cbff7f81e59c5c",
     "benchmarks/diagnostics/benchmark_k_cost_ablation.py": "4df718cbd4abdbc7716c449685f4c835117535cab800f6fc79083fa98c5d77b8",
@@ -372,7 +372,7 @@
     "benchmarks/diagnostics/verify_splitk_launch_options.py": "33797482422fa9752ab5739732a0e8a573bc197b4191cbdde1b627a34e7faa50",
     "benchmarks/diagnostics/w8a16_dense_search.py": "12462243185801f44b9de135cf97d4cc8420d6d94cfe0fbae03e2c64b8e1cbfa",
     "benchmarks/diagnostics/w8a16_splitk_search.py": "4d2e9bcd6fb447a0bc2483822727c194a52efcd695341e6a02aa40b532b3f443",
-    "flaggems-source-manifest.json": "c5d31f623535aa84d3960c5ab0b2b96289e4719f436f1f24a1ebbe1a958d9f56",
+    "flaggems-source-manifest.json": "f0635c907a94bb8668fd05cf57de0d73577b172d48d1cd8a83c9bd9c2fd9608b",
     "vllm_fl/dispatch/backends/vendor/metax/patches/gemm_bucket.py": "7a11203fc8ac5521d35d6c839706949522673f308df5e095a7f7239911e5bb6b",
     "vllm_fl/dispatch/backends/vendor/metax/patches/top_p_selection.py": "0780c0b82914f92c10bae425fdda45a1cb1cbe82438278c0813824fe11b7d459"
   }
