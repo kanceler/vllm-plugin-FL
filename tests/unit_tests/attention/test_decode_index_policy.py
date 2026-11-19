@@ -57,6 +57,7 @@ def test_default_and_explicit_enable_install(monkeypatch, setting):
     monkeypatch.setattr(mixed_policy, "_is_validated_device", lambda: True)
     original, specialized = object(), object()
     monkeypatch.setattr(policy, "build_specialized_head", lambda _: specialized)
+    monkeypatch.setenv("VLLM_FL_BIV150_DECODE_KV_PREFETCH", "0")
     namespace = {"_fl_prefill_tiles": None, "kernel_unified_attention": original}
     launcher = FunctionType((lambda: None).__code__, namespace)
     builder = SimpleNamespace(build=lambda *args: None)
@@ -67,6 +68,7 @@ def test_default_and_explicit_enable_install(monkeypatch, setting):
     dispatch = namespace["kernel_unified_attention"]
     assert isinstance(dispatch, policy.DecodeIndexKernel)
     assert dispatch.original is original and dispatch.specialized is specialized
+    assert dispatch.prefetch is None
     assert policy.install_decode_index_policy(backend)
 
 
@@ -162,3 +164,89 @@ def test_metadata_identity_and_diagnostic_fallback():
     assert dispatch.eligible(kwargs)
     dispatch.force_original = True
     assert not dispatch.eligible(kwargs)
+
+
+@pytest.mark.parametrize("mode", ["unset", "enabled", "disabled", "incompatible"])
+def test_prefetch_installs_independently(monkeypatch, mode):
+    from vllm_fl.attention import mixed_policy
+
+    monkeypatch.setattr(policy, "_installed", False)
+    monkeypatch.setenv("VLLM_FL_BIV150_DECODE_DIRECT_INDEX", "1")
+    if mode == "unset":
+        monkeypatch.delenv("VLLM_FL_BIV150_DECODE_KV_PREFETCH", raising=False)
+    else:
+        monkeypatch.setenv(
+            "VLLM_FL_BIV150_DECODE_KV_PREFETCH", "0" if mode == "disabled" else "1"
+        )
+    monkeypatch.setattr(mixed_policy, "_is_validated_device", lambda: True)
+    original, specialized, prefetch = object(), object(), object()
+    monkeypatch.setattr(policy, "build_specialized_head", lambda _: specialized)
+    seen = []
+
+    def build(candidate):
+        seen.append(candidate)
+        if mode == "incompatible":
+            raise ValueError("unrecognized load body")
+        return prefetch
+
+    monkeypatch.setattr(policy, "build_prefetch_head", build)
+    namespace = {"_fl_prefill_tiles": None, "kernel_unified_attention": original}
+    backend = SimpleNamespace(
+        unified_attention=FunctionType((lambda: None).__code__, namespace),
+        TritonAttentionMetadataBuilder=SimpleNamespace(build=lambda *args: None),
+    )
+    assert policy.install_decode_index_policy(backend)
+    dispatch = namespace["kernel_unified_attention"]
+    assert dispatch.original is original and dispatch.specialized is specialized
+    assert seen == ([] if mode == "disabled" else [specialized])
+    assert dispatch.prefetch is (prefetch if mode in {"unset", "enabled"} else None)
+
+
+@pytest.mark.parametrize(
+    ("batch", "quant_mode", "expected"),
+    [
+        (1, 0, "direct"),
+        (15, 0, "direct"),
+        (16, 0, "prefetch"),
+        (64, 0, "prefetch"),
+        (65, 0, "original"),
+        (32, 2, "original"),
+    ],
+)
+def test_prefetch_respects_compact_batch_and_qualification(batch, quant_mode, expected):
+    class Head:
+        def __init__(self, name):
+            self.name = name
+
+        def __getitem__(self, grid):
+            return lambda **kwargs: (self.name, grid)
+
+    kwargs = eligible_kwargs()
+    kwargs.update(num_seqs=batch, KV_QUANT_MODE=quant_mode)
+    kwargs["query_ptr"].shape = (batch, 16, 128)
+    metadata = SimpleNamespace(_fl_decode_index_starts=kwargs["query_start_len_ptr"])
+    dispatch = policy.DecodeIndexKernel(
+        Head("original"),
+        Head("direct"),
+        lambda: {"layer": metadata},
+        prefetch=Head("prefetch"),
+    )
+    grid = (96, 2, 16)
+    assert dispatch[grid](**kwargs) == (
+        expected,
+        grid if expected == "original" else (batch, 2, 16),
+    )
+
+
+def test_prefetch_rejects_unrecognized_load_body():
+    from vllm_fl.attention.decode_kv_prefetch import specialize_source
+
+    source = """def fl_decode_index_attention():
+    for j in range(loop_lo, loop_hi):
+        physical_block_idx = tl.load(
+            changed_ptr)
+        K = _cast_kv_tile(K_load, Q, k_scale, KV_QUANT_MODE)
+    # ---- Epilogue ---
+"""
+    with pytest.raises(ValueError, match="load body"):
+        specialize_source(source)

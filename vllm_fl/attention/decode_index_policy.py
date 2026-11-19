@@ -12,6 +12,8 @@ from vllm.logger import init_logger
 
 logger = init_logger(__name__)
 _installed = False
+_PREFETCH_MIN_BATCH = 16
+_PREFETCH_ENV = "VLLM_FL_BIV150_DECODE_KV_PREFETCH"
 _ORIGINAL_LOOKUP = """    (
         seq_idx,
         q_block_local_idx,
@@ -74,15 +76,27 @@ def build_specialized_head(upstream):
     source = original.replace(_ORIGINAL_LOOKUP, _DIRECT_LOOKUP, 1).replace(
         "def kernel_unified_attention(", "def fl_decode_index_attention(", 1
     )
+    return _compile_head(source, vars(upstream), "fl_decode_index_attention")
+
+
+def _compile_head(source, globals_dict, name):
     filename = (
         "<vllm_fl.decode_index." + hashlib.sha256(source.encode()).hexdigest() + ">"
     )
     # Triton uses inspect.getsource. An in-memory source entry keeps its hash
     # reproducible without writing/replacing vLLM or a generated .py file.
     linecache.cache[filename] = (len(source), None, source.splitlines(True), filename)
-    namespace = dict(vars(upstream))
+    namespace = dict(globals_dict)
     exec(compile(source, filename, "exec"), namespace)  # noqa: S102
-    return namespace["fl_decode_index_attention"]
+    return namespace[name]
+
+
+def build_prefetch_head(specialized):
+    from vllm_fl.attention.decode_kv_prefetch import _PREFETCH_HEAD, specialize_source
+
+    function = specialized.fn
+    source = specialize_source(inspect.getsource(function))
+    return _compile_head(source, function.__globals__, _PREFETCH_HEAD)
 
 
 def active_metadata():
@@ -95,10 +109,13 @@ def active_metadata():
 class DecodeIndexKernel:
     """Keep the original kernel for every unsupported launch/metadata shape."""
 
-    def __init__(self, original, specialized, metadata_provider=active_metadata):
+    def __init__(
+        self, original, specialized, metadata_provider=active_metadata, *, prefetch=None
+    ):
         self.original = original
         self.specialized = specialized
         self.metadata_provider = metadata_provider
+        self.prefetch = prefetch
         self.force_original = False  # Diagnostic A/B only, never an env hot switch.
 
     def eligible(self, kwargs):
@@ -167,7 +184,10 @@ class DecodeIndexKernel:
         def launch(*args, **kwargs):
             if not args and self.eligible(kwargs):
                 compact = (kwargs["num_seqs"], grid[1], grid[2])
-                return self.specialized[compact](**kwargs)
+                head = self.specialized
+                if self.prefetch is not None and compact[0] >= _PREFETCH_MIN_BATCH:
+                    head = self.prefetch
+                return head[compact](**kwargs)
             return self.original[grid](*args, **kwargs)
 
         return launch
@@ -215,10 +235,19 @@ def install_decode_index_policy(backend):
         metadata._fl_decode_index_starts = target
         return metadata
 
+    prefetch = None
+    if os.environ.get(_PREFETCH_ENV, "1").lower() in ("1", "true"):
+        try:
+            prefetch = build_prefetch_head(specialized)
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("BI-V150 Decode KV prefetch not installed: %s", exc)
+
     builder.build = build
     launcher.__globals__["kernel_unified_attention"] = DecodeIndexKernel(
-        original, specialized
+        original, specialized, prefetch=prefetch
     )
     _installed = True
     logger.info("BI-V150 Decode direct-index policy installed")
+    if prefetch is not None:
+        logger.info("BI-V150 Decode KV prefetch installed (batch >= 16)")
     return True
