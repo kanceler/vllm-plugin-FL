@@ -498,6 +498,13 @@ class WorkerFL(WorkerBase):
                 if not load_dummy_weights:
                     gemm_bucket_state = gemm_bucket.install(self.vllm_config)
             self.model_runner.load_model(load_dummy_weights=load_dummy_weights)
+            if (
+                getattr(current_platform, "vendor_name", None) == "iluvatar"
+                and self.model_config.dtype == torch.bfloat16
+            ):
+                from vllm_fl.attention.decode_kv_prefetch import install_decode_kv_prefetch
+
+                install_decode_kv_prefetch(self.cache_config.cache_dtype)
             if gemm_bucket_state is not None:
                 gemm_bucket.warmup_model(gemm_bucket_state, self.model_runner.model)
         # with self._maybe_get_memory_pool_context(tag="weights"):
