@@ -46,6 +46,16 @@ class StaticMixedPlan:
     decode_starts: object
     prefill_starts: object
     source_starts: object
+    leading_prefill_tokens: int = 0
+
+
+@dataclass(frozen=True)
+class GatherMixedPlan(StaticMixedPlan):
+    prefill_row: int = 0
+    prefill_begin: int = 0
+    prefill_end: int = 0
+    decode_rows: object = None
+    decode_tokens: object = None
 
 
 def attach_plan(metadata, common):
@@ -65,9 +75,61 @@ def attach_plan(metadata, common):
     if layout.all_decode:
         metadata._fl_static_decode_starts = metadata.query_start_loc
         return metadata
+    if not feature_enabled("VLLM_FL_MIXED_ATTN_SPLIT"):
+        return metadata
     d = layout.decode_rows
-    if (not feature_enabled("VLLM_FL_MIXED_ATTN_SPLIT")
-            or not 16 <= d < common.num_reqs or d > 80
+    extended_split = os.environ.get(
+        "VLLM_FL_BIV150_MIXED_EXTENDED_SPLIT", "0"
+    ).lower() in ("1", "true")
+    prefill_tokens = starts[1]
+    trailing_decodes = common.num_reqs - 1
+    if (
+        extended_split
+        and prefill_tokens > 1
+        and 16 <= trailing_decodes <= 80
+        and trailing_decodes <= metadata.softmax_segm_output.shape[0]
+        and all(right - left == 1 for left, right in zip(starts[1:], starts[2:]))
+    ):
+        gpu_starts = metadata.query_start_loc
+        metadata._fl_static_mixed_plan = StaticMixedPlan(
+            trailing_decodes,
+            gpu_starts[1:common.num_reqs + 1] - prefill_tokens,
+            gpu_starts[:2],
+            gpu_starts,
+            prefill_tokens,
+        )
+        return metadata
+    if (
+        extended_split
+        and 0 < d < 16
+        and 16 <= trailing_decodes <= 80
+        and trailing_decodes <= metadata.softmax_segm_output.shape[0]
+        and starts[d + 1] - starts[d] >= 1024
+        and all(right - left == 1 for left, right in zip(starts[d + 1:], starts[d + 2:]))
+    ):
+        import torch
+
+        gpu_starts = metadata.query_start_loc
+        begin, end = starts[d:d + 2]
+        decode_starts = torch.arange(
+            trailing_decodes + 1, dtype=gpu_starts.dtype, device=gpu_starts.device
+        )
+        # The first d Decode requests are also the first d Query tokens.
+        compact = decode_starts[:-1].long()
+        after_prefill = compact >= d
+        metadata._fl_static_mixed_plan = GatherMixedPlan(
+            num_decodes=trailing_decodes,
+            decode_starts=decode_starts,
+            prefill_starts=gpu_starts[d:d + 2] - begin,
+            source_starts=gpu_starts,
+            prefill_row=d,
+            prefill_begin=begin,
+            prefill_end=end,
+            decode_rows=compact + after_prefill,
+            decode_tokens=compact + after_prefill * (end - begin),
+        )
+        return metadata
+    if (not 16 <= d < common.num_reqs or d > 80
             or d > metadata.softmax_segm_output.shape[0]):
         return metadata
     existing = getattr(metadata, "_fl_mixed_plan", None)
@@ -99,9 +161,25 @@ def split_attention_args(args, plan):
         return None
     d = plan.num_decodes
     decode, prefill = dict(args), dict(args)
-    for name in ("q", "out", "seqused_k", "block_table"):
-        decode[name] = args[name][:d]
-        prefill[name] = args[name][d:]
+    if isinstance(plan, GatherMixedPlan):
+        start, end = plan.prefill_begin, plan.prefill_end
+        row = plan.prefill_row
+        decode["q"] = args["q"].index_select(0, plan.decode_tokens)
+        decode["out"] = decode["q"].new_empty(decode["q"].shape)
+        prefill["q"], prefill["out"] = args["q"][start:end], args["out"][start:end]
+        for name in ("seqused_k", "block_table"):
+            decode[name] = args[name].index_select(0, plan.decode_rows)
+            prefill[name] = args[name][row:row + 1]
+    else:
+        prefill_tokens = getattr(plan, "leading_prefill_tokens", 0)
+        for name in ("q", "out", "seqused_k", "block_table"):
+            if prefill_tokens:
+                prefix = prefill_tokens if name in ("q", "out") else 1
+                decode[name] = args[name][prefix:prefix + d]
+                prefill[name] = args[name][:prefix]
+            else:
+                decode[name] = args[name][:d]
+                prefill[name] = args[name][d:]
     decode["cu_seqlens_q"] = plan.decode_starts
     decode["max_seqlen_q"] = 1
     prefill["cu_seqlens_q"] = plan.prefill_starts

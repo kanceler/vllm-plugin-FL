@@ -567,7 +567,7 @@
     "vllm_fl/attention/k_static_fold_kernel.py": "a3495fc9b7b19970793fdaa7674062827d4c925ad4052d87729b353df1ab1a49",
     "vllm_fl/attention/k_static_fold_launch.py": "7745fbfedf0d713eb0f1076eab06bdf4ef26bcdb49920e58989c05e70eb3c349",
     "vllm_fl/attention/k_static_fold_policy.py": "913e99711ae6556dc5605ccad91b519daa1b0af3794ab38b0b238ba2a12d2721",
-    "vllm_fl/attention/k_static_fold_service.py": "786bf2b665a01fb75d7ea96777b9399f6c9aeee337139e79caeaf989ca1de8f1",
+    "vllm_fl/attention/k_static_fold_service.py": "9a16c762e03c28c82211697617784ca781939d63cc3b8c10f8fc9359f9ee8746",
     "vllm_fl/attention/k_static_fold_writer.py": "3603fbb8b41023404edaac133020a9fc70a6d3d46386c42654f9cef227845632",
     "vllm_fl/attention/k_top4.py": "d6368cfe77551bf9589be09537882387996163a7d3aa76b944a82682094af857",
     "vllm_fl/attention/k_top4_joint_kernel.py": "ef6dd485497669e803228446ee3b1fa3d38edb232a3e2e8e20613c9eca4698b1",
@@ -579,7 +579,7 @@
     "vllm_fl/dispatch/backends/vendor/iluvatar/iluvatar.py": "73ab446ca31f7927b5e87b0c69b05e55f53382d925a320b41006f865cee8f603",
     "vllm_fl/platform.py": "625d689262304c1fe04bd81b69e2d360a10c16173e275aa8de122ba4659baef8",
     "vllm_fl/worker/model_runner.py": "bf610da5c422a6ffaf0608e9c9db0a2699da9cc9fd18f4ed00364157b8e48c8e",
-    "vllm_fl/attention/static_kv_compat.py": "423d57bfef70bf24167c8aaca2507dfd45b22612802de2e6b057aa785149b9a6",
+    "vllm_fl/attention/static_kv_compat.py": "6485d466802a8f943ae288e7aeaefbf01ed6b6a46abe7469a6ec874eef428688",
     "vllm_fl/attention/mixed_policy.py": "d36f41bbffefc9b0a727ca651a05666faf332b907066ddab277b1e90f5090732",
     "vllm_fl/attention/decode_index_policy.py": "947153486d1ba488a13262490a914043559298e4aacf8f2dd2fe085c4f1318c0",
     "vllm_fl/patches/iluvatar_sampling.py": "e1f6dbe26d844f512472b29b20186489208a59cad1af12e1d6f559cbb8433d3d"

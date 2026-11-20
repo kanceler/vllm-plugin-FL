@@ -249,6 +249,8 @@ export VLLM_FL_K_TOP4=0
 export VLLM_FL_K_TOP4_JOINT=0
 export VLLM_FL_V_ONLY=0
 export VLLM_FL_MIXED_ATTN_SPLIT=1
+export VLLM_FL_BIV150_MIXED_EXTENDED_SPLIT=1
+export VLLM_FL_BIV150_DECODE_KV_PREFETCH=0
 export VLLM_FL_BIV150_DECODE_DIRECT_INDEX=1
 export VLLM_FL_BIV150_ROW_PARALLEL_SAMPLING=1
 export FLAGGEMS_ILUVATAR_BF16_HOTSPOTS=1
@@ -275,6 +277,8 @@ vllm serve /workspace/MiniCPM5-2B \
 
 
 服务就绪后核对静态KV初始化42层、workspace和FULL_DECODE_ONLY图捕获成功；简单测试使用第6节的 Python 请求。
+
+`VLLM_FL_BIV150_MIXED_EXTENDED_SPLIT=1` 在现有 Mixed 分相上同时启用两条路径。长 Prefill 在首时，连续 Decode 直接切片。长 Prefill 居中且满足容量和布局条件时，两侧 Decode 合并走 3D Attention 和 Reduce，再按原位置回写。实际命中居中布局时，服务日志会出现 `Static KV Mixed gather active`。旧版完整组合可将此开关设为 `0` 复现。天数最终组合保持 BF16 Decode KV 页预取关闭。
 
 ### 天数精度测评
 

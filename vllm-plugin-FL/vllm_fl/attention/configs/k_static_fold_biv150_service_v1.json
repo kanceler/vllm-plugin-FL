@@ -567,7 +567,7 @@
     "vllm_fl/attention/k_static_fold_kernel.py": "aef9711113dec1bc04ee06a8cec427acbfd9db2a8eaabf4230c5d7aef55e6109",
     "vllm_fl/attention/k_static_fold_launch.py": "7745fbfedf0d713eb0f1076eab06bdf4ef26bcdb49920e58989c05e70eb3c349",
     "vllm_fl/attention/k_static_fold_policy.py": "f83cda6c1b2658f42e20927f3d8b4bf7ed4c22a7e47ccfadb4f2579d4a1b7c44",
-    "vllm_fl/attention/k_static_fold_service.py": "11cbd5409d734166c1d8edfb3eb75889e97bc450766ba052e3c479b746c20afe",
+    "vllm_fl/attention/k_static_fold_service.py": "9a16c762e03c28c82211697617784ca781939d63cc3b8c10f8fc9359f9ee8746",
     "vllm_fl/attention/k_static_fold_writer.py": "3603fbb8b41023404edaac133020a9fc70a6d3d46386c42654f9cef227845632",
     "vllm_fl/attention/k_top4.py": "d6368cfe77551bf9589be09537882387996163a7d3aa76b944a82682094af857",
     "vllm_fl/attention/k_top4_joint_kernel.py": "ef6dd485497669e803228446ee3b1fa3d38edb232a3e2e8e20613c9eca4698b1",

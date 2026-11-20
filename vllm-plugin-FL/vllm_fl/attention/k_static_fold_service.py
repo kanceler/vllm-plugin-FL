@@ -126,6 +126,12 @@ class KStaticFoldImpl(TritonAttentionImpl):
             # Split only the Attention work, keeping physical cache/scales intact.
             self._attention(phases[0], m, direct=True)
             self._attention(phases[1], m, direct=False)
+            decode_tokens = getattr(plan, 'decode_tokens', None)
+            if decode_tokens is not None:
+                if not getattr(self, '_mixed_gather_reported', False):
+                    print(f'[FL] Static KV Mixed gather active: prefill_row={plan.prefill_row}, decode_rows={plan.num_decodes}', flush=True)
+                    self._mixed_gather_reported = True
+                a['out'].index_copy_(0, decode_tokens, phases[0]['out'])
         else:
             qualified = getattr(m, '_fl_static_decode_starts', None)
             self._attention(a, m, direct=qualified is m.query_start_loc)
